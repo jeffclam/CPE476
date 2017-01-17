@@ -1,0 +1,21 @@
+Andrew Adriance
+
+JSON library from:
+https://github.com/open-source-parsers/jsoncpp
+
+The resource folder includes objects and files to load a work and make stuff.
+
+Controls:
+
+WASD: move
+Z,X,Y: Set work axis (the axis that will be changed by transform commands)
+\: rotate counter clockwise
+/: rotate clockwise
++: scale up
+-: scale down
+R: reset transform on cursor
+H: hide cursor
+K: Save
+S: Load
+UP/DOWN arrows: change object
+LEFT/RIGHT arros: change mat
