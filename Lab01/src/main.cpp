@@ -34,16 +34,9 @@ using namespace glm;
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
-shared_ptr<Shape> shape;
-shared_ptr<Shape> shape2;
 shared_ptr<Shape> ground;
 
 int g_width, g_height;
-float sTheta;
-float trans;
-float handRot;
-float handDir;
-bool anim = true;
 float xPos[10];
 float zPos[10];
 float xPos2[10];
@@ -70,104 +63,17 @@ static void error_callback(int error, const char *description)
 
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    if(key == GLFW_KEY_L && action == GLFW_PRESS) {
-        Json::Value root;
-        Json::Reader reader;
-        std::ifstream stuffIn(RESOURCE_DIR + saveFile, std::ifstream::binary);
-        
-        bool parsingSuccessful = reader.parse( stuffIn, root, false );
-        if ( !parsingSuccessful )
-        {
-            // report to the user the failure and their locations in the document.
-            std::cout << "Error reading stuff file: "
-            << reader.getFormatedErrorMessages()
-            << "\n";
-        }
-        place.load(root);
-    }
-    if(key == GLFW_KEY_K && action == GLFW_PRESS) {
-        Json::Value root;
-        root = place.save();
-        
-        std::ofstream pOut;
-        pOut.open(RESOURCE_DIR + saveFile);
-        pOut << root;
-    }
-    if(key == GLFW_KEY_H && action == GLFW_PRESS) {
-        place.toggleCursor();
-    }
-    
-    if(key == GLFW_KEY_X && action == GLFW_PRESS) {
-        workAxis = 0;
-    }
-    if(key == GLFW_KEY_Y && action == GLFW_PRESS) {
-        workAxis = 1;
-    }
-    if(key == GLFW_KEY_Z && action == GLFW_PRESS) {
-        workAxis = 2;
-    }
-    if(key == GLFW_KEY_R && action == GLFW_PRESS) {
-        workAxis = 0;
-        place.cursor.setScale(1, 1, 1);
-        place.cursor.setRot(0, 0, 0);
-    }
-    
-    if(key == GLFW_KEY_EQUAL && action == GLFW_PRESS) {
-        place.cursor.scale[workAxis] = place.cursor.scale[workAxis] + 0.1;
-    }
-    if(key == GLFW_KEY_MINUS && action == GLFW_PRESS) {
-        place.cursor.scale[workAxis] = place.cursor.scale[workAxis] - 0.1;
-    }
-    if(key == GLFW_KEY_BACKSLASH && action == GLFW_PRESS) {
-        place.cursor.rot[workAxis] = place.cursor.rot[workAxis] + 0.1;
-    }
-    if(key == GLFW_KEY_SLASH && action == GLFW_PRESS) {
-        place.cursor.rot[workAxis] = place.cursor.rot[workAxis] - 0.1;
-    }
-    
-    if(key == GLFW_KEY_LEFT && action == GLFW_PRESS) {
-        if(place.cursor.mat == 0) {
-            place.cursor.mat = MAT_NUM - 1;
-        } else {
-            place.cursor.mat = (place.cursor.mat - 1) % MAT_NUM;
-        }
-    }
-    if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
-        place.cursor.mat = (place.cursor.mat + 1) % MAT_NUM;
-    }
-    if(key == GLFW_KEY_UP && action == GLFW_PRESS) {
-        if(curShape == 0) {
-            curShape = maxShapeDex - 1;
-        } else {
-            curShape = (curShape - 1) % maxShapeDex;
-        }
-        place.cursor.setName(getShapeByIndex(curShape));
-    }
-    if(key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-        curShape = (curShape + 1) % maxShapeDex;
-        place.cursor.setName(getShapeByIndex(curShape));
-    }
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
     cam.handleInputKey(key, action);
-    if(key == GLFW_KEY_C && action == GLFW_PRESS) {
-        sTheta = 0;
-        handRot = 0;
-    }
-    if(key == GLFW_KEY_X && action == GLFW_PRESS) {
-        anim = !anim;
-    }
 }
 
 
 static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
 {
-   double posX, posY;
    if (action == GLFW_PRESS) {
-      glfwGetCursorPos(window, &posX, &posY);
-       place.placeCursor();
-      //cout << "Pos X " << posX <<  " Pos Y " << posY << endl;
+      //user pressed
 	}
 }
 
@@ -175,6 +81,7 @@ static void mouseMove_callback(GLFWwindow *window, double xPos, double yPos)
 {
     cam.handleInputMouse(xPos, yPos, g_width, g_height);
 }
+
 static void resize_callback(GLFWwindow *window, int width, int height) {
    g_width = width;
    g_height = height;
@@ -194,26 +101,11 @@ static void init()
         zPos2[i] = rand() % 40 - 20;
     }
     
-	sTheta = 0;
-    handRot = 0;
-    handDir = 0;
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-	// Initialize mesh.
-	shape = make_shared<Shape>();
-	shape->loadMesh(RESOURCE_DIR + "sphere.obj");
-	shape->resize();
-	shape->init();
-    
-    // Initialize mesh.
-    shape2 = make_shared<Shape>();
-    shape2->loadMesh(RESOURCE_DIR + "body.obj");
-    shape2->resize();
-    shape2->init();
     
     ground = make_shared<Shape>();
     ground->loadMesh(RESOURCE_DIR + "cube.obj");
@@ -275,9 +167,7 @@ static void render()
 
    // Create the matrix stacks - please leave these alone for now
    auto P = make_shared<MatrixStack>();
-   auto M = make_shared<MatrixStack>();
-    auto B = make_shared<MatrixStack>();
-    
+   auto M = make_shared<MatrixStack>();    
     
    // Apply perspective projection.
    P->pushMatrix();
@@ -300,23 +190,6 @@ static void render()
    // Pop matrix stacks.
    P->popMatrix();
 
-    if (anim) {
-        if (sTheta < 1.4) {
-            sTheta += 0.01;
-        } else {
-            if(handRot > 0.5) {
-                handDir = 1;
-            }
-            if(handRot < -0.5) {
-                handDir = 0;
-            }
-            if(handDir == 0) {
-                handRot += 0.02;
-            } else {
-                handRot -= 0.02;
-            }
-        }
-    }
     cam.walk();
 }
 
