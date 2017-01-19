@@ -9,7 +9,7 @@
 #include "camera.h"
 
 Camera::Camera():
-    eyePt(vec3(0,0,0)),
+    eyePt(vec3(0,1.5,0)),
     gaze(vec3(0,0,0)),
     up (vec3(0,1,0)),
     oldX(0),
@@ -53,9 +53,10 @@ void Camera::handleInputKey(int key, int action) {
     }
 }
 
-void Camera::walk() {
-    eyePt += getW() * (dolly/6);
-    eyePt += getU() * (strafe/6);
+void Camera::walk(double delta) {
+    eyePt += getW() * dolly  * ((float)5) * (float)delta;
+    eyePt += getU() * strafe * ((float)5) * (float)delta;
+    eyePt[1] = 1.5;
 }
 
 void Camera::handleInputMouse(double xPos, double yPos, int g_width, int g_height){

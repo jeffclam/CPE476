@@ -24,7 +24,7 @@ public:
     vec3 getW();
     vec3 getU();
     vec3 getV();
-    void walk();
+    void walk(double delta);
     void handleInputKey(int key, int action);
     void handleInputMouse(double xPos, double yPos, int g_width, int g_height);
     tmat4x4<float> getLookAt();

@@ -167,7 +167,7 @@ static void render()
 
    // Create the matrix stacks - please leave these alone for now
    auto P = make_shared<MatrixStack>();
-   auto M = make_shared<MatrixStack>();    
+   auto M = make_shared<MatrixStack>();
     
    // Apply perspective projection.
    P->pushMatrix();
@@ -190,11 +190,11 @@ static void render()
    // Pop matrix stacks.
    P->popMatrix();
 
-    cam.walk();
 }
 
 int main(int argc, char **argv)
 {
+    double lastTime;
 	if(argc < 2) {
 		cout << "Please specify the resource directory." << endl;
 		return 0;
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 
 	// Initialize scene. Note geometry initialized in init now
 	init();
-
+    lastTime = glfwGetTime();
 	// Loop until the user closes the window.
 	while(!glfwWindowShouldClose(window)) {
 		// Render scene.
@@ -256,6 +256,9 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
+        
+        cam.walk(glfwGetTime() - lastTime);
+        lastTime = glfwGetTime();
 	}
 	// Quit program.
 	glfwDestroyWindow(window);
