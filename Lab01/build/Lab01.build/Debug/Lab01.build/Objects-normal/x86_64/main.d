@@ -108,5 +108,4 @@ dependencies: /Users/Andrew/Dropbox/School/CPE476/Lab01/src/main.cpp \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/type_ptr.inl \
   /Users/Andrew/Dropbox/School/CPE476/Lab01/src/thing.h \
   /Users/Andrew/Dropbox/School/CPE476/Lab01/src/place.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/Camera.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/glee.hpp
+  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/Camera.h

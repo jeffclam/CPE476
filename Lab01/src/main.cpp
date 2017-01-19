@@ -28,8 +28,8 @@ using namespace std;
 using namespace glm;
 
 /* to use glee */
-#define GLEE_OVERWRITE_GL_FUNCTIONS
-#include "glee.hpp"
+//#define GLEE_OVERWRITE_GL_FUNCTIONS
+//#include "glee.hpp"
 
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
