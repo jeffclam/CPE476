@@ -64,6 +64,7 @@
 		43754BF8512549C184D5312C /* posix_tls.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F21AF77D47F4D4990C277CE /* posix_tls.c */; settings = {COMPILER_FLAGS = ""; }; };
 		4912B10E1E2E94CD0027BA50 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4912B10C1E2E94CD0027BA50 /* camera.cpp */; };
 		4912B11E1E3184E00027BA50 /* WorldObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4912B11C1E3184E00027BA50 /* WorldObj.cpp */; };
+		4912B1211E31F5190027BA50 /* GameObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4912B1201E31F5190027BA50 /* GameObj.cpp */; };
 		4B58B2CA1BC74887A0335DA3 /* cocoa_joystick.m in Sources */ = {isa = PBXBuildFile; fileRef = 398AA157967644A29E6E8375 /* cocoa_joystick.m */; settings = {COMPILER_FLAGS = ""; }; };
 		6542986DC22245789DAA7812 /* place.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CCAA51FBC8D42BAB4054B2F /* place.cpp */; settings = {COMPILER_FLAGS = ""; }; };
 		6740D2D4666F423EAD41136A /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = 68CB5101D68049E898A67926 /* window.c */; settings = {COMPILER_FLAGS = ""; }; };
@@ -155,6 +156,7 @@
 		4912B11C1E3184E00027BA50 /* WorldObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WorldObj.cpp; path = src/WorldObj.cpp; sourceTree = "<group>"; };
 		4912B11D1E3184E00027BA50 /* WorldObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorldObj.h; path = src/WorldObj.h; sourceTree = "<group>"; };
 		4912B11F1E3185920027BA50 /* GameObj.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GameObj.h; path = src/GameObj.h; sourceTree = "<group>"; };
+		4912B1201E31F5190027BA50 /* GameObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameObj.cpp; path = src/GameObj.cpp; sourceTree = "<group>"; };
 		5B842378C3354F51B436579E /* CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
 		611C9CFB68264118AF727CF1 /* Program.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Program.h; path = src/Program.h; sourceTree = SOURCE_ROOT; };
 		64C35C74772647EDBD4080D5 /* Lab01 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Lab01; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -278,6 +280,7 @@
 				F97629FB6A7F48D9A65D926F /* stuff.cpp */,
 				86ADFE6D02974263B663CADB /* thing.cpp */,
 				4912B10C1E2E94CD0027BA50 /* camera.cpp */,
+				4912B1201E31F5190027BA50 /* GameObj.cpp */,
 				4912B11C1E3184E00027BA50 /* WorldObj.cpp */,
 			);
 			name = "Source Files";
@@ -501,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DD8B1B018374399941ED9F1 /* GLSL.cpp in Sources */,
+				4912B1211E31F5190027BA50 /* GameObj.cpp in Sources */,
 				8DA750EBAD2D4ADDBADC9994 /* MatrixStack.cpp in Sources */,
 				910045FB692D4245AC19C483 /* Program.cpp in Sources */,
 				9ECE06CFE45C409397EC8190 /* Shape.cpp in Sources */,

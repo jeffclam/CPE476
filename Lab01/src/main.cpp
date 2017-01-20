@@ -12,17 +12,14 @@
 #include "Program.h"
 #include "MatrixStack.h"
 #include "Shape.h"
-#include "json/json.h"
-
-#include "stuff.h"
-#include "thing.h"
-#include "place.h"
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Camera.h"
+#include "WorldObj.h"
+#include "GameObj.h"
 
 using namespace std;
 using namespace glm;
@@ -35,25 +32,12 @@ GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
 shared_ptr<Shape> ground;
+shared_ptr<Shape> bunny;
 
 int g_width, g_height;
-float xPos[10];
-float zPos[10];
-float xPos2[10];
-float zPos2[10];
 
 Camera cam = Camera();
-
-Json::Value save;
-string saveFile = "save.place";
-
-
-Place place = Place();
-
-int maxShapeDex = 0;
-int curShape = 0;
-
-int workAxis = 0;
+WorldObj world = WorldObj();
 
 
 static void error_callback(int error, const char *description)
@@ -93,13 +77,13 @@ static void init()
 {
 	GLSL::checkVersion();
 
-    srand (time(NULL));
+    /*srand (time(NULL));
     for(int i = 0; i < 10; i++) {
         xPos[i] = rand() % 40 - 20;
         zPos[i] = rand() % 40 - 20;
         xPos2[i] = rand() % 40 - 20;
         zPos2[i] = rand() % 40 - 20;
-    }
+    }*/
     
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -111,6 +95,11 @@ static void init()
     ground->loadMesh(RESOURCE_DIR + "cube.obj");
     ground->resize();
     ground->init();
+    
+    bunny = make_shared<Shape>();
+    bunny->loadMesh(RESOURCE_DIR + "bunny.obj");
+    bunny->resize();
+    bunny->init();
 
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
@@ -130,10 +119,7 @@ static void init()
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
     
-    loadStuff(RESOURCE_DIR, "stuff.stuff");
-    
-    maxShapeDex = getShapeCount();
-    place.cursor.setName(getShapeByIndex(0));
+    world.addObj(GameObj(bunny));
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {
@@ -150,6 +136,43 @@ static void renderGround(std::shared_ptr<MatrixStack> P) {
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     ground->draw(prog);
     M->popMatrix();
+}
+
+void setMater(int mat, shared_ptr<Program> prog) {
+    glUniform3f(prog->getUniform("lightColor"), 1, 1, 1);
+    glUniform3f(prog->getUniform("lightPos"), 0, 0, 0);
+    switch (mat) {
+        case 0: //shiny blue plastic
+            glUniform3f(prog->getUniform("ambColor"), 0.02, 0.04, 0.2);
+            glUniform3f(prog->getUniform("diffuseColor"), 0.0, 0.16, 0.9);
+            glUniform3f(prog->getUniform("specColor"), 0.14, 0.2, 0.8);
+            glUniform1f(prog->getUniform("specShine"), 120.0);
+            break;
+        case 1: // flat grey
+            glUniform3f(prog->getUniform("ambColor"), 0.13, 0.13, 0.14);
+            glUniform3f(prog->getUniform("diffuseColor"), 0.3, 0.3, 0.4);
+            glUniform3f(prog->getUniform("specColor"), 0.3, 0.3, 0.4);
+            glUniform1f(prog->getUniform("specShine"), 4.0);
+            break;
+        case 2: //brass
+            glUniform3f(prog->getUniform("ambColor"), 0.3294, 0.2235, 0.02745);
+            glUniform3f(prog->getUniform("diffuseColor"), 0.7804, 0.5686, 0.11373);
+            glUniform3f(prog->getUniform("specColor"), 0.9922, 0.941176, 0.80784);
+            glUniform1f(prog->getUniform("specShine"), 27.9);
+            break;
+        case 3: //copper
+            glUniform3f(prog->getUniform("ambColor"), 0.1913, 0.0735, 0.0225);
+            glUniform3f(prog->getUniform("diffuseColor"), 0.7038, 0.27048, 0.0828);
+            glUniform3f(prog->getUniform("specColor"), 0.257, 0.1376, 0.08601);
+            glUniform1f(prog->getUniform("specShine"), 12.8);
+            break;
+        case 4: //emerald
+            glUniform3f(prog->getUniform("ambColor"), 0.0215, 0.1745, 0.0215);
+            glUniform3f(prog->getUniform("diffuseColor"), 0.07568, 0.61424, 0.07568);
+            glUniform3f(prog->getUniform("specColor"), 0.633, 0.727811, 0.633);
+            glUniform1f(prog->getUniform("specShine"), 76.8);
+            break;
+    }
 }
 
 static void render()
@@ -177,13 +200,10 @@ static void render()
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
-    setMat(1, prog);
+    setMater(1, prog);
     renderGround(P);
     
-    vec3 cursorPos = vec3(0,0,0);
-    
-    place.cursor.setPos(cursorPos[0], cursorPos[1], cursorPos[2]);
-    place.renderPlace(prog);
+    world.render(prog);
     
 	prog->unbind();
 

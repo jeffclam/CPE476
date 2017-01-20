@@ -21,6 +21,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
 using namespace glm;
 using namespace std;
 
@@ -32,6 +33,7 @@ public:
     std::vector<GameObj> objs;
     void render(shared_ptr<Program> prog);
     void update(double time);
+    void addObj(GameObj newObj);
 private:
     
 };

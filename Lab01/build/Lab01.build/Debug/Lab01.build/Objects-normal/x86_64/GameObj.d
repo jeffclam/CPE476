@@ -1,5 +1,4 @@
-dependencies: /Users/Andrew/Dropbox/School/CPE476/Lab01/src/WorldObj.cpp \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/WorldObj.h \
+dependencies: /Users/Andrew/Dropbox/School/CPE476/Lab01/src/GameObj.cpp \
   /Users/Andrew/Dropbox/School/CPE476/Lab01/src/GameObj.h \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/type_ptr.hpp \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/../gtc/quaternion.hpp \

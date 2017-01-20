@@ -99,13 +99,11 @@ dependencies: /Users/Andrew/Dropbox/School/CPE476/Lab01/src/main.cpp \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/constants.inl \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/matrix_transform.inl \
   /Users/Andrew/Dropbox/School/CPE476/Lab01/src/Shape.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/json/json.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/stuff.h \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/type_ptr.hpp \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/../gtc/quaternion.hpp \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/quaternion.inl \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/quaternion_simd.inl \
   /Users/Andrew/Documents/School/CSC471/Lib/glm/gtc/type_ptr.inl \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/thing.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/place.h \
-  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/Camera.h
+  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/Camera.h \
+  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/WorldObj.h \
+  /Users/Andrew/Dropbox/School/CPE476/Lab01/src/GameObj.h

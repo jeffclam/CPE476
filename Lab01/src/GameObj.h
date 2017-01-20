@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 #ifndef _GAMEOBJ_H_
 #define _GAMEOBJ_H_
 
@@ -25,7 +25,7 @@ public:
     GameObj(shared_ptr<Shape> shape);
     ~GameObj();
     void update(double time);
-    void render(shared_ptr<Program> p, shared_ptr<MatrixStack> m);
+    void render(shared_ptr<Program> p);
     void setShape(shared_ptr<Shape> s);
     vec3 getPos();
     void setPos(float x, float y, float z);
@@ -43,6 +43,8 @@ public:
     vec3 pos; //x y z pos
     vec3 scale; //x y z scale
     vec3 rot; //x y z rotation
+    vector<GameObj>* worldObjs;
+    
     
 private:
    Bounding_Sphere b_sphere;

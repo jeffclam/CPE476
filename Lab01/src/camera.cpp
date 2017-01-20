@@ -83,6 +83,5 @@ tmat4x4<float> Camera::getLookAt() {
     z = cos(phi) * cos(M_PI/2 - theta);
     
     gaze = vec3(x,y,z) + eyePt - eyePt;
-    
     return lookAt(eyePt, vec3(x,y,z) + eyePt, up);
 }

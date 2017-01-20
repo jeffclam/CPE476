@@ -7,6 +7,9 @@ GameObj::GameObj() {
 
 GameObj::GameObj(shared_ptr<Shape> s) {
     shape = s;
+    pos = vec3(0,0,0);
+    scale = vec3(1,1,1);
+    rot = vec3(0,0,0);
 }
 
 GameObj::~GameObj() {
@@ -17,8 +20,9 @@ void GameObj::update(double time) {
 
 }
 
-void GameObj::render(shared_ptr<Program> prog, shared_ptr<MatrixStack> m) {
-    auto M = getM(m);
+void GameObj::render(shared_ptr<Program> prog) {
+    auto M = make_shared<MatrixStack>();
+    M = getM(M);
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     shape->draw(prog);
     M->popMatrix();
