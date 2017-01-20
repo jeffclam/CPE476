@@ -5,25 +5,31 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Program.h"
+#include "Shape.h"
+#include "MatrixStack.h"
+
+using namespace std;
 using namespace glm;
 
 struct Bounding_Sphere
 {
     vec3 center;
     float radius;
-}
+};
 
-class GameObj
-{
+class GameObj {
 public:
     GameObj();
+    GameObj(shared_ptr<Shape> shape);
     ~GameObj();
-    void update();
-    void render();
-    shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
+    void update(double time);
+    void render(shared_ptr<Program> p, shared_ptr<Shape> shape);
+    vec3 getPos();
     void setPos(float x, float y, float z);
     void setScale(float x, float y, float z);
     void setRot(float x, float y, float z);
+    shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
     void calcBoundingSphere();
     bool check_Interact_Radius();
     bool check_Collision_Radius();
@@ -34,7 +40,7 @@ public:
     vec3 rot; //x y z rotation
     
 private:
-   Bounding_Sphere bsphere;
+   Bounding_Sphere b_sphere;
 };
 
 #endif
