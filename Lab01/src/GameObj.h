@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "GLSL.h"
 #include "Program.h"
 #include "Shape.h"
 #include "MatrixStack.h"
@@ -24,9 +25,12 @@ public:
     GameObj(shared_ptr<Shape> shape);
     ~GameObj();
     void update(double time);
-    void render(shared_ptr<Program> p, shared_ptr<Shape> shape);
+    void render(shared_ptr<Program> p, shared_ptr<MatrixStack> m);
+    void setShape(shared_ptr<Shape> s);
     vec3 getPos();
     void setPos(float x, float y, float z);
+    vec3 getVel();
+    void setVel(float x, float y, float z);
     void setScale(float x, float y, float z);
     void setRot(float x, float y, float z);
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
@@ -35,12 +39,14 @@ public:
     bool check_Collision_Radius();
     int mat;
     vec3 vel;
+    vec3 dir;
     vec3 pos; //x y z pos
     vec3 scale; //x y z scale
     vec3 rot; //x y z rotation
     
 private:
    Bounding_Sphere b_sphere;
+   shared_ptr<Shape> shape;
 };
 
 #endif
