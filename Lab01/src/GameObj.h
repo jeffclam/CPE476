@@ -43,11 +43,11 @@ public:
     void setScale(float x, float y, float z);
     void setRot(float x, float y, float z);
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
-    void calcBoundingBox();
+    void calcBoundingBox(mat4 transform);
     float GameObj::calcBoundingRadius();
     void calcBoundingSphere();
-    bool check_Interact_Radius();
-    bool check_Collision_Radius();
+    bool check_Interact_Radius(GameObj other);
+    bool check_Collision_Radius(GameObj other);
     int mat;
     vec3 vel;
     vec3 dir;

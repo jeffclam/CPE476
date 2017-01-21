@@ -32,6 +32,8 @@ void GameObj::setRandomVel() {
 void GameObj::render(shared_ptr<Program> prog) {
     auto M = make_shared<MatrixStack>();
     M = getM(M);
+    calcBoundingBox(M->topMatrix());
+    calcBoundingSphere();
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     shape->draw(prog);
     M->popMatrix();
@@ -39,7 +41,6 @@ void GameObj::render(shared_ptr<Program> prog) {
 
 void GameObj::setShape(shared_ptr<Shape> s) {
    shape = s;
-   calcBoundingBox();
 }
 
 vec3 GameObj::getPos() {
@@ -81,12 +82,9 @@ shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
     return M;
 }
 
-void GameObj::calcBoundingBox() {
-    auto M = make_shared<MatrixStack>();
-    M = getM(M);
-
-    b_box.min = vec3(M->topMatrix() * vec4(shape->getMin(), 0.0));
-    b_box.max = vec3(M->topMatrix() * vec4(shape->getMax(), 0.0));
+void GameObj::calcBoundingBox(mat4 transform) {
+    b_box.min = vec3(transform * vec4(shape->getMin(), 0.0));
+    b_box.max = vec3(transform * vec4(shape->getMax(), 0.0));
 }
 
 float GameObj::calcBoundingRadius() {
@@ -98,10 +96,13 @@ void GameObj::calcBoundingSphere() {
     b_sphere.center = pos;
 }
 
-bool GameObj::check_Interact_Radius() {
+bool GameObj::check_Interact_Radius(GameObj other) {
     return 0;
 }
 
-bool GameObj::check_Collision_Radius() {
-    return 0;
+bool GameObj::check_Collision_Radius(GameObj other) {
+    if (distance(getPos(), other.getPos()) < b_sphere.radius) {
+        return true;
+    }
+    return false;
 }
