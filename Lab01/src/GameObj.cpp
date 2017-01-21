@@ -19,7 +19,7 @@ GameObj::~GameObj() {
 
 void GameObj::update(double time) {
     pos+= vel*(float)100000.0*(float)time;
-    printf("%f %f %f\n", pos[0], pos[1], pos[2]);
+    //printf("%f %f %f\n", pos[0], pos[1], pos[2]);
 }
 
 void GameObj::setRandomVel() {
@@ -39,6 +39,7 @@ void GameObj::render(shared_ptr<Program> prog) {
 
 void GameObj::setShape(shared_ptr<Shape> s) {
    shape = s;
+   calcBoundingBox();
 }
 
 vec3 GameObj::getPos() {
@@ -47,6 +48,10 @@ vec3 GameObj::getPos() {
 
 void GameObj::setPos(float x, float y, float z) {
     pos = vec3(x, y, z);
+}
+
+void GameObj::setPos(vec3 v) {
+    pos = v;
 }
 
 vec3 GameObj::getVel() {
@@ -76,8 +81,21 @@ shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
     return M;
 }
 
+void GameObj::calcBoundingBox() {
+    auto M = make_shared<MatrixStack>();
+    M = getM(M);
+
+    b_box.min = vec3(M->topMatrix() * vec4(shape->getMin(), 0.0));
+    b_box.max = vec3(M->topMatrix() * vec4(shape->getMax(), 0.0));
+}
+
+float GameObj::calcBoundingRadius() {
+    return distance(b_box.min, b_box.max) / 2.0f;
+}
+
 void GameObj::calcBoundingSphere() {
-   b_sphere.center = pos;
+    b_sphere.radius = calcBoundingRadius();
+    b_sphere.center = pos;
 }
 
 bool GameObj::check_Interact_Radius() {

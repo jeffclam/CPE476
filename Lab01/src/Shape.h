@@ -6,6 +6,10 @@
 #include <vector>
 #include <memory>
 
+#include <glm/glm.hpp>
+
+using namespace glm;
+
 class Program;
 
 class Shape
@@ -14,6 +18,8 @@ public:
 	Shape();
 	virtual ~Shape();
 	void loadMesh(const std::string &meshName);
+    vec3 getMin();
+    vec3 getMax();
 	void init();
 	void resize();
 	void draw(const std::shared_ptr<Program> prog) const;

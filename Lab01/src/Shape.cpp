@@ -98,6 +98,43 @@ void Shape::resize() {
 	}
 }
 
+/* Returns Min and Max of coordinates in Object Space. Should be used after shape has been resized. */
+vec3 Shape::getMin() {
+    float minX, minY, minZ;
+
+    minX = minY = minZ = 1.1754E+38F;
+
+    //Go through all vertices to determine min and max of each dimension
+    for (size_t v = 0; v < posBuf.size() / 3; v++) {
+        if (posBuf[3 * v + 0] < minX) minX = posBuf[3 * v + 0];
+
+        if (posBuf[3 * v + 1] < minY) minY = posBuf[3 * v + 1];
+
+        if (posBuf[3 * v + 2] < minZ) minZ = posBuf[3 * v + 2];
+    }
+    
+    return vec3(minX, minY, minZ);
+}
+
+vec3 Shape::getMax() {
+    float minX, minY, minZ;
+    float maxX, maxY, maxZ;
+
+    minX = minY = minZ = 1.1754E+38F;
+    maxX = maxY = maxZ = -1.1754E+38F;
+
+    //Go through all vertices to determine min and max of each dimension
+    for (size_t v = 0; v < posBuf.size() / 3; v++) {
+        if (posBuf[3 * v + 0] > maxX) maxX = posBuf[3 * v + 0];
+
+        if (posBuf[3 * v + 1] > maxY) maxY = posBuf[3 * v + 1];
+
+        if (posBuf[3 * v + 2] > maxZ) maxZ = posBuf[3 * v + 2];
+    }
+
+    return vec3(maxX, maxY, maxZ);
+}
+
 void Shape::init()
 {
    // Initialize the vertex array object
