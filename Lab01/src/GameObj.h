@@ -24,7 +24,7 @@ public:
     GameObj();
     GameObj(shared_ptr<Shape> shape);
     ~GameObj();
-    void update(double time);
+    virtual void update(double time);
     void render(shared_ptr<Program> p);
     void setShape(shared_ptr<Shape> s);
     vec3 getPos();
@@ -44,6 +44,7 @@ public:
     vec3 scale; //x y z scale
     vec3 rot; //x y z rotation
     vector<GameObj>* worldObjs;
+    void setRandomVel();
     
     
 private:

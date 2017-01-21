@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "WorldObj.h"
 #include "GameObj.h"
+#include "BunnyGameObj.h"
 
 using namespace std;
 using namespace glm;
@@ -119,7 +120,10 @@ static void init()
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
     
-    world.addObj(GameObj(bunny));
+    //world.addObj(GameObj(bunny));
+    GameObj bun = GameObj(bunny);
+    bun.setRandomVel();
+    world.addObj(bun);
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {
@@ -270,6 +274,8 @@ int main(int argc, char **argv)
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
 	while(!glfwWindowShouldClose(window)) {
+        //update world
+        world.update(glfwGetTime() - lastTime);
 		// Render scene.
 		render();
 		// Swap front and back buffers.

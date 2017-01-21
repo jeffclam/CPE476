@@ -10,6 +10,7 @@ GameObj::GameObj(shared_ptr<Shape> s) {
     pos = vec3(0,0,0);
     scale = vec3(1,1,1);
     rot = vec3(0,0,0);
+    vel = vec3(0, 0, 0);
 }
 
 GameObj::~GameObj() {
@@ -17,7 +18,15 @@ GameObj::~GameObj() {
 }
 
 void GameObj::update(double time) {
+    pos+= vel*(float)100000.0*(float)time;
+    printf("%f %f %f\n", pos[0], pos[1], pos[2]);
+}
 
+void GameObj::setRandomVel() {
+    srand (time(NULL));
+    vel[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    //vel[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    vel[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 }
 
 void GameObj::render(shared_ptr<Program> prog) {

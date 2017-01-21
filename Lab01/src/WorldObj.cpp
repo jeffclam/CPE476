@@ -23,7 +23,9 @@ void WorldObj::render(shared_ptr<Program> prog) {
 }
 
 void WorldObj::update(double time) {
-    //do something
+    for(int i = 0; i < objs.size(); i++) {
+        objs[i].update(time);
+    }
 }
 
 void WorldObj::addObj(GameObj newObj) {
