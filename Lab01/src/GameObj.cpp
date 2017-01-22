@@ -3,6 +3,7 @@
 GameObj::GameObj() {
    pos = vec3(0, 0, 0);
    vel = vec3(0, 0, 0);
+    srand (time(NULL));
 }
 
 GameObj::GameObj(shared_ptr<Shape> s) {
@@ -11,6 +12,7 @@ GameObj::GameObj(shared_ptr<Shape> s) {
     scale = vec3(1, 1, 1);
     rot = vec3(0, 0, 0);
     vel = vec3(0, 0, 0);
+    srand (time(NULL));
 }
 
 GameObj::~GameObj() {
@@ -20,14 +22,24 @@ GameObj::~GameObj() {
 void GameObj::update(double time) {
     if (!check_Collision_Radius()) {
         pos += vel*(float)100000.0*(float)time;
-    }    //printf("%f %f %f\n", pos[0], pos[1], pos[2]);
+    } else {
+        pos -= vel*(float)100000.0*(float)time;;
+        setRandomVel();
+    }
+    
+    if(pos[0] > 50.0 || pos[0] < -50.0 ) {
+        vel[0] *= -1;
+    }
+    if(pos[2] > 50.0 || pos[2] < -50.0 ) {
+        vel[2] *= -1;
+    }
 }
 
 void GameObj::setRandomVel() {
-    srand (time(NULL));
-    vel[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    //srand (time(NULL));
+    vel[0] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
     //vel[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    vel[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    vel[2] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
 }
 
 void GameObj::render(shared_ptr<Program> prog) {

@@ -45,7 +45,7 @@ public:
     void setRot(float x, float y, float z);
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
     void calcBoundingBox(mat4 transform);
-    float GameObj::calcBoundingRadius();
+    float calcBoundingRadius();
     void calcBoundingSphere();
     bool check_Interact_Radius();
     bool check_Collision_Radius();
@@ -60,10 +60,10 @@ public:
     Bounding_Box b_box;
     void setRandomVel();
     string name;
-    
+    shared_ptr<Shape> shape;
     
 private:
-   shared_ptr<Shape> shape;
+   
 };
 
 #endif

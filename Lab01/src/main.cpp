@@ -76,6 +76,7 @@ static void resize_callback(GLFWwindow *window, int width, int height) {
 
 static void init()
 {
+    srand (time(NULL));
 	GLSL::checkVersion();
 
     /*srand (time(NULL));
@@ -145,7 +146,7 @@ static void renderGround(std::shared_ptr<MatrixStack> P) {
     M->pushMatrix();
     M->loadIdentity();
     M->translate(vec3(0,-1,0));
-    M->scale(vec3(20,0.1,20));
+    M->scale(vec3(60,0.1,60));
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     ground->draw(prog);
     M->popMatrix();
@@ -215,7 +216,7 @@ static void render()
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     setMater(1, prog);
     renderGround(P);
-    
+    setMater(3, prog);
     world.render(prog);
     
 	prog->unbind();

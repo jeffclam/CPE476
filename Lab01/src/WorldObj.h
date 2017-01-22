@@ -15,6 +15,7 @@
 #include "GLSL.h"
 #include "Program.h"
 #include "MatrixStack.h"
+#include "Shape.h"
 
 #include <GL/glew.h>
 
@@ -35,7 +36,6 @@ public:
     void update(double time);
     void addObj(GameObj newObj);
 private:
-    
 };
 
 #endif /* WorldObject_hpp */
