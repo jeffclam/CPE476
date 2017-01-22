@@ -28,11 +28,14 @@ void GameObj::update(double time) {
     }
     
     if(pos[0] > 50.0 || pos[0] < -50.0 ) {
+        pos[0] -= vel[0];
         vel[0] *= -1;
     }
     if(pos[2] > 50.0 || pos[2] < -50.0 ) {
+        pos[1] -= ve;[1];
         vel[2] *= -1;
     }
+    rot[1] = atan(vel[0]/vel[1]) + M_PI/2;
 }
 
 void GameObj::setRandomVel() {
