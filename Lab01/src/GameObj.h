@@ -35,6 +35,7 @@ public:
     virtual void update(double time);
     void render(shared_ptr<Program> p);
     void setShape(shared_ptr<Shape> s);
+    void setWorldObjs(vector<GameObj> *objs);
     vec3 getPos();
     void setPos(float x, float y, float z);
     void setPos(vec3 v);
@@ -46,8 +47,8 @@ public:
     void calcBoundingBox(mat4 transform);
     float GameObj::calcBoundingRadius();
     void calcBoundingSphere();
-    bool check_Interact_Radius(GameObj other);
-    bool check_Collision_Radius(GameObj other);
+    bool check_Interact_Radius();
+    bool check_Collision_Radius();
     int mat;
     vec3 vel;
     vec3 dir;
@@ -58,6 +59,7 @@ public:
     Bounding_Sphere b_sphere;
     Bounding_Box b_box;
     void setRandomVel();
+    string name;
     
     
 private:

@@ -122,8 +122,17 @@ static void init()
     
     //world.addObj(GameObj(bunny));
     GameObj bun = GameObj(bunny);
-    bun.setRandomVel();
+    bun.setPos(-5, 2, 0);
+
+    GameObj bun2 = GameObj(bunny);
+    bun2.setPos(-5, 2, 5);
+    bun2.setVel(0, 0, -1);
+
+    //bun.setRandomVel();
     world.addObj(bun);
+    world.addObj(bun2);
+    bun.setWorldObjs(&(world.objs));
+    bun2.setWorldObjs(&(world.objs));
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {

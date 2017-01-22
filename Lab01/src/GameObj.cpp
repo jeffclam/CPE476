@@ -7,9 +7,9 @@ GameObj::GameObj() {
 
 GameObj::GameObj(shared_ptr<Shape> s) {
     shape = s;
-    pos = vec3(0,0,0);
-    scale = vec3(1,1,1);
-    rot = vec3(0,0,0);
+    pos = vec3(0, 0, 0);
+    scale = vec3(1, 1, 1);
+    rot = vec3(0, 0, 0);
     vel = vec3(0, 0, 0);
 }
 
@@ -18,8 +18,9 @@ GameObj::~GameObj() {
 }
 
 void GameObj::update(double time) {
-    pos+= vel*(float)100000.0*(float)time;
-    //printf("%f %f %f\n", pos[0], pos[1], pos[2]);
+    if (!check_Collision_Radius()) {
+        pos += vel*(float)100000.0*(float)time;
+    }    //printf("%f %f %f\n", pos[0], pos[1], pos[2]);
 }
 
 void GameObj::setRandomVel() {
@@ -41,6 +42,10 @@ void GameObj::render(shared_ptr<Program> prog) {
 
 void GameObj::setShape(shared_ptr<Shape> s) {
    shape = s;
+}
+
+void GameObj::setWorldObjs(vector<GameObj> *objects) {
+    worldObjs = objects;
 }
 
 vec3 GameObj::getPos() {
@@ -88,21 +93,26 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 2.0f;
+    return distance(b_box.min, b_box.max) / 16.0f;
 }
 
 void GameObj::calcBoundingSphere() {
-    b_sphere.radius = calcBoundingRadius();
+    //b_sphere.radius = calcBoundingRadius();
+    b_sphere.radius = 1;
     b_sphere.center = pos;
 }
 
-bool GameObj::check_Interact_Radius(GameObj other) {
+bool GameObj::check_Interact_Radius() {
     return 0;
 }
 
-bool GameObj::check_Collision_Radius(GameObj other) {
-    if (distance(getPos(), other.getPos()) < b_sphere.radius) {
-        return true;
+bool GameObj::check_Collision_Radius() {
+    float dist;
+    for (GameObj other : (*worldObjs)) {
+        dist = distance(getPos(), other.getPos());
+        if (dist > 0 && dist <= other.b_sphere.radius) {
+            return true;
+        }
     }
     return false;
 }
