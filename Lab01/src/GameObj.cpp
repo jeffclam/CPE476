@@ -1,8 +1,12 @@
 #include "GameObj.h"
+#include <algorithm>
+
+int score = 0;
 
 GameObj::GameObj() {
    pos = vec3(0, 0, 0);
    vel = vec3(0, 0, 0);
+    srand (time(NULL));
 }
 
 GameObj::GameObj(shared_ptr<Shape> s) {
@@ -11,23 +15,61 @@ GameObj::GameObj(shared_ptr<Shape> s) {
     scale = vec3(1, 1, 1);
     rot = vec3(0, 0, 0);
     vel = vec3(0, 0, 0);
+    srand (time(NULL));
 }
 
 GameObj::~GameObj() {
 
 }
 
+void GameObj::die(double time) {
+    float ySize = fmax(0.001, scale[1] - 10000.0 * (float)time);
+    setScale(1, ySize, 1);
+}
+
 void GameObj::update(double time) {
-    if (!check_Collision_Radius()) {
+    GameObj *collider = check_Collision_Radius();
+    
+    if(player) {
+        return;
+    }
+    
+    if(!alive) {
+        die(time);
+        return;
+    }
+    
+    if (collider == NULL) {
         pos += vel*(float)100000.0*(float)time;
-    }    //printf("%f %f %f\n", pos[0], pos[1], pos[2]);
+    } else {
+        if(collider->shape == shape) {
+            pos -= vel*(float)100000.0*(float)time;;
+            setRandomVel();
+        } else {
+            if(alive) {
+                alive = false;
+                vel = vec3(0,0,0);
+                score++;
+            }
+        }
+    }
+    
+    if(pos[0] > 50.0 || pos[0] < -50.0 ) {
+        pos[0] -= vel[0];
+        vel[0] *= -1;
+    }
+    if(pos[2] > 50.0 || pos[2] < -50.0 ) {
+        pos[1] -= vel[1];
+        vel[2] *= -1;
+    }
+    rot[1] = atan(((vel[0] != 0.0) ? vel[0]: 0.0001)/((vel[1] != 0.0) ? vel[1]: 0.0001)) + M_PI/2;
 }
 
 void GameObj::setRandomVel() {
-    srand (time(NULL));
-    vel[0] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    //srand (time(NULL));
+    vel[0] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
     //vel[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    vel[2] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    vel[2] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
 }
 
 void GameObj::render(shared_ptr<Program> prog) {
@@ -105,13 +147,14 @@ bool GameObj::check_Interact_Radius() {
     return 0;
 }
 
-bool GameObj::check_Collision_Radius() {
+GameObj *GameObj::check_Collision_Radius() {
     float dist;
-    for (GameObj other : (*worldObjs)) {
+    for (int i = 0; i < worldObjs->size(); i++) {
+        GameObj other = (*worldObjs)[i];
         dist = distance(getPos(), other.getPos());
         if (dist > 0 && dist <= other.b_sphere.radius) {
-            return true;
+            return &((*worldObjs)[i]);
         }
     }
-    return false;
+    return NULL;
 }
