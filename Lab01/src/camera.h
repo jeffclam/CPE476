@@ -28,8 +28,8 @@ public:
     void handleInputKey(int key, int action);
     void handleInputMouse(double xPos, double yPos, int g_width, int g_height);
     tmat4x4<float> getLookAt();
-private:
     vec3 eyePt;
+private:
     vec3 gaze;
     vec3 up;
     float oldX;

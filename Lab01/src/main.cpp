@@ -128,12 +128,17 @@ static void init()
     GameObj bun2 = GameObj(bunny);
     bun2.setPos(-5, 2, 5);
     bun2.setVel(0, 0, -1);
+    
+    GameObj me = GameObj(ground);
+    me.setPos(0, 0, 0);
+    me.setVel(0, 0, 0);
+    me.setScale(0.5, 0.5, 0.5);
+    me.player = true;
 
     //bun.setRandomVel();
+    world.addObj(me);
     world.addObj(bun);
     world.addObj(bun2);
-    bun.setWorldObjs(&(world.objs));
-    bun2.setWorldObjs(&(world.objs));
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {
@@ -228,7 +233,8 @@ static void render()
 
 int main(int argc, char **argv)
 {
-    double lastTime;
+    double lastTime, start, end;
+    long frames = 0;
 	if(argc < 2) {
 		cout << "Please specify the resource directory." << endl;
 		return 0;
@@ -283,15 +289,22 @@ int main(int argc, char **argv)
 	init();
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
+    start = time(NULL);
 	while(!glfwWindowShouldClose(window)) {
-        //update world
+        
         world.update(glfwGetTime() - lastTime);
+        world.objs[0].pos = vec3(cam.eyePt[0], 0, cam.eyePt[2]);
+        world.objs[0].vel = vec3(0,0,0);
 		// Render scene.
 		render();
 		// Swap front and back buffers.
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
+        
+        end = time(NULL);
+        frames++;
+        printf("FPS: %f\n", (float)frames/(float)(end-start));
         
         cam.walk(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();

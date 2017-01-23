@@ -17,6 +17,8 @@
 using namespace std;
 using namespace glm;
 
+extern int score;
+
 struct Bounding_Box {
     vec3 min;
     vec3 max;
@@ -48,7 +50,7 @@ public:
     float calcBoundingRadius();
     void calcBoundingSphere();
     bool check_Interact_Radius();
-    bool check_Collision_Radius();
+    GameObj *check_Collision_Radius();
     int mat;
     vec3 vel;
     vec3 dir;
@@ -61,8 +63,11 @@ public:
     void setRandomVel();
     string name;
     shared_ptr<Shape> shape;
+    bool player = false;
     
 private:
+    bool alive = true;
+    void die(double time);
    
 };
 
