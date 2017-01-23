@@ -24,7 +24,6 @@ GameObj::~GameObj() {
 
 void GameObj::die(double time) {
     float ySize = fmax(0.001, scale[1] - 10000.0 * (float)time);
-    printf("scale: %f\n", ySize);
     setScale(1, ySize, 1);
 }
 
