@@ -4,8 +4,8 @@
 int score = 0;
 
 GameObj::GameObj() {
-   pos = vec3(0, 0, 0);
-   vel = vec3(0, 0, 0);
+    pos = vec3(0, 0, 0);
+    vel = vec3(0, 0, 0);
     srand (time(NULL));
 }
 
@@ -134,12 +134,11 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 16.0f;
+    return distance(b_box.min, b_box.max) / 4.0f;
 }
 
 void GameObj::calcBoundingSphere() {
-    //b_sphere.radius = calcBoundingRadius();
-    b_sphere.radius = 1;
+    b_sphere.radius = calcBoundingRadius();
     b_sphere.center = pos;
 }
 
@@ -148,12 +147,22 @@ bool GameObj::check_Interact_Radius() {
 }
 
 GameObj *GameObj::check_Collision_Radius() {
-    float dist;
+    float dist, minDist;
+    vec3 dVel;
     for (int i = 0; i < worldObjs->size(); i++) {
-        GameObj other = (*worldObjs)[i];
-        dist = distance(getPos(), other.getPos());
-        if (dist > 0 && dist <= other.b_sphere.radius) {
-            return &((*worldObjs)[i]);
+        GameObj *other = &(*worldObjs)[i];
+
+        // Check the spheres are already interacting
+        dist = distance(this->getPos(), other->getPos());
+        minDist = this->b_sphere.radius + other->b_sphere.radius;
+        if (dist > 0 && dist < minDist) {
+            // Check if the spheres are moving away from each other
+            if (other->getVel() != vec3(0, 0, 0))
+                dVel = other->getVel() - this->getVel();
+            if (dot(dVel, dVel) < 0) {
+                return other;
+            }
+            return other;
         }
     }
     return NULL;

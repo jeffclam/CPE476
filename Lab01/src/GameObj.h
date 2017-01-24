@@ -1,8 +1,11 @@
 #ifndef _GAMEOBJ_H_
 #define _GAMEOBJ_H_
 
+#define _USE_MATH_DEFINES
+
 #include <iostream>
 #include <memory>
+#include <cmath>
 #include <time.h>
 
 #include <glm/gtc/type_ptr.hpp>
