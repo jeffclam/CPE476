@@ -123,10 +123,10 @@ static void init()
     
     //world.addObj(GameObj(bunny));
     GameObj bun = GameObj(bunny);
-    bun.setPos(-5, 2, 0);
+    bun.setPos(-5, 0, 0);
 
     GameObj bun2 = GameObj(bunny);
-    bun2.setPos(-5, 2, 5);
+    bun2.setPos(-5, 0, 5);
     bun2.setVel(0, 0, -1);
     
     GameObj me = GameObj(ground);

@@ -10,6 +10,10 @@
 #define camera_h
 
 #define GLEW_STATIC
+
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
