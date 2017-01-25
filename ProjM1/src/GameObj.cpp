@@ -1,8 +1,6 @@
 #include "GameObj.h"
 #include <algorithm>
 
-int score = 0;
-
 GameObj::GameObj() {
    pos = vec3(0, 0, 0);
    vel = vec3(0, 0, 0);
@@ -22,46 +20,16 @@ GameObj::~GameObj() {
 
 }
 
-void GameObj::die(double time) {
-    float ySize = fmax(0.001, scale[1] - (float)5.0 * (float)time);
-    setScale(1, ySize, 1);
-}
-
 void GameObj::update(double time) {
-    GameObj *collider = check_Collision_Radius();
-    if(player) {
-        return;
-    }
     
-    if(!alive) {
-        die(time);
-        return;
-    }
+    GameObj *collider = check_Collision_Radius();
     
     if (collider == NULL) {
         pos += vel*((float)5*(float)time);
     } else {
-        if(collider->shape == shape) {
-            pos -= vel*((float)5*(float)time);
-            setRandomVel();
-        } else {
-            if(alive) {
-                alive = false;
-                vel = vec3(0,0,0);
-                score++;
-            }
-        }
+        pos -= vel*((float)5*(float)time);
+        setRandomVel();
     }
-    
-    if(pos[0] > 50.0 || pos[0] < -50.0 ) {
-        pos[0] -= vel[0];
-        vel[0] *= -1;
-    }
-    if(pos[2] > 50.0 || pos[2] < -50.0 ) {
-        pos[1] -= vel[1];
-        vel[2] *= -1;
-    }
-    rot[1] = atan(((vel[0] != 0.0) ? vel[0]: 0.0001)/((vel[1] != 0.0) ? vel[1]: 0.0001)) + M_PI/2;
 }
 
 void GameObj::setRandomVel() {

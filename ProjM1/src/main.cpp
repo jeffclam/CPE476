@@ -129,14 +129,6 @@ static void init()
     bun2.setPos(-5, 2, 5);
     bun2.setVel(0, 0, -1);
     
-    GameObj me = GameObj(ground);
-    me.setPos(0, 0, 0);
-    me.setVel(0, 0, 0);
-    me.setScale(0.5, 0.5, 0.5);
-    me.player = true;
-
-    //bun.setRandomVel();
-    world.addObj(me);
     world.addObj(bun);
     world.addObj(bun2);
 }
@@ -304,8 +296,6 @@ int main(int argc, char **argv)
         printf("FPS: %f\n", (float)frames/(float)(end-start));
         
         world.update(glfwGetTime() - lastTime);
-        world.objs[0].pos = vec3(cam.eyePt[0], 0, cam.eyePt[2]);
-        world.objs[0].vel = vec3(0,0,0);
         cam.walk(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
 	}

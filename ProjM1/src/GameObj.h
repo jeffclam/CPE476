@@ -17,8 +17,6 @@
 using namespace std;
 using namespace glm;
 
-extern int score;
-
 struct Bounding_Box {
     vec3 min;
     vec3 max;
@@ -61,13 +59,9 @@ public:
     Bounding_Sphere b_sphere;
     Bounding_Box b_box;
     void setRandomVel();
-    string name;
     shared_ptr<Shape> shape;
-    bool player = false;
     
 private:
-    bool alive = true;
-    void die(double time);
    
 };
 
