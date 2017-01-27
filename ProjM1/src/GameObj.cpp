@@ -20,14 +20,16 @@ GameObj::~GameObj() {
 
 }
 
-void GameObj::update(double time) {
+void GameObj::update(GameState state) {
+    
+    float time = state.deltaTime;
     
     GameObj *collider = check_Collision_Radius();
     
     if (collider == NULL) {
-        pos += vel*((float)5*(float)time);
+        pos += vel*((float)5*time);
     } else {
-        pos -= vel*((float)5*(float)time);
+        pos -= vel*((float)5*time);
         setRandomVel();
     }
 }
@@ -53,7 +55,7 @@ void GameObj::setShape(shared_ptr<Shape> s) {
    shape = s;
 }
 
-void GameObj::setWorldObjs(vector<GameObj> *objects) {
+void GameObj::setWorldObjs(vector<GameObj*> *objects) {
     worldObjs = objects;
 }
 
@@ -118,10 +120,10 @@ bool GameObj::check_Interact_Radius() {
 GameObj *GameObj::check_Collision_Radius() {
     float dist;
     for (int i = 0; i < worldObjs->size(); i++) {
-        GameObj other = (*worldObjs)[i];
+        GameObj other = *(*worldObjs)[i];
         dist = distance(getPos(), other.getPos());
         if (dist > 0 && dist <= other.b_sphere.radius) {
-            return &((*worldObjs)[i]);
+            return (*worldObjs)[i];
         }
     }
     return NULL;

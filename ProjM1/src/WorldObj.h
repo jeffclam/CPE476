@@ -31,11 +31,13 @@ class WorldObj
 public:
     WorldObj();
     ~WorldObj();
-    std::vector<GameObj> objs;
+    std::vector<GameObj*> objs;
     void render(shared_ptr<Program> prog);
     void update(double time);
-    void addObj(GameObj newObj);
+    void addObj(GameObj *newObj);
+    void setWindows(GLFWwindow *win);
 private:
+    GameState state;
 };
 
 #endif /* WorldObject_hpp */

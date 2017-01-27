@@ -13,6 +13,7 @@
 #include "Program.h"
 #include "Shape.h"
 #include "MatrixStack.h"
+#include "GameState.h"
 
 using namespace std;
 using namespace glm;
@@ -31,11 +32,11 @@ class GameObj {
 public:
     GameObj();
     GameObj(shared_ptr<Shape> shape);
-    ~GameObj();
-    virtual void update(double time);
+    virtual ~GameObj();
+    virtual void update(GameState state);
     void render(shared_ptr<Program> p);
     void setShape(shared_ptr<Shape> s);
-    void setWorldObjs(vector<GameObj> *objs);
+    void setWorldObjs(vector<GameObj*> *objs);
     vec3 getPos();
     void setPos(float x, float y, float z);
     void setPos(vec3 v);
@@ -55,7 +56,7 @@ public:
     vec3 pos; //x y z pos
     vec3 scale; //x y z scale
     vec3 rot; //x y z rotation
-    vector<GameObj>* worldObjs;
+    vector<GameObj*>* worldObjs;
     Bounding_Sphere b_sphere;
     Bounding_Box b_box;
     void setRandomVel();

@@ -135,12 +135,12 @@ static void init()
     prog->addTexture(&texture);
     
     //world.addObj(GameObj(bunny));
-    GameObj bun = GameObj(bunny);
-    bun.setPos(-5, 2, 0);
+    GameObj *bun = new GameObj(bunny);
+    bun->setPos(-5, 2, 0);
 
-    GameObj bun2 = GameObj(bunny);
-    bun2.setPos(-5, 2, 5);
-    bun2.setVel(0, 0, -1);
+    GameObj *bun2 = new GameObj(bunny);
+    bun2->setPos(-5, 2, 5);
+    bun2->setVel(0, 0, -1);
     
     world.addObj(bun);
     world.addObj(bun2);
@@ -292,6 +292,8 @@ int main(int argc, char **argv)
 
 	// Initialize scene. Note geometry initialized in init now
 	init();
+    world.setWindows(window);
+    
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
     start = time(NULL);

@@ -8,10 +8,9 @@
 
 #include "WorldObj.h"
 
-double updateTime = 0.0;
-
 WorldObj::WorldObj():
-    objs()
+    objs(),
+    state()
 {}
 
 WorldObj::~WorldObj(){
@@ -20,19 +19,25 @@ WorldObj::~WorldObj(){
 
 void WorldObj::render(shared_ptr<Program> prog) {
     for(int i = 0; i < objs.size(); i++) {
-        objs[i].render(prog);
+        objs[i]->render(prog);
     }
 }
 
 void WorldObj::update(double time) {
-    updateTime += time;
+
+    state.deltaTime = (float) time;
+    state.worldTime += (float) time;
     
     for(int i = 0; i < objs.size(); i++) {
-        objs[i].update(time);
+        objs[i]->update(state);
     }
 }
 
-void WorldObj::addObj(GameObj newObj) {
-    newObj.worldObjs = &objs;
+void WorldObj::addObj(GameObj *newObj) {
+    newObj->worldObjs = &objs;
     objs.push_back(newObj);
+}
+
+void WorldObj::setWindows(GLFWwindow *win) {
+    state.window = win;
 }
