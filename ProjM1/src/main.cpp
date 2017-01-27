@@ -20,7 +20,6 @@
 #include "Camera.h"
 #include "WorldObj.h"
 #include "GameObj.h"
-#include "BunnyGameObj.h"
 #include "Texture.h"
 
 using namespace std;
@@ -41,7 +40,7 @@ int g_width, g_height;
 Camera cam = Camera();
 WorldObj world = WorldObj();
 
-Texture texture;
+Texture texture, textureGrass, textureWorld;
 
 
 static void error_callback(int error, const char *description)
@@ -125,20 +124,27 @@ static void init()
     prog->addUniform("lightColor");
     
     texture.setFilename(RESOURCE_DIR + "ledog.bmp");
-    //////////////////////////////////////////////////////
-    // Intialize textures
-    //////////////////////////////////////////////////////
     texture.setUnit(0);
     texture.setName("tex");
     texture.init();
     
-    prog->addTexture(&texture);
+    textureGrass.setFilename(RESOURCE_DIR + "grass.bmp");
+    textureGrass.setUnit(0);
+    textureGrass.setName("tex");
+    textureGrass.init();
+    
+    textureWorld.setFilename(RESOURCE_DIR + "cloud.bmp");
+    textureWorld.setUnit(0);
+    textureWorld.setName("tex");
+    textureWorld.init();
+    
+    //prog->addTexture(&texture);
     
     //world.addObj(GameObj(bunny));
-    GameObj *bun = new GameObj(bunny);
+    GameObj *bun = new GameObj(bunny, &texture);
     bun->setPos(-5, 2, 0);
 
-    GameObj *bun2 = new GameObj(bunny);
+    GameObj *bun2 = new GameObj(bunny, &textureWorld);
     bun2->setPos(-5, 2, 5);
     bun2->setVel(0, 0, -1);
     
@@ -147,6 +153,7 @@ static void init()
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {
+    textureGrass.bind();
     auto M = make_shared<MatrixStack>();
     
     
@@ -160,6 +167,7 @@ static void renderGround(std::shared_ptr<MatrixStack> P) {
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     ground->draw(prog);
     M->popMatrix();
+    textureGrass.unbind();
 }
 
 void setMater(int mat, shared_ptr<Program> prog) {

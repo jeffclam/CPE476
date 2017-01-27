@@ -7,13 +7,14 @@ GameObj::GameObj() {
     srand (time(NULL));
 }
 
-GameObj::GameObj(shared_ptr<Shape> s) {
+GameObj::GameObj(shared_ptr<Shape> s, Texture *tex) {
     shape = s;
     pos = vec3(0, 0, 0);
     scale = vec3(1, 1, 1);
     rot = vec3(0, 0, 0);
     vel = vec3(0, 0, 0);
     srand (time(NULL));
+    texture = tex;
 }
 
 GameObj::~GameObj() {
@@ -42,6 +43,8 @@ void GameObj::setRandomVel() {
 }
 
 void GameObj::render(shared_ptr<Program> prog) {
+    //prog->addTexture(texture);
+    texture->bind();
     auto M = make_shared<MatrixStack>();
     M = getM(M);
     calcBoundingBox(M->topMatrix());
@@ -49,6 +52,7 @@ void GameObj::render(shared_ptr<Program> prog) {
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     shape->draw(prog);
     M->popMatrix();
+    texture->unbind();
 }
 
 void GameObj::setShape(shared_ptr<Shape> s) {

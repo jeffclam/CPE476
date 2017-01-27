@@ -14,6 +14,7 @@
 #include "Shape.h"
 #include "MatrixStack.h"
 #include "GameState.h"
+#include "Texture.h"
 
 using namespace std;
 using namespace glm;
@@ -31,7 +32,7 @@ struct Bounding_Sphere {
 class GameObj {
 public:
     GameObj();
-    GameObj(shared_ptr<Shape> shape);
+    GameObj(shared_ptr<Shape> shape, Texture *tex);
     virtual ~GameObj();
     virtual void update(GameState state);
     void render(shared_ptr<Program> p);
@@ -63,7 +64,7 @@ public:
     shared_ptr<Shape> shape;
     
 private:
-   
+    Texture *texture;
 };
 
 #endif
