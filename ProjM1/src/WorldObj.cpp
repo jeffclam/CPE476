@@ -24,9 +24,11 @@ void WorldObj::render(shared_ptr<Program> prog) {
 }
 
 void WorldObj::update(double time) {
-
+    
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
+    
+    glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
     
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->update(state);
