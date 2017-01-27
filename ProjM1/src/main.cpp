@@ -21,6 +21,7 @@
 #include "WorldObj.h"
 #include "GameObj.h"
 #include "BunnyGameObj.h"
+#include "Texture.h"
 
 using namespace std;
 using namespace glm;
@@ -39,6 +40,8 @@ int g_width, g_height;
 
 Camera cam = Camera();
 WorldObj world = WorldObj();
+
+Texture texture;
 
 
 static void error_callback(int error, const char *description)
@@ -99,7 +102,7 @@ static void init()
     ground->init();
     
     bunny = make_shared<Shape>();
-    bunny->loadMesh(RESOURCE_DIR + "bunny.obj");
+    bunny->loadMesh(RESOURCE_DIR + "cube.obj");
     bunny->resize();
     bunny->init();
 
@@ -120,6 +123,16 @@ static void init()
     prog->addUniform("ambColor");
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
+    
+    texture.setFilename(RESOURCE_DIR + "ledog.bmp");
+    //////////////////////////////////////////////////////
+    // Intialize textures
+    //////////////////////////////////////////////////////
+    texture.setUnit(0);
+    texture.setName("tex");
+    texture.init();
+    
+    prog->addTexture(&texture);
     
     //world.addObj(GameObj(bunny));
     GameObj bun = GameObj(bunny);
