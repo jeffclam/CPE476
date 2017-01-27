@@ -25,6 +25,10 @@ void GameObj::update(GameState state) {
     
     float time = state.deltaTime;
     
+    if(vel[0] != 0 || vel[2] != 0) {
+        rot[1] = atan2(vel[0],vel[2]);
+    }
+    
     GameObj *collider = check_Collision_Radius();
     
     if (collider == NULL) {

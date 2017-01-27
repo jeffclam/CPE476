@@ -37,7 +37,7 @@ shared_ptr<Shape> bunny;
 
 int g_width, g_height;
 
-Camera cam = Camera();
+//Camera cam = Camera();
 WorldObj world = WorldObj();
 
 Texture texture, textureGrass, textureWorld;
@@ -53,7 +53,7 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-    cam.handleInputKey(key, action);
+    //cam.handleInputKey(key, action);
 }
 
 
@@ -66,7 +66,7 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
 
 static void mouseMove_callback(GLFWwindow *window, double xPos, double yPos)
 {
-    cam.handleInputMouse(xPos, yPos, g_width, g_height);
+    //cam.handleInputMouse(xPos, yPos, g_width, g_height);
 }
 
 static void resize_callback(GLFWwindow *window, int width, int height) {
@@ -148,8 +148,13 @@ static void init()
     bun2->setPos(-5, 2, 5);
     bun2->setVel(0, 0, -1);
     
+    GameObj *ground = new GameObj(bunny, &textureGrass);
+    ground->setPos(0, -1, 0);
+    ground->setScale(60, 0.1, 60);
+    
     world.addObj(bun);
     world.addObj(bun2);
+    world.addObj(ground);
 }
 
 static void renderGround(std::shared_ptr<MatrixStack> P) {
@@ -158,7 +163,7 @@ static void renderGround(std::shared_ptr<MatrixStack> P) {
     
     
     glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
+    //glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     
     M->pushMatrix();
     M->loadIdentity();
@@ -231,11 +236,10 @@ static void render()
 	// Draw a stack of cubes with indiviudal transforms 
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
+    //glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     setMater(1, prog);
-    renderGround(P);
-    setMater(3, prog);
     world.render(prog);
+    //renderGround(P);
     
 	prog->unbind();
 
@@ -319,7 +323,7 @@ int main(int argc, char **argv)
         printf("FPS: %f\n", (float)frames/(float)(end-start));
         
         world.update(glfwGetTime() - lastTime);
-        cam.walk(glfwGetTime() - lastTime);
+        //cam.walk(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
 	}
 	// Quit program.

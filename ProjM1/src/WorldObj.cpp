@@ -10,7 +10,8 @@
 
 WorldObj::WorldObj():
     objs(),
-    state()
+    state(),
+    cam()
 {}
 
 WorldObj::~WorldObj(){
@@ -18,6 +19,8 @@ WorldObj::~WorldObj(){
 }
 
 void WorldObj::render(shared_ptr<Program> prog) {
+    
+    glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->render(prog);
     }
@@ -25,14 +28,18 @@ void WorldObj::render(shared_ptr<Program> prog) {
 
 void WorldObj::update(double time) {
     
+    //update game state
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
-    
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
     
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->update(state);
     }
+    
+    //update camera
+    cam.avatar = objs[1];
+    cam.updateCamera();
 }
 
 void WorldObj::addObj(GameObj *newObj) {
