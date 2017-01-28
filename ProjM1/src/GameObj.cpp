@@ -22,7 +22,6 @@ GameObj::~GameObj() {
 }
 
 void GameObj::update(GameState state) {
-    
     float time = state.deltaTime;
     
     if(vel[0] != 0 || vel[2] != 0) {
@@ -32,10 +31,11 @@ void GameObj::update(GameState state) {
     GameObj *collider = check_Collision_Radius();
     
     if (collider == NULL) {
-        pos += vel*((float)5*time);
+        pos += getVel()*((float)5*time);
     } else {
-        pos -= vel*((float)5*time);
-        setRandomVel();
+        pos -= getVel()*((float)5*time);
+        setVel(0, 0, 0);
+        //setRandomVel();
     }
 }
 

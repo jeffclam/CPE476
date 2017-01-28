@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "WorldObj.h"
 #include "GameObj.h"
+#include "PlayerGameObj.h"
 #include "Texture.h"
 
 using namespace std;
@@ -151,28 +152,15 @@ static void init()
     GameObj *ground = new GameObj(bunny, &textureGrass);
     ground->setPos(0, -1, 0);
     ground->setScale(60, 0.1, 60);
+    ground->setVel(0, 0, 0);
     
+    PlayerGameObj *player = new PlayerGameObj(bunny, &texture);
+    player->setVel(1, 0, 1);
+    
+    world.addObj(player);
     world.addObj(bun);
     world.addObj(bun2);
     world.addObj(ground);
-}
-
-static void renderGround(std::shared_ptr<MatrixStack> P) {
-    textureGrass.bind();
-    auto M = make_shared<MatrixStack>();
-    
-    
-    glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    //glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
-    
-    M->pushMatrix();
-    M->loadIdentity();
-    M->translate(vec3(0,-1,0));
-    M->scale(vec3(60,0.1,60));
-    glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-    ground->draw(prog);
-    M->popMatrix();
-    textureGrass.unbind();
 }
 
 void setMater(int mat, shared_ptr<Program> prog) {

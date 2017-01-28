@@ -38,7 +38,7 @@ void WorldObj::update(double time) {
     }
     
     //update camera
-    cam.avatar = objs[1];
+    cam.avatar = objs[0];
     cam.updateCamera();
 }
 

@@ -16,18 +16,24 @@ avatar(NULL)
 {}
 
 void ManualCamera::updateCamera() {
-    vec3 goal = avatar->getPos() - normalize(avatar->vel) * (float)5.0;
+    vec3 vel = avatar->getVel();
+    if(vel[0] != vel[2] && vel[0] != 0) {
+        vel = normalize(vel);
+    } else {
+        vel = vec3(cos(avatar->rot[1]),0,sin(avatar->rot[1]));
+    }
+    vec3 goal = avatar->getPos() - vel * (float)5.0;
     float deltaX = 0.1;
     float deltaZ = 0.1;
     if(deltaX > abs(goal[0] - eyePt[0])) {
         deltaX = goal[0] - eyePt[0];
     } else {
-        deltaX *= abs(goal[0] - eyePt[0])/(goal[0] - eyePt[0]);
+        deltaX *= abs(goal[0] - eyePt[0])/(goal[0] - eyePt[0]) * abs(goal[0] - eyePt[0]);
     }
     if(deltaZ > abs(goal[2] - eyePt[2])) {
         deltaZ = goal[2] - eyePt[2];
     } else {
-        deltaZ *= abs(goal[2] - eyePt[2])/(goal[2] - eyePt[2]);
+        deltaZ *= abs(goal[2] - eyePt[2])/(goal[2] - eyePt[2]) * abs(goal[2] - eyePt[2]);
     }
     eyePt[0] += deltaX;
     eyePt[1] = avatar->getPos()[1] + 2;
