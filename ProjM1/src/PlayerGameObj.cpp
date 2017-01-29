@@ -24,7 +24,7 @@ void PlayerGameObj::update(GameState state) {
     } else {
         setVel(0, 0, 0);
     }
-    setVel(cos(theta) * speed, 0, sin(theta) * speed);
+    setVel(sin(theta) * speed, 0, cos(theta) * speed);
     pos += getVel()*((float)5*state.deltaTime);
     setRot(0, theta, 0);
 }

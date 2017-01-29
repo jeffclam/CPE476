@@ -20,7 +20,7 @@ void ManualCamera::updateCamera() {
     if(vel[0] != vel[2] && vel[0] != 0) {
         vel = normalize(vel);
     } else {
-        vel = vec3(cos(avatar->rot[1]),0,sin(avatar->rot[1]));
+        vel = vec3(sin(avatar->rot[1]),0,cos(avatar->rot[1]));
     }
     vec3 goal = avatar->getPos() - vel * (float)5.0;
     float deltaX = 0.1;

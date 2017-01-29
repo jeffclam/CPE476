@@ -35,6 +35,7 @@ string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
 shared_ptr<Shape> ground;
 shared_ptr<Shape> bunny;
+shared_ptr<Shape> pointer;
 
 int g_width, g_height;
 
@@ -105,6 +106,11 @@ static void init()
     bunny->loadMesh(RESOURCE_DIR + "cube.obj");
     bunny->resize();
     bunny->init();
+    
+    pointer = make_shared<Shape>();
+    pointer->loadMesh(RESOURCE_DIR + "pointer.obj");
+    pointer->resize();
+    pointer->init();
 
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
@@ -154,7 +160,7 @@ static void init()
     ground->setScale(60, 0.1, 60);
     ground->setVel(0, 0, 0);
     
-    PlayerGameObj *player = new PlayerGameObj(bunny, &texture);
+    PlayerGameObj *player = new PlayerGameObj(pointer, &texture);
     player->setVel(1, 0, 1);
     
     world.addObj(player);
