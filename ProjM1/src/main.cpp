@@ -26,10 +26,6 @@
 using namespace std;
 using namespace glm;
 
-/* to use glee */
-//#define GLEE_OVERWRITE_GL_FUNCTIONS
-//#include "glee.hpp"
-
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
@@ -39,7 +35,6 @@ shared_ptr<Shape> pointer;
 
 int g_width, g_height;
 
-//Camera cam = Camera();
 WorldObj world = WorldObj();
 
 Texture texture, textureGrass, textureWorld;
@@ -55,20 +50,6 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
-    //cam.handleInputKey(key, action);
-}
-
-
-static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
-{
-   if (action == GLFW_PRESS) {
-      //user pressed
-	}
-}
-
-static void mouseMove_callback(GLFWwindow *window, double xPos, double yPos)
-{
-    //cam.handleInputMouse(xPos, yPos, g_width, g_height);
 }
 
 static void resize_callback(GLFWwindow *window, int width, int height) {
@@ -82,14 +63,6 @@ static void init()
 {
     srand (time(NULL));
 	GLSL::checkVersion();
-
-    /*srand (time(NULL));
-    for(int i = 0; i < 10; i++) {
-        xPos[i] = rand() % 40 - 20;
-        zPos[i] = rand() % 40 - 20;
-        xPos2[i] = rand() % 40 - 20;
-        zPos2[i] = rand() % 40 - 20;
-    }*/
     
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -145,9 +118,7 @@ static void init()
     textureWorld.setName("tex");
     textureWorld.init();
     
-    //prog->addTexture(&texture);
     
-    //world.addObj(GameObj(bunny));
     GameObj *bun = new GameObj(bunny, &texture);
     bun->setPos(-5, 2, 0);
 
@@ -219,21 +190,17 @@ static void render()
 	//Use the matrix stack for Lab 6
    float aspect = width/(float)height;
 
-   // Create the matrix stacks - please leave these alone for now
+   // Create tperspective matrix
    auto P = make_shared<MatrixStack>();
-   auto M = make_shared<MatrixStack>();
     
    // Apply perspective projection.
    P->pushMatrix();
    P->perspective(45.0f, aspect, 0.01f, 100.0f);
 
-	// Draw a stack of cubes with indiviudal transforms 
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    //glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     setMater(1, prog);
     world.render(prog);
-    //renderGround(P);
     
 	prog->unbind();
 
@@ -289,10 +256,6 @@ int main(int argc, char **argv)
 	glfwSwapInterval(1);
 	// Set keyboard callback.
 	glfwSetKeyCallback(window, key_callback);
-   //set the mouse call back
-   glfwSetMouseButtonCallback(window, mouse_callback);
-    //set the mouse move call back
-    glfwSetCursorPosCallback(window, mouseMove_callback);
    //set the window resize call back
    glfwSetFramebufferSizeCallback(window, resize_callback);
 
