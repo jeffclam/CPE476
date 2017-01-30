@@ -1,0 +1,10 @@
+﻿  GameObj.cpp
+src\GameObj.cpp(9): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+src\GameObj.cpp(18): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+src\GameObj.cpp(26): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+src\GameObj.cpp(65): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+src\GameObj.cpp(70): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+src\GameObj.cpp(72): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+src\GameObj.cpp(153): warning C4018: '<': signed/unsigned mismatch
+  Lab01.vcxproj -> C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\Debug\Lab01.exe
+  Lab01.vcxproj -> C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/Debug/Lab01.pdb (Full PDB)
