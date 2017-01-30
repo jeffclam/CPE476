@@ -1,6 +1,9 @@
 #ifndef _GAMEOBJ_H_
 #define _GAMEOBJ_H_
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <iostream>
 #include <memory>
 #include <time.h>
@@ -43,13 +46,14 @@ public:
     void setPos(vec3 v);
     vec3 getVel();
     void setVel(float x, float y, float z);
+    void setVel(vec3 v);
     void setScale(float x, float y, float z);
     void setRot(float x, float y, float z);
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
     void calcBoundingBox(mat4 transform);
     float calcBoundingRadius();
     void calcBoundingSphere();
-    bool check_Interact_Radius();
+    bool check_Interact_Radius(GameObj obj);
     GameObj *check_Collision_Radius();
     int mat;
     vec3 vel;

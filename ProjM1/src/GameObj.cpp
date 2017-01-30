@@ -42,12 +42,10 @@ void GameObj::update(GameState state) {
 void GameObj::setRandomVel() {
     //srand (time(NULL));
     vel[0] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
-    //vel[1] = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     vel[2] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
 }
 
 void GameObj::render(shared_ptr<Program> prog) {
-    //prog->addTexture(texture);
     texture->bind();
     auto M = make_shared<MatrixStack>();
     M = getM(M);
@@ -87,6 +85,10 @@ void GameObj::setVel(float x, float y, float z) {
     vel = vec3(x, y, z);
 }
 
+void GameObj::setVel(vec3 v) {
+    vel = v;
+}
+
 void GameObj::setScale(float x, float y, float z) {
     scale = vec3(x, y, z);
 }
@@ -112,26 +114,39 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 16.0f;
+    return distance(b_box.min, b_box.max) / 2.0f;
 }
 
 void GameObj::calcBoundingSphere() {
-    //b_sphere.radius = calcBoundingRadius();
-    b_sphere.radius = 1;
+    b_sphere.radius = calcBoundingRadius();
     b_sphere.center = pos;
 }
 
-bool GameObj::check_Interact_Radius() {
-    return 0;
+bool GameObj::check_Interact_Radius(GameObj obj) {
+    if (calcBoundingRadius() * 2 < distance(getPos(), obj.getPos())) {
+        return true;
+    }
+    return false;
 }
 
 GameObj *GameObj::check_Collision_Radius() {
-    float dist;
+    float dist, minDist;
+    vec3 dVel;
     for (int i = 0; i < worldObjs->size(); i++) {
-        GameObj other = *(*worldObjs)[i];
-        dist = distance(getPos(), other.getPos());
-        if (dist > 0 && dist <= other.b_sphere.radius) {
-            return (*worldObjs)[i];
+        GameObj *other = (*worldObjs)[i];
+
+        // Check the spheres are already interacting
+        dist = distance(this->getPos(), other->getPos());
+        minDist = this->b_sphere.radius + other->b_sphere.radius;
+        if (dist > 0 && dist < minDist) {
+            // Check if the spheres are moving away from each other
+            if (other->getVel() != vec3(0, 0, 0)) {
+                dVel = other->getVel() - this->getVel();
+            }
+            if (dot(dVel, dVel) < 0) {
+                return other;
+            }
+            return other;
         }
     }
     return NULL;

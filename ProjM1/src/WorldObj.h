@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include "GameObj.h"
+#include "EdibleGameObj.h"
+#include "EnemyGameObj.h"
 #include <vector>
 #include "GLSL.h"
 #include "Program.h"
@@ -36,7 +38,10 @@ public:
     void render(shared_ptr<Program> prog);
     void update(double time);
     void addObj(GameObj *newObj);
+    void addShape(shared_ptr<Shape> s);
     void setWindows(GLFWwindow *win);
+    void growGrass(vector<EdibleGameObj *> e);
+    void spawnEnemy(vector<EnemyGameObj *> e);
 private:
     GameState state;
     ManualCamera cam;

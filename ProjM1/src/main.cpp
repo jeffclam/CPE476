@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <fstream>
 #include <vector>
+#include <random>
 
 #include "GLSL.h"
 #include "Program.h"
@@ -20,6 +21,8 @@
 #include "Camera.h"
 #include "WorldObj.h"
 #include "GameObj.h"
+#include "EdibleGameObj.h"
+#include "EnemyGameObj.h"
 #include "PlayerGameObj.h"
 #include "Texture.h"
 
@@ -29,7 +32,7 @@ using namespace glm;
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
-shared_ptr<Shape> ground;
+shared_ptr<Shape> cube;
 shared_ptr<Shape> bunny;
 shared_ptr<Shape> pointer;
 
@@ -70,16 +73,16 @@ static void init()
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
-    ground = make_shared<Shape>();
-    ground->loadMesh(RESOURCE_DIR + "cube.obj");
-    ground->resize();
-    ground->init();
+    cube = make_shared<Shape>();
+    cube->loadMesh(RESOURCE_DIR + "cube.obj");
+    cube->resize();
+    cube->init();
     
     bunny = make_shared<Shape>();
-    bunny->loadMesh(RESOURCE_DIR + "cube.obj");
+    bunny->loadMesh(RESOURCE_DIR + "sphere.obj");
     bunny->resize();
     bunny->init();
-    
+
     pointer = make_shared<Shape>();
     pointer->loadMesh(RESOURCE_DIR + "pointer.obj");
     pointer->resize();
@@ -118,26 +121,36 @@ static void init()
     textureWorld.setName("tex");
     textureWorld.init();
     
-    
-    GameObj *bun = new GameObj(bunny, &texture);
-    bun->setPos(-5, 2, 0);
-
-    GameObj *bun2 = new GameObj(bunny, &textureWorld);
-    bun2->setPos(-5, 2, 5);
-    bun2->setVel(0, 0, -1);
-    
-    GameObj *ground = new GameObj(bunny, &textureGrass);
+    GameObj *ground = new GameObj(cube, &textureGrass);
     ground->setPos(0, -1, 0);
     ground->setScale(60, 0.1, 60);
     ground->setVel(0, 0, 0);
     
     PlayerGameObj *player = new PlayerGameObj(pointer, &texture);
     player->setVel(1, 0, 1);
+    player->setPos(0, 0, 55);
     
     world.addObj(player);
-    world.addObj(bun);
-    world.addObj(bun2);
     world.addObj(ground);
+   
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(-30, 30);
+
+    vector<EdibleGameObj *> edibles;
+    for (int i = 0; i < 10; i++) {
+        edibles.push_back(new EdibleGameObj(cube, &textureGrass));
+        edibles[i]->setPos(vec3(dis(gen), 0, 35));
+    }
+    world.growGrass(edibles);
+
+    vector<EnemyGameObj *> enemies;
+    for (int i = 0; i < 10; i++) {
+        enemies.push_back(new EnemyGameObj(bunny, &texture));
+        enemies[i]->setPos(vec3(dis(gen), 0, -50));
+        enemies[i]->setRandomVel(edibles);
+    }
+    world.spawnEnemy(enemies);
 }
 
 void setMater(int mat, shared_ptr<Program> prog) {

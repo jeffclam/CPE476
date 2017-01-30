@@ -39,3 +39,13 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, Texture *tex) :
     oldX = 0.0;
     theta = M_PI;
 }
+
+void PlayerGameObj::push(GameState state, vector<EnemyGameObj *> e) {
+    if (glfwGetKey(state.window, GLFW_KEY_SPACE) == GLFW_PRESS) {    
+        for (int i = 0; i < e.size(); i++) {
+            if (check_Interact_Radius(*(e[i]))) {
+                e[i]->pushed();
+            }
+        }
+    }
+}

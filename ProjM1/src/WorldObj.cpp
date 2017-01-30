@@ -8,7 +8,7 @@
 
 #include "WorldObj.h"
 
-WorldObj::WorldObj():
+WorldObj::WorldObj() :
     objs(),
     state(),
     cam()
@@ -49,4 +49,16 @@ void WorldObj::addObj(GameObj *newObj) {
 
 void WorldObj::setWindows(GLFWwindow *win) {
     state.window = win;
+}
+
+void WorldObj::growGrass(vector<EdibleGameObj *> e) {
+    for (int i = 0; i < e.size(); i++) {
+        addObj(e[i]);
+    }
+}
+
+void WorldObj::spawnEnemy(vector<EnemyGameObj *> e) {
+    for (int i = 0; i < e.size(); i++) {
+        addObj(e[i]);
+    }
 }
