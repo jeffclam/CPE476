@@ -1,9 +1,0 @@
-C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeFiles/Lab01.dir
-C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeFiles/INSTALL.dir
-C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeFiles/ALL_BUILD.dir
-C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeFiles/ZERO_CHECK.dir
-C:/lib/glfw/debug/CMakeFiles/uninstall.dir
-C:/lib/glfw/debug/CMakeFiles/INSTALL.dir
-C:/lib/glfw/debug/CMakeFiles/ALL_BUILD.dir
-C:/lib/glfw/debug/src/CMakeFiles/glfw.dir
-C:/lib/glfw/debug/src/CMakeFiles/INSTALL.dir
