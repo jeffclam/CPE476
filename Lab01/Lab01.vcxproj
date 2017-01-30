@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{65AA2B24-6989-37D9-AEFE-2E5105613F97}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>Lab01</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Lab01.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Lab01</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Lab01.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Lab01</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Lab01.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Lab01</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Lab01.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Lab01</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\lib\glfw\debug\src\Debug\glfw3.lib;opengl32.lib;C:\lib\glew\lib\Release\Win32\glew32s.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/Debug/Lab01.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/Debug/Lab01.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\lib\glfw\debug\src\Release\glfw3.lib;opengl32.lib;C:\lib\glew\lib\Release\Win32\glew32s.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/Release/Lab01.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/Release/Lab01.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\lib\glfw\debug\src\MinSizeRel\glfw3.lib;opengl32.lib;C:\lib\glew\lib\Release\Win32\glew32s.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/MinSizeRel/Lab01.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/MinSizeRel/Lab01.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\lib\glm;C:\lib\glfw\include;C:\lib\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;C:\lib\glfw\debug\src\RelWithDebInfo\glfw3.lib;opengl32.lib;C:\lib\glew\lib\Release\Win32\glew32s.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/RelWithDebInfo/Lab01.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/RelWithDebInfo/Lab01.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+C:\lib\CMake\bin\cmake.exe "-HC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" "-BC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" --check-stamp-file "C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+C:\lib\CMake\bin\cmake.exe "-HC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" "-BC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" --check-stamp-file "C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+C:\lib\CMake\bin\cmake.exe "-HC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" "-BC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" --check-stamp-file "C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+C:\lib\CMake\bin\cmake.exe "-HC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" "-BC:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01" --check-stamp-file "C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInitialize.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCCompiler.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeCXXCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeSystemSpecificInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeGenericSystem.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\WindowsPaths.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-C.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\3.7.2\CMakeRCCompiler.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeRCInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCXXInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeLanguageInformation.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Compiler\MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC-CXX.cmake;C:\lib\CMake\share\cmake-3.7\Modules\Platform\Windows-MSVC.cmake;C:\lib\CMake\share\cmake-3.7\Modules\CMakeCommonLanguageInclude.cmake;C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BunnyGameObj.cpp" />
+    <ClCompile Include="src\GameObj.cpp" />
+    <ClCompile Include="src\WorldObj.cpp" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\GLSL.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\MatrixStack.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\Program.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\Shape.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\camera.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\json\json-forwards.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\json\json.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\place.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\stuff.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\thing.h" />
+    <ClInclude Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\tiny_obj_loader.h" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\GLSL.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\MatrixStack.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\Program.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\Shape.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\camera.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\jsoncpp.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\main.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\place.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\stuff.cpp" />
+    <ClCompile Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\src\thing.cpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\BunnyGameObj.h" />
+    <ClInclude Include="src\GameObj.h" />
+    <ClInclude Include="src\WorldObj.h" />
+    <None Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\resources\simple_frag.glsl" />
+    <None Include="C:\Users\Jeffrey\Desktop\School\CPE 476\CPE476\Lab01\resources\simple_vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/Users/Jeffrey/Desktop/School/CPE 476/CPE476/Lab01/ZERO_CHECK.vcxproj">
+      <Project>D6C08ECE-506C-3EC7-8D83-9FF224E298AF</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/lib/glfw/debug/src/glfw.vcxproj">
+      <Project>79E6B52A-6315-339E-8BCC-DD74A2544511</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Lab01.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
