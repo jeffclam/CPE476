@@ -114,11 +114,12 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 2.0f;
+    return distance(b_box.min, b_box.max) / 8.0f;
 }
 
 void GameObj::calcBoundingSphere() {
-    b_sphere.radius = calcBoundingRadius();
+    //b_sphere.radius = calcBoundingRadius();
+    b_sphere.radius = 1;
     b_sphere.center = pos;
 }
 
@@ -139,14 +140,16 @@ GameObj *GameObj::check_Collision_Radius() {
         dist = distance(this->getPos(), other->getPos());
         minDist = this->b_sphere.radius + other->b_sphere.radius;
         if (dist > 0 && dist < minDist) {
+            /*
             // Check if the spheres are moving away from each other
             if (other->getVel() != vec3(0, 0, 0)) {
                 dVel = other->getVel() - this->getVel();
             }
             if (dot(dVel, dVel) < 0) {
-                return other;
+                return (*worldObjs)[i];
             }
-            return other;
+            */
+            return (*worldObjs)[i];
         }
     }
     return NULL;

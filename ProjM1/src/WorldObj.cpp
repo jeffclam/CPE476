@@ -8,6 +8,8 @@
 
 #include "WorldObj.h"
 
+double updateTime = 0.0;
+
 WorldObj::WorldObj() :
     objs(),
     state(),
@@ -27,12 +29,12 @@ void WorldObj::render(shared_ptr<Program> prog) {
 }
 
 void WorldObj::update(double time) {
-    
+    updateTime += time;
     //update game state
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
-    
+
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->update(state);
     }

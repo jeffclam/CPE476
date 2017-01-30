@@ -145,9 +145,9 @@ static void init()
     world.growGrass(edibles);
 
     vector<EnemyGameObj *> enemies;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
         enemies.push_back(new EnemyGameObj(bunny, &texture));
-        enemies[i]->setPos(vec3(dis(gen), 0, -50));
+        enemies[i]->setPos(vec3(dis(gen), 0, -40));
         enemies[i]->setRandomVel(edibles);
     }
     world.spawnEnemy(enemies);

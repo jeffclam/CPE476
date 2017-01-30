@@ -8,17 +8,21 @@ EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, Texture *tex) : GameObj(shap
 }
 
 vec3 EnemyGameObj::setRandomVel(vector<EdibleGameObj *> e) {
-    EdibleGameObj *target;
-    int dist = 99999;
+    EdibleGameObj *target = e[0];
+    int dist = 99999, current_dist;
     vec3 velocity;
 
     for (int i = 0; i < e.size(); i++) {
-        if (distance(getPos(), e[i]->getPos()) < dist) {
+        current_dist = distance(getPos(), e[i]->getPos());
+        if (current_dist < dist) {
+            dist = current_dist;
             target = e[i];
         }
     }
 
-    velocity = getPos() - target->getPos();
+    velocity = target->getPos() - getPos();
+    velocity[1] = 0;
+    velocity *= .05;
     setVel(velocity);
     return velocity;
 }
