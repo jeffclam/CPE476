@@ -131,10 +131,10 @@ static void init()
     player->setPos(0, 0, 55);
     player->setEnemiesList(&(world.enemies));
     EdibleGameObj *edible = new EdibleGameObj(cube, &textureGrass);
-    edible->setPos(0, 0, 70);
+    edible->setPos(0, -20, 0);
 
     EnemyGameObj *enemy = new EnemyGameObj(bunny, &texture);
-    enemy->setPos(0, 0, -70);
+    enemy->setPos(0, -20, 0);
 
     world.addObj(player);
     world.addObj(ground);
