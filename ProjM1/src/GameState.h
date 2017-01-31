@@ -24,6 +24,7 @@ public:
     GLFWwindow *window = NULL;
     //use glfwGetKey (GLFWwindow *window, int key) to check key input
 private:
+
 };
 
 #endif /* GameState_h */

@@ -66,9 +66,10 @@ public:
     Bounding_Box b_box;
     void setRandomVel();
     shared_ptr<Shape> shape;
-    
-private:
     Texture *texture;
+    bool is_Edible = false;
+    bool was_Pushed = false;
+private:
 };
 
 #endif

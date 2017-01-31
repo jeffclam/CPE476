@@ -10,11 +10,16 @@
 
 double updateTime = 0.0;
 
+random_device rd;
+mt19937 gen(rd());
+uniform_int_distribution<> dis(-30, 30);
+
 WorldObj::WorldObj() :
     objs(),
     state(),
     cam()
-{}
+{
+}
 
 WorldObj::~WorldObj(){
 
@@ -36,14 +41,25 @@ void WorldObj::update(double time) {
     state.timeSinceSpawn += (float) time;
     if(state.timeSinceSpawn > state.timeBetweenSpawn) {
         state.timeSinceSpawn = 0;
-        cout << "Spawn a thing here!\n";
+
+        EdibleGameObj *ed = new EdibleGameObj(objs[2]->shape, objs[2]->texture);
+        ed->setPos(dis(gen), 0, 50);
+        spawnGrass(ed);
+
+        EnemyGameObj *e = new EnemyGameObj(objs[3]->shape, objs[3]->texture);
+        e->setPos(dis(gen), 0, -50);
+        spawnEnemy(e);
+        e->setRandomVel(edibles);
     }
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->update(state);
     }
-    
+
+    for (int j = 0; j < edibles.size(); j++) {
+        edibles[j]->update(state);
+    }
     //update camera
     cam.avatar = objs[0];
     cam.updateCamera();
@@ -58,14 +74,12 @@ void WorldObj::setWindows(GLFWwindow *win) {
     state.window = win;
 }
 
-void WorldObj::growGrass(vector<EdibleGameObj *> e) {
-    for (int i = 0; i < e.size(); i++) {
-        addObj(e[i]);
-    }
+void WorldObj::spawnGrass(EdibleGameObj *e) {
+    addObj(e);
+    edibles.push_back(e);
 }
 
-void WorldObj::spawnEnemy(vector<EnemyGameObj *> e) {
-    for (int i = 0; i < e.size(); i++) {
-        addObj(e[i]);
-    }
+void WorldObj::spawnEnemy(EnemyGameObj *e) {
+     addObj(e);
+     enemies.push_back(e);
 }

@@ -10,6 +10,7 @@
 #define WorldObject_hpp
 
 #include <stdio.h>
+#include <random>
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
@@ -40,8 +41,10 @@ public:
     void addObj(GameObj *newObj);
     void addShape(shared_ptr<Shape> s);
     void setWindows(GLFWwindow *win);
-    void growGrass(vector<EdibleGameObj *> e);
-    void spawnEnemy(vector<EnemyGameObj *> e);
+    void spawnGrass(EdibleGameObj *e);
+    void spawnEnemy(EnemyGameObj *e);
+    vector<EdibleGameObj *> edibles;
+    vector<EnemyGameObj *> enemies;
 private:
     GameState state;
     ManualCamera cam;

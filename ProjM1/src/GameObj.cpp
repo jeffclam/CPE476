@@ -32,10 +32,12 @@ void GameObj::update(GameState state) {
     
     if (collider == NULL) {
         pos += getVel()*((float)5*time);
-    } else {
+    } else if (collider != NULL && !was_Pushed){
         pos -= getVel()*((float)5*time);
         setVel(0, 0, 0);
-        //setRandomVel();
+    }
+    else {
+        setRandomVel();
     }
 }
 
@@ -108,13 +110,18 @@ shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
     return M;
 }
 
+
+/**
+  I really need to fix the collision checking - Jeffrey
+*/
+
 void GameObj::calcBoundingBox(mat4 transform) {
     b_box.min = vec3(transform * vec4(shape->getMin(), 0.0));
     b_box.max = vec3(transform * vec4(shape->getMax(), 0.0));
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 8.0f;
+    return distance(b_box.min, b_box.max) / 2.0f;
 }
 
 void GameObj::calcBoundingSphere() {
@@ -124,7 +131,7 @@ void GameObj::calcBoundingSphere() {
 }
 
 bool GameObj::check_Interact_Radius(GameObj obj) {
-    if (calcBoundingRadius() * 2 < distance(getPos(), obj.getPos())) {
+    if (calcBoundingRadius() * 4 > distance(getPos(), obj.getPos())) {
         return true;
     }
     return false;

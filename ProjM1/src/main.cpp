@@ -129,28 +129,17 @@ static void init()
     PlayerGameObj *player = new PlayerGameObj(pointer, &texture);
     player->setVel(1, 0, 1);
     player->setPos(0, 0, 55);
-    
+    player->setEnemiesList(&(world.enemies));
+    EdibleGameObj *edible = new EdibleGameObj(cube, &textureGrass);
+    edible->setPos(0, 0, 70);
+
+    EnemyGameObj *enemy = new EnemyGameObj(bunny, &texture);
+    enemy->setPos(0, 0, -70);
+
     world.addObj(player);
     world.addObj(ground);
-   
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(-30, 30);
-
-    vector<EdibleGameObj *> edibles;
-    for (int i = 0; i < 10; i++) {
-        edibles.push_back(new EdibleGameObj(cube, &textureGrass));
-        edibles[i]->setPos(vec3(dis(gen), 0, 35));
-    }
-    world.growGrass(edibles);
-
-    vector<EnemyGameObj *> enemies;
-    for (int i = 0; i < 5; i++) {
-        enemies.push_back(new EnemyGameObj(bunny, &texture));
-        enemies[i]->setPos(vec3(dis(gen), 0, -40));
-        enemies[i]->setRandomVel(edibles);
-    }
-    world.spawnEnemy(enemies);
+    world.addObj(edible);
+    world.addObj(enemy);
 }
 
 void setMater(int mat, shared_ptr<Program> prog) {

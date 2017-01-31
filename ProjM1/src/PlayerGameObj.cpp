@@ -18,9 +18,9 @@ void PlayerGameObj::update(GameState state) {
     theta += (state.mouseX-oldX)/width;
     oldX = state.mouseX;
     if(glfwGetKey(state.window, GLFW_KEY_W) == GLFW_PRESS) {
-        speed = 1;
+        speed = 2;
     } else if(glfwGetKey(state.window, GLFW_KEY_S) == GLFW_PRESS) {
-        speed = -1;
+        speed = -2;
     } else {
         setVel(0, getVel()[1], 0);
     }
@@ -28,10 +28,12 @@ void PlayerGameObj::update(GameState state) {
     if (glfwGetKey(state.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isJumping = true;
         cout << "jump\n";
+        push();
     }
     jump(state);
     pos += getVel()*((float)5*state.deltaTime);
-    if(check_Collision_Radius() != NULL) {
+    GameObj *collider = check_Collision_Radius();
+    if(collider != NULL && !collider->is_Edible && !collider->was_Pushed) {
         pos -= getVel()*((float)5*state.deltaTime);
     }
     setRot(0, theta, 0);
@@ -46,6 +48,10 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, Texture *tex) :
 {
     oldX = 0.0;
     theta = M_PI;
+}
+
+void PlayerGameObj::setEnemiesList(vector<EnemyGameObj *> *e) {
+    enemies = e;
 }
 
 void PlayerGameObj::jump(GameState state) {
@@ -63,12 +69,10 @@ void PlayerGameObj::jump(GameState state) {
     }
 }
 
-void PlayerGameObj::push(GameState state, vector<EnemyGameObj *> e) {
-    if (glfwGetKey(state.window, GLFW_KEY_SPACE) == GLFW_PRESS) {    
-        for (int i = 0; i < e.size(); i++) {
-            if (check_Interact_Radius(*(e[i]))) {
-                //e[i]->pushed();
-            }
+void PlayerGameObj::push() {
+    for (int i = 0; i < enemies->size(); i++) {
+        if (check_Interact_Radius(*(*enemies)[i])) {
+            (*enemies)[i]->pushed();
         }
     }
 }

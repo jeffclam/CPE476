@@ -20,12 +20,14 @@ public:
     PlayerGameObj(shared_ptr<Shape> shape, Texture *tex);
     virtual ~PlayerGameObj();
     virtual void update(GameState state);
-    void push(GameState state, vector<EnemyGameObj *> e);
+    void setEnemiesList(vector<EnemyGameObj *> *e);
+    void push();
 private:
     float oldX;
     float theta;
     void jump(GameState state);
     bool isJumping;
+    vector<EnemyGameObj *> *enemies;
 };
 
 #endif /* PlayerGameObj_h */

@@ -29,10 +29,6 @@ vec3 EnemyGameObj::setRandomVel(vector<EdibleGameObj *> e) {
 
 void EnemyGameObj::pushed() {
     was_pushed = true;
-    if (getVel() != vec3(0, 0, 0)) {
-        setVel(-getVel());
-    }
-    else {
-        setVel(vec3(-10, 0, -10));
-    }
+    cout << "I WAS PUSHED!!!" << endl;
+    setVel(vec3(0, 0, -5));
 }
