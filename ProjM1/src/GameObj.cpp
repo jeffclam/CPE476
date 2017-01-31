@@ -30,14 +30,18 @@ void GameObj::update(GameState state) {
     
     GameObj *collider = check_Collision_Radius();
     
-    if (collider == NULL) {
-        pos += getVel()*((float)5*time);
+    /* Hey Andrew I was a little stuck here but I think I got it?
+     * I can't compile rn so please check if there's a bug of 
+      */
+    
+    if (collider == NULL || (collider != NULL && was_Pushed)) {
+      if (was_Pushed && getVel() == vec3(0, 0, 0)) {
+         setVel(0,0,-5);
+      }
+      pos += getVel()*((float)5*time);
     } else if (collider != NULL && !was_Pushed){
-        pos -= getVel()*((float)5*time);
-        setVel(0, 0, 0);
-    }
-    else {
-        setRandomVel();
+      pos -= getVel()*((float)5*time);
+      setVel(0, 0, 0);
     }
 }
 
