@@ -26,6 +26,9 @@ void PlayerGameObj::update(GameState state) {
     }
     setVel(sin(theta) * speed, 0, cos(theta) * speed);
     pos += getVel()*((float)5*state.deltaTime);
+    if(check_Collision_Radius() != NULL) {
+        pos -= getVel()*((float)5*state.deltaTime);
+    }
     setRot(0, theta, 0);
 }
 
