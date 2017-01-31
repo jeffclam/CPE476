@@ -38,11 +38,11 @@ void GameObj::update(GameState state) {
       if (was_Pushed && getVel() == vec3(0, 0, 0)) {
          setVel(0,0,-5);
       }
-      pos += getVel()*((float)5*time);
-    } else if (collider != NULL && !was_Pushed && collider->name != collider->name){
+    } else if (collider != NULL && !was_Pushed && (collider->name == "player" || collider->name == "grass")){
       //pos -= getVel()*((float)5*time);
       setVel(0, 0, 0);
     }
+    pos += getVel()*((float)5*time);
 }
 
 void GameObj::setRandomVel() {
@@ -150,7 +150,7 @@ GameObj *GameObj::check_Collision_Radius() {
         // Check the spheres are already interacting
         dist = distance(this->getPos(), other->getPos());
         minDist = this->b_sphere.radius + other->b_sphere.radius;
-        if (dist > 0 && dist < minDist) {
+        if (dist > 0 && dist < minDist and other->name != noInteract) {
             /*
             // Check if the spheres are moving away from each other
             if (other->getVel() != vec3(0, 0, 0)) {

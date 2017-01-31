@@ -5,6 +5,8 @@ EdibleGameObj::EdibleGameObj(shared_ptr<Shape> shape, Texture *tex) :
     oldX = 0;
     theta = M_PI;
     is_Edible = true;
+    name = "grass";
+    noInteract = "grass";
 };
 
 void EdibleGameObj::update(GameState state) {

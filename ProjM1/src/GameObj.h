@@ -70,6 +70,7 @@ public:
     bool is_Edible = false;
     bool was_Pushed = false;
     string name = "";
+    string noInteract = "_NONE_";
 private:
 };
 

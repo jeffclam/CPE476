@@ -47,6 +47,7 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, Texture *tex) :
 {
     oldX = 0.0;
     theta = M_PI;
+    name = "player";
 }
 
 void PlayerGameObj::setEnemiesList(vector<EnemyGameObj *> *e) {
