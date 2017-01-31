@@ -33,6 +33,11 @@ void WorldObj::update(double time) {
     //update game state
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
+    state.timeSinceSpawn += (float) time;
+    if(state.timeSinceSpawn > state.timeBetweenSpawn) {
+        state.timeSinceSpawn = 0;
+        cout << "Spawn a thing here!\n";
+    }
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 
     for(int i = 0; i < objs.size(); i++) {

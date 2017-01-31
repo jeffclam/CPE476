@@ -290,7 +290,7 @@ int main(int argc, char **argv)
         
         end = time(NULL);
         frames++;
-        printf("FPS: %f\n", (float)frames/(float)(end-start));
+        //printf("FPS: %f\n", (float)frames/(float)(end-start));
         
         world.update(glfwGetTime() - lastTime);
         //cam.walk(glfwGetTime() - lastTime);

@@ -16,11 +16,14 @@ public:
     GameState();
     float worldTime = 0; //Current time in the world total
     float deltaTime = 0; //Time since last update
+    float timeSinceSpawn = 0;
     int waveNumber = 0;  //How many waves you've survived
     double mouseX = 0;    //Current position of mouse (X)
     double mouseY = 0;    //Current position of mouse (Y)
+    float timeBetweenSpawn = 5;
     GLFWwindow *window = NULL;
     //use glfwGetKey (GLFWwindow *window, int key) to check key input
+private:
 };
 
 #endif /* GameState_h */
