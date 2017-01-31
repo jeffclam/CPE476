@@ -5,6 +5,7 @@ EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, Texture *tex) : GameObj(shap
     oldx = 0;
     theta = M_PI;
     was_pushed = false;
+    name = "enemy";
 }
 
 vec3 EnemyGameObj::setRandomVel(vector<EdibleGameObj *> e) {
@@ -31,4 +32,5 @@ void EnemyGameObj::pushed() {
     was_pushed = true;
     cout << "I WAS PUSHED!!!" << endl;
     setVel(vec3(0, 0, -5));
+    pos += getVel();
 }

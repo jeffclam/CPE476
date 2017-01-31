@@ -39,8 +39,8 @@ void GameObj::update(GameState state) {
          setVel(0,0,-5);
       }
       pos += getVel()*((float)5*time);
-    } else if (collider != NULL && !was_Pushed){
-      pos -= getVel()*((float)5*time);
+    } else if (collider != NULL && !was_Pushed && collider->name != collider->name){
+      //pos -= getVel()*((float)5*time);
       setVel(0, 0, 0);
     }
 }

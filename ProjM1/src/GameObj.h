@@ -69,6 +69,7 @@ public:
     Texture *texture;
     bool is_Edible = false;
     bool was_Pushed = false;
+    string name = "";
 private:
 };
 

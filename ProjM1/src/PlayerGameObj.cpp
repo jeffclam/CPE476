@@ -27,7 +27,6 @@ void PlayerGameObj::update(GameState state) {
     setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
     if (glfwGetKey(state.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isJumping = true;
-        cout << "jump\n";
         push();
     }
     jump(state);

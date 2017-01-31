@@ -40,7 +40,7 @@ void ManualCamera::updateCamera() {
      eyePt[2] += deltaZ;
      */
     
-    float theta = (avatar->rot[1] + oldTheta)/2;
+    float theta = (avatar->rot[1] + oldTheta * 8)/9;
     float r = 4;
     /*if(avatar->rot[1] - theta < M_PI/10) {
         theta = avatar->rot[1] - theta;
