@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 /* BMP file loader loads a 24-bit bmp file only */
 
@@ -33,9 +35,17 @@ static unsigned int getshort(FILE *fp){
 	return ((unsigned int) c) + (((unsigned int) c1) << 8);
 }
 
+int Texture::ImageLoad(const char *filename, Image *image) {
+	int comp;
+	image->data = (char *)stbi_load(filename, &width, &height, &comp, 0);
+	image->sizeX = width;
+	image->sizeY = height;
+	return 1;
+}
+
 /*  quick and dirty bitmap loader...for 24 bit bitmaps with 1 plane only.  */
 
-int Texture::ImageLoad(const char *filename, Image *image) {
+int OldImageLoad(const char *filename, Texture::Image *image) {
 	FILE *file;
 	unsigned long size;                 /*  size of the image in bytes. */
 	unsigned long i;                    /*  standard counter. */

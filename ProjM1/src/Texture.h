@@ -21,7 +21,7 @@ public:
 		GLubyte b;
 	} RGB;
 	
-	static int ImageLoad(const char *filename, Image *image);
+	int ImageLoad(const char *filename, Image *image);
 	
 	Texture();
 	virtual ~Texture();
@@ -42,6 +42,8 @@ private:
 	GLuint tid;
 	int unit;
 	GLint handle;
+	int height = 0;
+	int width = 0;
 	
 };
 

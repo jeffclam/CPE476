@@ -106,7 +106,7 @@ static void init()
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
     
-    texture.setFilename(RESOURCE_DIR + "ledog.bmp");
+    texture.setFilename(RESOURCE_DIR + "pngTest.png");
     texture.setUnit(0);
     texture.setName("tex");
     texture.init();
