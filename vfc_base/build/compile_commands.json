@@ -1,0 +1,82 @@
+[
+{
+  "directory": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLEW/include   -std=c++0x -Wall -pedantic -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk   -o CMakeFiles/vfc.dir/src/GLSL.cpp.o -c /Users/Andrew/Dropbox/School/CPE476/vfc_base/src/GLSL.cpp",
+  "file": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/src/GLSL.cpp"
+},
+{
+  "directory": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLEW/include   -std=c++0x -Wall -pedantic -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk   -o CMakeFiles/vfc.dir/src/main.cpp.o -c /Users/Andrew/Dropbox/School/CPE476/vfc_base/src/main.cpp",
+  "file": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/src/main.cpp"
+},
+{
+  "directory": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++    -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLEW/include   -std=c++0x -Wall -pedantic -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk   -o CMakeFiles/vfc.dir/src/tiny_obj_loader.cpp.o -c /Users/Andrew/Dropbox/School/CPE476/vfc_base/src/tiny_obj_loader.cpp",
+  "file": "/Users/Andrew/Dropbox/School/CPE476/vfc_base/src/tiny_obj_loader.cpp"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/context.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/context.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/context.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/init.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/init.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/init.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/input.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/input.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/input.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/monitor.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/monitor.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/monitor.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/vulkan.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/vulkan.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/vulkan.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/window.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/window.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/window.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/cocoa_init.m.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_init.m",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_init.m"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/cocoa_joystick.m.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_joystick.m",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_joystick.m"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/cocoa_monitor.m.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_monitor.m",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_monitor.m"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/cocoa_window.m.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_window.m",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_window.m"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/cocoa_time.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_time.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/cocoa_time.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/posix_tls.c.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/posix_tls.c",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/posix_tls.c"
+},
+{
+  "directory": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc  -D_GLFW_USE_CONFIG_H -I/Users/Andrew/Documents/School/CSC471/Lib -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/include -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src -I/Users/Andrew/Documents/School/CSC471/Lib/GLFW/debug/src  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk -fPIC   -Wall -o CMakeFiles/glfw.dir/nsgl_context.m.o   -c /Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/nsgl_context.m",
+  "file": "/Users/Andrew/Documents/School/CSC471/Lib/GLFW/src/nsgl_context.m"
+}
+]
