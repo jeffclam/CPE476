@@ -13,6 +13,8 @@
 #include "Program.h"
 #include "MatrixStack.h"
 #include "Shape.h"
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
@@ -41,6 +43,8 @@ int g_width, g_height;
 WorldObj world = WorldObj();
 
 Texture texture, textureGrass, textureWorld;
+
+float FPS;
 
 
 static void error_callback(int error, const char *description)
@@ -183,11 +187,13 @@ static void render()
 {
 	// Get current frame buffer size.
 	int width, height;
+    bool show_another_window = true;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
 	// Clear framebuffer.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glfwSwapBuffers(window);
 
 	//Use the matrix stack for Lab 6
    float aspect = width/(float)height;
@@ -208,6 +214,14 @@ static void render()
 
    // Pop matrix stacks.
    P->popMatrix();
+    ImGui_ImplGlfwGL3_NewFrame();
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(200,100), ImGuiSetCond_Always);
+    ImGui::Begin("Another Window", &show_another_window);
+    ImGui::Text("Hello");
+    ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+    ImGui::End();
+    ImGui::Render();
 
 }
 
@@ -241,6 +255,7 @@ int main(int argc, char **argv)
 		glfwTerminate();
 		return -1;
 	}
+    ImGui_ImplGlfwGL3_Init(window, true);
 	// Make the window's context current.
 	glfwMakeContextCurrent(window);
 	// Initialize GLEW.
@@ -280,7 +295,8 @@ int main(int argc, char **argv)
         end = time(NULL);
         frames++;
         //printf("FPS: %f\n", (float)frames/(float)(end-start));
-        
+        FPS = (float)frames/(float)(end-start);
+
         world.update(glfwGetTime() - lastTime);
         //cam.walk(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
