@@ -35,7 +35,7 @@ struct Bounding_Sphere {
 class GameObj {
 public:
     GameObj();
-    GameObj(shared_ptr<Shape> shape, Texture *tex);
+    GameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~GameObj();
     virtual void update(GameState state);
     void render(shared_ptr<Program> p);
@@ -66,7 +66,7 @@ public:
     Bounding_Box b_box;
     void setRandomVel();
     shared_ptr<Shape> shape;
-    Texture *texture;
+    shared_ptr<Texture> texture;
     bool is_Edible = false;
     bool was_Pushed = false;
     string name = "";

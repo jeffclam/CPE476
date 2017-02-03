@@ -7,7 +7,7 @@ GameObj::GameObj() {
     srand (time(NULL));
 }
 
-GameObj::GameObj(shared_ptr<Shape> s, Texture *tex) {
+GameObj::GameObj(shared_ptr<Shape> s,shared_ptr< Texture> tex) {
     shape = s;
     pos = vec3(0, 0, 0);
     scale = vec3(1, 1, 1);

@@ -1,7 +1,7 @@
 #include "stuff.h"
 
 unordered_map<string, shared_ptr<Shape>> loadedThings;
-vector<string> names;
+unordered_map<string, shared_ptr<Texture>> loadedText;
 
 void loadStuff(string resourceDir, string stuffFile){
     Json::Value root;
@@ -17,20 +17,10 @@ void loadStuff(string resourceDir, string stuffFile){
         << "\n";
     }
     Json::Value things;
-    things = root["things"];
+    things = root["shapes"];
     for ( int index = 0; index < things.size(); ++index ) {
-        string thingName = things[index].asString();
-        Json::Value rootThing;
-        std::ifstream thingIn(resourceDir + thingName, std::ifstream::binary);
-        bool parsingSuccessful = reader.parse( thingIn, rootThing, false );
-        if ( !parsingSuccessful )
-        {
-            // report to the user the failure and their locations in the document.
-            std::cout << "Error reading object " + thingName + " "
-            << reader.getFormatedErrorMessages()
-            << "\n";
-        }
-        
+        Json::Value rootThing = things[index];
+
         std::string name = rootThing.get("name", "NAME_NONE" ).asString();
         std::string obj = rootThing.get("obj", "OBJ_NONE" ).asString();
         
@@ -40,13 +30,33 @@ void loadStuff(string resourceDir, string stuffFile){
         shape->init();
         pair<string, shared_ptr<Shape>> newThing (name, shape);
         loadedThings.insert(newThing);
-        names.push_back(name);
+    }
+
+    things = root["textures"];
+    for ( int index = 0; index < things.size(); ++index ) {
+        Json::Value rootThing = things[index];
+
+        std::string nameText = rootThing.get("name", "NAME_NONE" ).asString();
+        std::string text = rootThing.get("text", "OBJ_NONE" ).asString();
+        cout << "loading " << nameText << "\n";
+        auto texPtr = make_shared<Texture>();
+        texPtr->setFilename(resourceDir + text);
+        texPtr->setUnit(0);
+        texPtr->setName("tex");
+        texPtr->init();
+        pair<string, shared_ptr<Texture>> newText (nameText, texPtr);
+        loadedText.insert(newText);
     }
 
 }
 
-shared_ptr<Shape> getThing(string name) {
+shared_ptr<Shape> getShape(string name) {
     std::unordered_map<std::string,shared_ptr<Shape>>::const_iterator got = loadedThings.find (name);
+    return got->second;
+}
+
+shared_ptr<Texture> getTexture(string name) {
+    std::unordered_map<std::string,shared_ptr<Texture>>::const_iterator got = loadedText.find (name);
     return got->second;
 }
 
@@ -85,11 +95,4 @@ void setMat(int mat, shared_ptr<Program> prog) {
             glUniform1f(prog->getUniform("specShine"), 76.8);
             break;
     }
-}
-
-int getShapeCount() {
-    return names.size();
-}
-string getShapeByIndex(int index) {
-    return names[index];
 }

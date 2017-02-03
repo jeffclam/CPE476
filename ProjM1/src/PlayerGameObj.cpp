@@ -42,7 +42,7 @@ PlayerGameObj::~PlayerGameObj() {
     
 }
 
-PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, Texture *tex) :
+PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     GameObj(shape, tex)
 {
     oldX = 0.0;

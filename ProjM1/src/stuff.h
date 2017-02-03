@@ -10,6 +10,7 @@
 
 
 #include "Shape.h"
+#include "Texture.h"
 #include "json/json.h"
 
 #define GLEW_STATIC
@@ -26,10 +27,10 @@ using namespace Json;
 using namespace std;
 
 void loadStuff(string resourceDir, string stuffFile);
-shared_ptr<Shape> getThing(string name);
+shared_ptr<Shape> getShape(string name);
+shared_ptr<Texture> getTexture(string name);
 void setMat(int mat, shared_ptr<Program> prog);
-int getShapeCount();
-string getShapeByIndex(int index);
+
 
 
 

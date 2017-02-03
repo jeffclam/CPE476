@@ -1,7 +1,7 @@
 #include "EnemyGameObj.h"
 #include "EdibleGameObj.h"
 
-EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, Texture *tex) : GameObj(shape, tex) {
+EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) : GameObj(shape, tex) {
     oldx = 0;
     theta = M_PI;
     was_pushed = false;

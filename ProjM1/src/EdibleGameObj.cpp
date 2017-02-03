@@ -1,6 +1,6 @@
 #include "EdibleGameObj.h"
 
-EdibleGameObj::EdibleGameObj(shared_ptr<Shape> shape, Texture *tex) : 
+EdibleGameObj::EdibleGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) : 
     GameObj(shape, tex) {
     oldX = 0;
     theta = M_PI;

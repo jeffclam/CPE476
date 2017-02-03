@@ -1,0 +1,34 @@
+{
+    "shapes" : [
+        {
+        "name": "cube",
+        "obj": "cube.obj"
+        },
+        {
+        "name": "sphere",
+        "obj": "sphere.obj"
+        },
+        {
+        "name": "pointer",
+        "obj": "pointer.obj"
+        }
+        ],
+   "textures" : [
+        {
+        "name": "grass",
+        "text": "grass.bmp"
+        },
+        {
+        "name": "fur",
+        "text": "ledog.bmp"
+        },
+        {
+        "name": "test",
+        "text": "pngTest.png"
+        },
+        {
+        "name": "cloud",
+        "text": "cloud.bmp"
+        }
+        ]
+}

@@ -1,8 +1,0 @@
-{
-    "things" : [
-        "sphere.thing",
-	"bunny.thing",
-	"cube.thing",
-	"cone.thing"
-        ]
-}

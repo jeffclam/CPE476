@@ -17,7 +17,7 @@
 
 class PlayerGameObj: public GameObj {
 public:
-    PlayerGameObj(shared_ptr<Shape> shape, Texture *tex);
+    PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~PlayerGameObj();
     virtual void update(GameState state);
     void setEnemiesList(vector<EnemyGameObj *> *e);

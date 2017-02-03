@@ -27,6 +27,7 @@
 #include "EnemyGameObj.h"
 #include "PlayerGameObj.h"
 #include "Texture.h"
+#include "Stuff.h"
 
 using namespace std;
 using namespace glm;
@@ -34,15 +35,10 @@ using namespace glm;
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
 shared_ptr<Program> prog;
-shared_ptr<Shape> cube;
-shared_ptr<Shape> bunny;
-shared_ptr<Shape> pointer;
 
 int g_width, g_height;
 
 WorldObj world = WorldObj();
-
-Texture texture, textureGrass, textureWorld;
 
 float FPS;
 
@@ -70,28 +66,13 @@ static void init()
 {
     srand (time(NULL));
 	GLSL::checkVersion();
-    
+    loadStuff(RESOURCE_DIR, "stuff.json");
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
-    cube = make_shared<Shape>();
-    cube->loadMesh(RESOURCE_DIR + "cube.obj");
-    cube->resize();
-    cube->init();
-    
-    bunny = make_shared<Shape>();
-    bunny->loadMesh(RESOURCE_DIR + "sphere.obj");
-    bunny->resize();
-    bunny->init();
-
-    pointer = make_shared<Shape>();
-    pointer->loadMesh(RESOURCE_DIR + "pointer.obj");
-    pointer->resize();
-    pointer->init();
-
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
 	prog->setVerbose(true);
@@ -110,34 +91,19 @@ static void init()
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
     
-    texture.setFilename(RESOURCE_DIR + "pngTest.png");
-    texture.setUnit(0);
-    texture.setName("tex");
-    texture.init();
-    
-    textureGrass.setFilename(RESOURCE_DIR + "grass.bmp");
-    textureGrass.setUnit(0);
-    textureGrass.setName("tex");
-    textureGrass.init();
-    
-    textureWorld.setFilename(RESOURCE_DIR + "cloud.bmp");
-    textureWorld.setUnit(0);
-    textureWorld.setName("tex");
-    textureWorld.init();
-    
-    GameObj *ground = new GameObj(cube, &textureGrass);
+    GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
     ground->setPos(0, -1, 0);
     ground->setScale(60, 0.1, 60);
     ground->setVel(0, 0, 0);
     
-    PlayerGameObj *player = new PlayerGameObj(pointer, &texture);
+    PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
     player->setPos(0, 0, 55);
     player->setEnemiesList(&(world.enemies));
-    EdibleGameObj *edible = new EdibleGameObj(cube, &textureGrass);
+    EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
     edible->setPos(0, -20, 0);
 
-    EnemyGameObj *enemy = new EnemyGameObj(bunny, &texture);
+    EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(0, -20, 0);
 
     world.addObj(player);
