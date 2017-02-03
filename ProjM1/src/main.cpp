@@ -216,7 +216,7 @@ static void render()
    P->popMatrix();
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(200,100), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(100,50), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Hello");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
