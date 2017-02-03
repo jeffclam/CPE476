@@ -24,11 +24,25 @@ void PlayerGameObj::update(GameState state) {
     } else {
         setVel(0, getVel()[1], 0);
     }
+
     setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
     if (glfwGetKey(state.window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isJumping = true;
         push();
     }
+    //strafing
+    if(glfwGetKey(state.window, GLFW_KEY_A) == GLFW_PRESS) {
+        vec3 oldPos = getPos();
+        vec3 strafe = cross(vec3(0,1,0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
+        strafe = strafe * ((float)10*state.deltaTime);
+        setPos(oldPos[0]-strafe[0], oldPos[1], oldPos[2]-strafe[2]);
+    } 
+    if(glfwGetKey(state.window, GLFW_KEY_D) == GLFW_PRESS) {
+        vec3 oldPos = getPos();
+        vec3 strafe = cross(vec3(0,1,0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
+        strafe = strafe * ((float)10*state.deltaTime);
+        setPos(oldPos[0]+strafe[0], oldPos[1], oldPos[2]+strafe[2]);
+    } 
     jump(state);
     pos += getVel()*((float)5*state.deltaTime);
     GameObj *collider = check_Collision_Radius();
