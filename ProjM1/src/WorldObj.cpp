@@ -45,12 +45,12 @@ void WorldObj::update(double time) {
 
         EdibleGameObj *ed = new EdibleGameObj(objs[2]->shape, objs[2]->texture);
         ed->setPos(dis(gen), 0, 50);
-        spawnGrass(ed);
+        addObj(ed);
 
         EnemyGameObj *e = new EnemyGameObj(objs[3]->shape, objs[3]->texture);
         e->setPos(dis(gen), 0, -50);
-        spawnEnemy(e);
-        e->setRandomVel(edibles);
+        addObj(e);
+        e->setRandomVel();
     }
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 
@@ -73,14 +73,4 @@ void WorldObj::addObj(GameObj *newObj) {
 
 void WorldObj::setWindows(GLFWwindow *win) {
     state.window = win;
-}
-
-void WorldObj::spawnGrass(EdibleGameObj *e) {
-    addObj(e);
-    edibles.push_back(e);
-}
-
-void WorldObj::spawnEnemy(EnemyGameObj *e) {
-     addObj(e);
-     enemies.push_back(e);
 }

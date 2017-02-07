@@ -29,20 +29,10 @@ void GameObj::update(GameState state) {
     }
     
     GameObj *collider = check_Collision_Radius();
-    
-    /* Hey Andrew I was a little stuck here but I think I got it?
-     * I can't compile rn so please check if there's a bug of 
-      */
-    
-    if (collider == NULL || (collider != NULL && was_Pushed)) {
-      if (was_Pushed && getVel() == vec3(0, 0, 0)) {
-         setVel(0,0,-5);
-      }
-    } else if (collider != NULL && !was_Pushed && (collider->name == "player" || collider->name == "grass")){
-      //pos -= getVel()*((float)5*time);
-      setVel(0, 0, 0);
+    if (collider != NULL) {
+        setVel(vec3(0, 0, 0));
     }
-    pos += getVel()*((float)5*time);
+    pos += getVel()*((float)5 * time);
 }
 
 void GameObj::setRandomVel() {
@@ -103,6 +93,14 @@ void GameObj::setRot(float x, float y, float z) {
     rot = vec3(x, y, z);
 }
 
+void GameObj::setName(string name) {
+    this->name = name;
+}
+
+string GameObj::getName() {
+    return name;
+}
+
 shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
     M->pushMatrix();
     M->loadIdentity();
@@ -114,11 +112,6 @@ shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
     return M;
 }
 
-
-/**
-  I really need to fix the collision checking - Jeffrey
-*/
-
 void GameObj::calcBoundingBox(mat4 transform) {
     b_box.min = vec3(transform * vec4(shape->getMin(), 0.0));
     b_box.max = vec3(transform * vec4(shape->getMax(), 0.0));
@@ -129,13 +122,12 @@ float GameObj::calcBoundingRadius() {
 }
 
 void GameObj::calcBoundingSphere() {
-    //b_sphere.radius = calcBoundingRadius();
-    b_sphere.radius = 1;
+    b_sphere.radius = calcBoundingRadius();
     b_sphere.center = pos;
 }
 
 bool GameObj::check_Interact_Radius(GameObj obj) {
-    if (calcBoundingRadius() * 4 > distance(getPos(), obj.getPos())) {
+    if (calcBoundingRadius() * 4.0f > distance(getPos(), obj.getPos())) {
         return true;
     }
     return false;
@@ -143,24 +135,14 @@ bool GameObj::check_Interact_Radius(GameObj obj) {
 
 GameObj *GameObj::check_Collision_Radius() {
     float dist, minDist;
-    vec3 dVel;
     for (int i = 0; i < worldObjs->size(); i++) {
         GameObj *other = (*worldObjs)[i];
-
-        // Check the spheres are already interacting
-        dist = distance(this->getPos(), other->getPos());
-        minDist = this->b_sphere.radius + other->b_sphere.radius;
-        if (dist > 0 && dist < minDist and other->name != noInteract) {
-            /*
-            // Check if the spheres are moving away from each other
-            if (other->getVel() != vec3(0, 0, 0)) {
-                dVel = other->getVel() - this->getVel();
-            }
-            if (dot(dVel, dVel) < 0) {
+        if (other->name != noInteract && other->name != "ground") {
+            dist = distance(this->getPos(), other->getPos());
+            minDist = this->b_sphere.radius + other->b_sphere.radius;
+            if (dist > 0 && dist < minDist) {
                 return (*worldObjs)[i];
             }
-            */
-            return (*worldObjs)[i];
         }
     }
     return NULL;

@@ -50,6 +50,8 @@ public:
     void setVel(vec3 v);
     void setScale(float x, float y, float z);
     void setRot(float x, float y, float z);
+    void setName(string name);
+    string getName();
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
     void calcBoundingBox(mat4 transform);
     float calcBoundingRadius();

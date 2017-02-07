@@ -7,7 +7,8 @@ class EnemyGameObj: public GameObj {
 public:
     EnemyGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     //virtual ~EnemyGameObj();
-    vec3 setRandomVel(vector<EdibleGameObj *> e);
+    vec3 setRandomVel();
+    void update(GameState state);
     void pushed();
 private:
     float oldx;
