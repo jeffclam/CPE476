@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <random>
+#include "WorldGrid.h"
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
@@ -26,6 +27,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "ManualCamera.h"
 
+class WroldGrid;
 
 using namespace glm;
 using namespace std;
@@ -45,6 +47,7 @@ public:
     void spawnEnemy(EnemyGameObj *e);
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
+    WorldGrid grid = WorldGrid(5, 5);
 private:
     GameState state;
     ManualCamera cam;

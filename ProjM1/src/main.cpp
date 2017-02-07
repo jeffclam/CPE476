@@ -88,6 +88,8 @@ static void init()
     prog->addUniform("lightPos");
     prog->addUniform("lightColor");
     
+	world.grid.initGrid();
+
     GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
     ground->setPos(0, -1, 0);
     ground->setScale(60, 0.1, 60);

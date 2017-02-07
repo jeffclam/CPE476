@@ -18,6 +18,7 @@
 #include "MatrixStack.h"
 #include "GameState.h"
 #include "Texture.h"
+#include "WorldGrid.h"
 
 using namespace std;
 using namespace glm;

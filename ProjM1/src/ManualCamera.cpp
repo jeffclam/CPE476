@@ -16,7 +16,7 @@ avatar(NULL)
 {}
 
 void ManualCamera::updateCamera() {
-    /*vec3 vel = avatar->getVel();
+    vec3 vel = vec3(sin(avatar->rot[1]), 0, cos(avatar->rot[1]));
     if(vel[0] != vel[2] && vel[0] != 0) {
         vel = normalize(vel);
     } else {
@@ -38,18 +38,16 @@ void ManualCamera::updateCamera() {
      eyePt[0] += deltaX;
      eyePt[1] = avatar->getPos()[1] + 2;
      eyePt[2] += deltaZ;
-     */
+     
     
-    float theta = (avatar->rot[1] + oldTheta * 8)/9;
+    /*float theta = (avatar->rot[1] + oldTheta * 8)/9;
     float r = 4;
-    /*if(avatar->rot[1] - theta < M_PI/10) {
-        theta = avatar->rot[1] - theta;
-    }*/
+
     oldTheta = avatar->rot[1];
     
     eyePt[0] = -r * sin(theta) + avatar->getPos()[0] - avatar->getVel()[0]/7;
     eyePt[1] = avatar->getPos()[1] + 2;
-    eyePt[2] = -r * cos(theta) + avatar->getPos()[2] - avatar->getVel()[2]/7;
+    eyePt[2] = -r * cos(theta) + avatar->getPos()[2] - avatar->getVel()[2]/7;*/
     lookAtPt = avatar->getPos();
 }
 

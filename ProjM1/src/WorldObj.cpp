@@ -31,6 +31,7 @@ void WorldObj::render(shared_ptr<Program> prog) {
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->render(prog);
     }
+    grid.renderGrid(prog);
 }
 
 void WorldObj::update(double time) {
