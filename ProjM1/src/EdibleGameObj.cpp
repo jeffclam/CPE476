@@ -12,7 +12,7 @@ EdibleGameObj::EdibleGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
 void EdibleGameObj::update(GameState state) {
     GameObj::update(state);
     GameObj *collider = check_Collision_Radius();
-    if(collider != NULL && collider->name == "enemy" and scale[1] > 0) {
+    if(collider != NULL && collider->name == "enemy" && scale[1] > 0) {
         eat(state);
     }
         

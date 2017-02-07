@@ -45,8 +45,9 @@ void PlayerGameObj::update(GameState state) {
     } 
     jump(state);
     pos += getVel()*((float)5*state.deltaTime);
+
     GameObj *collider = check_Collision_Radius();
-    if(collider != NULL && !collider->is_Edible && !collider->was_Pushed) {
+    if(collider != NULL && collider->getName() != "grass") {
         pos -= getVel()*((float)5*state.deltaTime);
     }
     setRot(0, theta, 0);
@@ -62,10 +63,6 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     oldX = 0.0;
     theta = M_PI;
     name = "player";
-}
-
-void PlayerGameObj::setEnemiesList(vector<EnemyGameObj *> *e) {
-    enemies = e;
 }
 
 void PlayerGameObj::jump(GameState state) {
@@ -84,9 +81,13 @@ void PlayerGameObj::jump(GameState state) {
 }
 
 void PlayerGameObj::push() {
-    for (int i = 0; i < enemies->size(); i++) {
-        if (check_Interact_Radius(*(*enemies)[i])) {
-            (*enemies)[i]->pushed();
+    EnemyGameObj *enemy;
+    for (int i = 0; i < (*worldObjs).size(); i++) {
+        enemy = (EnemyGameObj *)(*worldObjs)[i];
+        if (enemy->getName() == "enemy") {
+            if (check_Interact_Radius(*enemy)) {
+                enemy->pushed();
+            }
         }
     }
 }

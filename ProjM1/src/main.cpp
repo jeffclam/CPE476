@@ -89,6 +89,7 @@ static void init()
     prog->addUniform("lightColor");
     
     GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
+    ground->setName("ground");
     ground->setPos(0, -1, 0);
     ground->setScale(60, 0.1, 60);
     ground->setVel(0, 0, 0);
@@ -96,9 +97,9 @@ static void init()
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
     player->setPos(0, 0, 55);
-    player->setEnemiesList(&(world.enemies));
+
     EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
-    edible->setPos(0, -20, 0);
+    edible->setPos(0, -200, 0);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(0, -20, 0);
@@ -176,7 +177,7 @@ int main(int argc, char **argv)
 	// Create a windowed mode window and its OpenGL context.
     g_width = 640;
     g_height = 480;
-	window = glfwCreateWindow(g_width, g_height, "Oh Mah Law!", NULL, NULL);
+	window = glfwCreateWindow(g_width, g_height, "Oh Mah Lawn!", NULL, NULL);
 	if(!window) {
 		glfwTerminate();
 		return -1;
