@@ -106,6 +106,16 @@ static void init()
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(0, -20, 0);
 
+	GameObj *testObj = new GameObj(getShape("cube"), getTexture("grass"));
+	GridCell *cell = world.grid.getCellFromCoords(testObj->getPos()[0], testObj->getPos()[2]);
+	cout << cell->contents.size() << ": Content size\n";
+	world.grid.addToGrid(testObj);
+	cout << cell->contents.size() << ": Content size\n";
+	world.grid.removeFromGrid(testObj);
+	cout << cell->contents.size() << ": Content size\n";
+	vec3 testNext = world.grid.getNextPoint(world.grid.getCellFromCoords(8.0f,8.0f), world.grid.getCellFromCoords(0.0f,0.0f));
+	cout << "Target: " << testNext[0] << " " << testNext[1] << " " << testNext[2] << "\n";
+
     world.addObj(player);
     world.addObj(ground);
     world.addObj(edible);

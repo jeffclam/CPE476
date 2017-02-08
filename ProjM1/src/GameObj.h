@@ -23,6 +23,8 @@
 using namespace std;
 using namespace glm;
 
+class WorldGrid;
+
 struct Bounding_Box {
     vec3 min;
     vec3 max;
@@ -74,6 +76,7 @@ public:
     bool was_Pushed = false;
     string name = "";
     string noInteract = "_NONE_";
+    WorldGrid *grid = NULL;
 private:
 };
 
