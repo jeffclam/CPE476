@@ -69,6 +69,7 @@ void WorldObj::update(double time) {
 void WorldObj::addObj(GameObj *newObj) {
     newObj->worldObjs = &objs;
     objs.push_back(newObj);
+    newObj->grid = &grid;
 }
 
 void WorldObj::setWindows(GLFWwindow *win) {

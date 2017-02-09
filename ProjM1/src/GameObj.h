@@ -77,6 +77,7 @@ public:
     string name = "";
     string noInteract = "_NONE_";
     WorldGrid *grid = NULL;
+    bool solid = true;
 private:
 };
 

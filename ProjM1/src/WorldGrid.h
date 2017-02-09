@@ -19,6 +19,7 @@ class GridCell {
     GameObj *tile;
     void setXPos(float x);
     void setYPos(float y);
+    bool isEmpty();
     //scratch space variable for A*
     int accumulatedCost = -1;
     int toGoCost = -1;

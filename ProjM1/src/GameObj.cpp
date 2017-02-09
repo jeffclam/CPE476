@@ -118,7 +118,7 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 2.0f;
+    return distance(b_box.min, b_box.max) / 2.5f;
 }
 
 void GameObj::calcBoundingSphere() {

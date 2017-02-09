@@ -26,6 +26,7 @@
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
 #include "PlayerGameObj.h"
+#include "GameObjPather.h"
 #include "Texture.h"
 #include "Stuff.h"
 
@@ -98,7 +99,8 @@ static void init()
     
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
-    player->setPos(0, 0, 55);
+    player->setPos(10, 5, 10);
+	world.cam.eyePt = player->getPos();
 
     EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
     edible->setPos(0, -200, 0);
@@ -106,20 +108,23 @@ static void init()
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(0, -20, 0);
 
-	GameObj *testObj = new GameObj(getShape("cube"), getTexture("grass"));
-	GridCell *cell = world.grid.getCellFromCoords(testObj->getPos()[0], testObj->getPos()[2]);
-	cout << cell->contents.size() << ": Content size\n";
-	world.grid.addToGrid(testObj);
-	cout << cell->contents.size() << ": Content size\n";
-	world.grid.removeFromGrid(testObj);
-	cout << cell->contents.size() << ": Content size\n";
-	vec3 testNext = world.grid.getNextPoint(world.grid.getCellFromCoords(8.0f,8.0f), world.grid.getCellFromCoords(0.0f,0.0f));
-	cout << "Target: " << testNext[0] << " " << testNext[1] << " " << testNext[2] << "\n";
+	GameObjPather *pathy = new GameObjPather(getShape("sphere"), getTexture("grass"));
+	pathy->setPos(0, 5, 0);
+
+	GameObj *blocker = new GameObj(getShape("sphere"), getTexture("fur"));
+	blocker->setPos(4,1.5,4);
+	GameObj *blocker2 = new GameObj(getShape("sphere"), getTexture("fur"));
+	blocker2->setPos(2,1.5,2);
 
     world.addObj(player);
     world.addObj(ground);
     world.addObj(edible);
     world.addObj(enemy);
+	world.addObj(blocker);
+	world.grid.addToGrid(blocker);
+	world.addObj(blocker2);
+	world.grid.addToGrid(blocker2);
+	world.addObj(pathy);
 }
 
 static void render()

@@ -48,9 +48,9 @@ public:
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
     WorldGrid grid = WorldGrid(5, 5);
+    ManualCamera cam;
 private:
     GameState state;
-    ManualCamera cam;
 };
 
 #endif /* WorldObject_hpp */
