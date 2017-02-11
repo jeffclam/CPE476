@@ -11,6 +11,10 @@
         {
         "name": "pointer",
         "obj": "pointer.obj"
+        },
+        {
+        "name": "grass",
+        "obj": "grass.obj"
         }
         ],
    "textures" : [
@@ -41,6 +45,10 @@
         {
         "name": "grassTrans",
         "text": "grass.png"
+        },
+        {
+        "name": "grassUV",
+        "text": "grassUV.png"
         }
         ]
 }

@@ -48,11 +48,13 @@ void EnemyGameObj::update(GameState state) {
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
         if(normGoal[0] + normGoal[1] + normGoal[2] != 0)
             normGoal = normalize(normGoal);
-        setVel(normGoal[0]/5.0f, vel[1], normGoal[2]/5.0f);
+        setVel(normGoal[0]/2.0f, vel[1], normGoal[2]/2.0f);
         cout << "Moving\n";
     } else {
         if(grass->is_Edible)
             grass->eat(state);
+        else
+            goal = NULL;
         setVel(0,0,0);
         cout << "Not moving\n";
     }

@@ -92,4 +92,12 @@ void WorldObj::makeFence(int row, int col){
             grid.addToGrid(fence);
         }
     }
+    for(int r = 0; r < row; r++) {
+        for(int c = 0; c < col; c++) {
+            EdibleGameObj *grass = new EdibleGameObj(getShape("grass"), getTexture("grassUV"));
+            grass->setPos(r * grid.offset, 2, c * grid.offset);
+            addObj(grass);
+            grid.addToGrid(grass);
+        }
+    }
 }

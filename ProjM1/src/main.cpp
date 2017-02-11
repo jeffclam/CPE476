@@ -99,15 +99,10 @@ static void init()
     player->setPos(10, 2, 10);
 	world.cam.eyePt = player->getPos();
 
-    EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grassTrans"));
-    edible->setPos(10, 1.9, 10);
-
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(42, 2, 45);
 
     world.addObj(player);
-    world.addObj(edible);
-	world.grid.addToGrid(edible);
     world.addObj(enemy);
 	world.grid.addToGrid(enemy);
 	world.makeFence(13, 23);
