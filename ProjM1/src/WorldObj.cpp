@@ -43,14 +43,14 @@ void WorldObj::update(double time) {
     if(state.timeSinceSpawn > state.timeBetweenSpawn) {
         state.timeSinceSpawn = 0;
 
-        EdibleGameObj *ed = new EdibleGameObj(objs[2]->shape, objs[2]->texture);
+        /*EdibleGameObj *ed = new EdibleGameObj(objs[2]->shape, objs[2]->texture);
         ed->setPos(dis(gen), 0, 50);
         addObj(ed);
 
         EnemyGameObj *e = new EnemyGameObj(objs[3]->shape, objs[3]->texture);
         e->setPos(dis(gen), 0, -50);
         addObj(e);
-        e->setRandomVel();
+        e->setRandomVel();*/
     }
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 

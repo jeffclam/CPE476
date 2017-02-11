@@ -2,8 +2,6 @@
 #include "EdibleGameObj.h"
 
 EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) : GameObj(shape, tex) {
-    oldx = 0;
-    theta = M_PI;
     was_pushed = false;
     name = "enemy";
 }
@@ -31,26 +29,37 @@ vec3 EnemyGameObj::setRandomVel() {
 }
 
 void EnemyGameObj::update(GameState state) {
-    float time = state.deltaTime;
-
-    if (vel[0] != 0 || vel[2] != 0) {
-        rot[1] = atan2(vel[0], vel[2]);
+    GameObj::update(state);
+    if(goal == NULL){
+        GridCell *next = grid->randomGrid();
+        while(!canEatCell(next)) {
+            next = grid->randomGrid();
+        }
+        goal = next;
+        nextGoal = grid->getNextPoint(goal, grid->getCellFromCoords(pos[0],pos[2]));
     }
-
-    GameObj *collider = check_Collision_Radius();
-
-    if (collider != NULL && collider->name != "ground" && !was_Pushed) {
-        setVel(0, 0, 0);
+    if(abs(distance(vec3(nextGoal[0], 0, nextGoal[2]), vec3(pos[0], 0, pos[2]))) < 0.1) {
+        nextGoal = grid->getNextPoint(goal, grid->getCellFromCoords(pos[0],pos[2]));
     }
-    else if (getVel() == vec3(0,0,0) && !was_Pushed) {
-        setRandomVel();
+    cout << pos[0] << " " << pos[1] << " " << pos[2] << " Pos\n";
+    cout << nextGoal[0] << " " << nextGoal[1] << " " << nextGoal[2] << " Goal\n";
+    if(abs(distance(vec3(goal->xPos, pos[1], goal->yPos),getPos())) > 0.1) {
+        vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
+        if(normGoal[0] + normGoal[1] + normGoal[2] != 0)
+            normGoal = normalize(normGoal);
+        setVel(normGoal[0]/5.0f, vel[1], normGoal[2]/5.0f);
+        cout << "Moving\n";
+    } else {
+        setVel(0,0,0);
+        cout << "Not moving\n";
     }
-    pos += getVel()*((float)5 * time);
 }
 
-void EnemyGameObj::pushed() {
-    was_pushed = true;
-    noInteract = "enemy";
-    setVel(vec3(0, 0, -5));
-    pos += getVel();
+bool EnemyGameObj::canEatCell(GridCell *cell){
+    for(int i = 0; i < cell->contents.size(); i++){
+        if(cell->contents[i]->is_Edible) {
+            return true;
+        }
+    }
+    return false;
 }

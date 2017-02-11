@@ -42,6 +42,8 @@ void WorldGrid::initGrid() {
     for(r = 0; r < grid.size(); r++) {
         for(c = 0; c < grid[r].size(); c++) {
             grid[r][c].tile = new GameObj(getShape("cube"), getTexture("grass"));
+            grid[r][c].tile->setScale(1.5,1,1.5);
+            grid[r][c].tile->pos[1] = (r + c)/10.0f;
             grid[r][c].idxX = r;
             grid[r][c].idxY = c;
             grid[r][c].setXPos(r * offset);
@@ -78,9 +80,14 @@ void WorldGrid::removeFromGrid(GameObj *toRemove) {
     }
 }
 
-//TO-DO: Andrew- Nothing blocks paths currently
+GridCell *WorldGrid::randomGrid(){
+    int i = rand() % grid.size();
+    int j = rand() % grid[0].size();
+    return &grid[i][j];
+}
+
 vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
-    int i,j;
+    int i,j, toClose, lookedAt = 0;
     vector<GridCell *> closedSet;
     vector<GridCell *> openSet;
     GridCell *current = NULL;
@@ -90,14 +97,17 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
     openSet.push_back(start);
     //While things are in the openSet
     while(openSet.size() > 0) {
+        lookedAt++;
         //find the theoretically cheapest node
         for(i = 0; i < openSet.size(); i++) {
             if(current == NULL || openSet[i]->toGoCost < current->toGoCost) {
                 current = openSet[i];
-                openSet.erase(openSet.begin() + i);
-                closedSet.push_back(current);
+                toClose = i;
             }
         }
+        //remove the new current
+        openSet.erase(openSet.begin() + toClose);
+        closedSet.push_back(current);
         //If we are at the destination, loop back to find the next destination and return
         if(current == dest) {
             while(current->cameFrom != NULL && current->cameFrom != start) {
@@ -133,5 +143,6 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
         current = NULL;
     }
     //if no path was found, return the start node as the next destination
+    cout << "No path:" << lookedAt << "\n";
     return vec3(start->idxX * offset ,0,start->idxY * offset);
 }

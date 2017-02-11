@@ -24,9 +24,9 @@ class GridCell {
     int accumulatedCost = -1;
     int toGoCost = -1;
     GridCell *cameFrom = NULL;
-    private:
     float xPos;
     float yPos;
+    private:
 };
 
 class WorldGrid {
@@ -37,11 +37,12 @@ class WorldGrid {
     void initGrid();
     void removeFromGrid(GameObj *toRemove);
     void addToGrid(GameObj *toAdd);
+    GridCell *randomGrid();
     vector<vector<GridCell>> grid;
     GridCell *getCellFromCoords(float x, float y);
     vec3 getNextPoint(GridCell *dest,  GridCell *start);
     private:
-    float offset = 2;
+    float offset = 3;
 };
 
 #endif

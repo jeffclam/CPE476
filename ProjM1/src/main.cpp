@@ -103,28 +103,17 @@ static void init()
 	world.cam.eyePt = player->getPos();
 
     EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
-    edible->setPos(0, -200, 0);
+    edible->setPos(10, 4, 10);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
-    enemy->setPos(0, -20, 0);
-
-	GameObjPather *pathy = new GameObjPather(getShape("sphere"), getTexture("grass"));
-	pathy->setPos(0, 5, 0);
-
-	GameObj *blocker = new GameObj(getShape("sphere"), getTexture("fur"));
-	blocker->setPos(4,1.5,4);
-	GameObj *blocker2 = new GameObj(getShape("sphere"), getTexture("fur"));
-	blocker2->setPos(2,1.5,2);
+    enemy->setPos(0, 4, 0);
 
     world.addObj(player);
     world.addObj(ground);
     world.addObj(edible);
+	world.grid.addToGrid(edible);
     world.addObj(enemy);
-	world.addObj(blocker);
-	world.grid.addToGrid(blocker);
-	world.addObj(blocker2);
-	world.grid.addToGrid(blocker2);
-	world.addObj(pathy);
+	world.grid.addToGrid(enemy);
 }
 
 static void render()

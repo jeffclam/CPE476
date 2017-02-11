@@ -47,7 +47,7 @@ public:
     void spawnEnemy(EnemyGameObj *e);
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
-    WorldGrid grid = WorldGrid(5, 5);
+    WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
 private:
     GameState state;

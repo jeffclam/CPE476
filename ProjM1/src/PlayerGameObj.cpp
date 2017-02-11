@@ -81,7 +81,7 @@ void PlayerGameObj::jump(GameState state) {
 }
 
 void PlayerGameObj::push() {
-    EnemyGameObj *enemy;
+    /*EnemyGameObj *enemy;
     for (int i = 0; i < (*worldObjs).size(); i++) {
         enemy = (EnemyGameObj *)(*worldObjs)[i];
         if (enemy->getName() == "enemy") {
@@ -89,5 +89,5 @@ void PlayerGameObj::push() {
                 enemy->pushed();
             }
         }
-    }
+    }*/
 }

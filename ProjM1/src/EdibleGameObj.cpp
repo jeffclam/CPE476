@@ -2,20 +2,19 @@
 
 EdibleGameObj::EdibleGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) : 
     GameObj(shape, tex) {
-    oldX = 0;
-    theta = M_PI;
     is_Edible = true;
     name = "grass";
     noInteract = "grass";
+    solid = false;
 };
 
 void EdibleGameObj::update(GameState state) {
     GameObj::update(state);
     GameObj *collider = check_Collision_Radius();
-    if(collider != NULL && collider->name == "enemy" && scale[1] > 0) {
+    if(collider != NULL && collider->name == "enemy" && scale[1] > 0.1) {
         eat(state);
     }
-        
+    is_Edible = (scale[1] > 0.1);   
 }
 
 void EdibleGameObj::eat(GameState stat) {
