@@ -41,7 +41,7 @@ public:
     GameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~GameObj();
     virtual void update(GameState state);
-    void render(shared_ptr<Program> p);
+    void render(shared_ptr<Program> p, bool sendData);
     void setShape(shared_ptr<Shape> s);
     void setWorldObjs(vector<GameObj*> *objs);
     vec3 getPos();
@@ -79,6 +79,7 @@ public:
     WorldGrid *grid = NULL;
     bool solid = true;
 private:
+    vec3 oldScale = vec3(0,0,0);
 };
 
 #endif

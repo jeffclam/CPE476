@@ -29,7 +29,7 @@ void WorldObj::render(shared_ptr<Program> prog) {
     grid.renderGrid(prog);
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     for(int i = 0; i < objs.size(); i++) {
-        objs[i]->render(prog);
+        objs[i]->render(prog, (lastRendered != objs[i]->name));
     }
 }
 
@@ -88,6 +88,7 @@ void WorldObj::makeFence(int row, int col){
             GameObj *fence = new GameObj(getShape("cube"), getTexture("fence"));
             fence->setPos(row * grid.offset, 2, c * grid.offset);
             fence->setScale(0.5,1,1.5);
+            fence->name = "fence";
             addObj(fence);
             grid.addToGrid(fence);
         }

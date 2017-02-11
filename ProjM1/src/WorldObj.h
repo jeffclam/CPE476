@@ -52,6 +52,7 @@ public:
     ManualCamera cam;
 private:
     GameState state;
+    string lastRendered = "";
 };
 
 #endif /* WorldObject_hpp */

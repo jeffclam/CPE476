@@ -28,10 +28,10 @@ void GameObj::update(GameState state) {
         rot[1] = atan2(vel[0],vel[2]);
     }
     
-    GameObj *collider = check_Collision_Radius();
+    /*GameObj *collider = check_Collision_Radius();
     if (collider != NULL) {
         setVel(vec3(0, 0, 0));
-    }
+    }*/
     pos += getVel()*((float)5 * time);
 }
 
@@ -41,16 +41,20 @@ void GameObj::setRandomVel() {
     vel[2] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
 }
 
-void GameObj::render(shared_ptr<Program> prog) {
-    texture->bind();
+void GameObj::render(shared_ptr<Program> prog, bool sendData) {
+    if(sendData)
+        texture->bind();
     auto M = make_shared<MatrixStack>();
     M = getM(M);
-    calcBoundingBox(M->topMatrix());
-    calcBoundingSphere();
+    if(oldScale[0] != scale[0] || oldScale[1] != scale[1] || oldScale[2] != scale[2]){
+        calcBoundingBox(M->topMatrix());
+        calcBoundingSphere();
+    }
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     shape->draw(prog);
     M->popMatrix();
-    texture->unbind();
+    oldScale = scale;
+    //texture->unbind();
 }
 
 void GameObj::setShape(shared_ptr<Shape> s) {

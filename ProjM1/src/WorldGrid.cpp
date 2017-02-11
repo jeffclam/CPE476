@@ -30,9 +30,11 @@ WorldGrid::WorldGrid(int rows, int cols) {
 
 void WorldGrid::renderGrid(shared_ptr<Program> prog) {
     int r, c;
+    bool first = true;
     for(r = 0; r < grid.size(); r++) {
         for(c = 0; c < grid[r].size(); c++) {
-            grid[r][c].tile->render(prog);
+            grid[r][c].tile->render(prog, first);
+            first = false;
         }
     }
 }
