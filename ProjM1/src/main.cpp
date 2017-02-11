@@ -70,6 +70,9 @@ static void init()
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glBlendFunc (GL_ONE, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
     
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
@@ -96,7 +99,7 @@ static void init()
     player->setPos(10, 2, 10);
 	world.cam.eyePt = player->getPos();
 
-    EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
+    EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grassTrans"));
     edible->setPos(10, 1.9, 10);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));

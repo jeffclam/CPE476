@@ -37,7 +37,7 @@ static unsigned int getshort(FILE *fp){
 
 int Texture::ImageLoad(const char *filename, Image *image) {
 	int comp;
-	image->data = (char *)stbi_load(filename, &width, &height, &comp, 0);
+	image->data = (char *)stbi_load(filename, &width, &height, &comp, STBI_rgb_alpha);
 	image->sizeX = width;
 	image->sizeY = height;
 	return 1;
@@ -146,8 +146,8 @@ void Texture::init()
 	glBindTexture(GL_TEXTURE_2D, tid);
 	// Load the actual texture data
 	// Base level is 0, number of channels is 3, and border is 0.
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image0->sizeX, image0->sizeY,
-				 0, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*) image0->data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image0->sizeX, image0->sizeY,
+				 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*) image0->data);
 
 	// Generate image pyramid
 	glGenerateMipmap(GL_TEXTURE_2D);

@@ -33,6 +33,6 @@ void main()
     
     vec3 vertColor = diffuse + specular + ambient;
     
-    color = vec4(vertColor[0] * texColor[0], vertColor[1] * texColor[1], vertColor[2] * texColor[2], 1.0);
+    color = vec4(vertColor[0] * texColor[0], vertColor[1] * texColor[1], vertColor[2] * texColor[2], texColor[3]);
 }
 

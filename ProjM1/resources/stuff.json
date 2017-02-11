@@ -37,6 +37,10 @@
         {
         "name": "dirt",
         "text": "dirt.jpeg"
+        },
+        {
+        "name": "grassTrans",
+        "text": "grass.png"
         }
         ]
 }

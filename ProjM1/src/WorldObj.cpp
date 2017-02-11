@@ -26,12 +26,11 @@ WorldObj::~WorldObj(){
 }
 
 void WorldObj::render(shared_ptr<Program> prog) {
-    
+    grid.renderGrid(prog);
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->render(prog);
     }
-    grid.renderGrid(prog);
 }
 
 void WorldObj::update(double time) {
