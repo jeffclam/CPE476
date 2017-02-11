@@ -13,4 +13,5 @@ private:
     bool canEatCell(GridCell *cell);
     vec3 nextGoal = vec3(-1,-1,-1);
     GridCell *goal = NULL;
+    EdibleGameObj *grass;
 };

@@ -45,6 +45,7 @@ public:
     void setWindows(GLFWwindow *win);
     void spawnGrass(EdibleGameObj *e);
     void spawnEnemy(EnemyGameObj *e);
+    void makeFence(int row, int col);
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
     WorldGrid grid = WorldGrid(15, 25);

@@ -29,6 +29,14 @@
         {
         "name": "cloud",
         "text": "cloud.bmp"
+        },
+        {
+        "name": "fence",
+        "text": "fence.jpeg"
+        },
+        {
+        "name": "dirt",
+        "text": "dirt.jpeg"
         }
         ]
 }

@@ -41,9 +41,9 @@ void WorldGrid::initGrid() {
     int r, c;
     for(r = 0; r < grid.size(); r++) {
         for(c = 0; c < grid[r].size(); c++) {
-            grid[r][c].tile = new GameObj(getShape("cube"), getTexture("grass"));
+            grid[r][c].tile = new GameObj(getShape("cube"), getTexture("dirt"));
             grid[r][c].tile->setScale(1.5,1,1.5);
-            grid[r][c].tile->pos[1] = (r + c)/10.0f;
+            //grid[r][c].tile->pos[1] = (r + c)/10.0f;
             grid[r][c].idxX = r;
             grid[r][c].idxY = c;
             grid[r][c].setXPos(r * offset);

@@ -41,8 +41,8 @@ class WorldGrid {
     vector<vector<GridCell>> grid;
     GridCell *getCellFromCoords(float x, float y);
     vec3 getNextPoint(GridCell *dest,  GridCell *start);
-    private:
     float offset = 3;
+    private:
 };
 
 #endif

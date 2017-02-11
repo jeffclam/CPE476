@@ -4,6 +4,7 @@
 EnemyGameObj::EnemyGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) : GameObj(shape, tex) {
     was_pushed = false;
     name = "enemy";
+    noInteract = "grass";
 }
 
 vec3 EnemyGameObj::setRandomVel() {
@@ -50,6 +51,8 @@ void EnemyGameObj::update(GameState state) {
         setVel(normGoal[0]/5.0f, vel[1], normGoal[2]/5.0f);
         cout << "Moving\n";
     } else {
+        if(grass->is_Edible)
+            grass->eat(state);
         setVel(0,0,0);
         cout << "Not moving\n";
     }
@@ -58,6 +61,7 @@ void EnemyGameObj::update(GameState state) {
 bool EnemyGameObj::canEatCell(GridCell *cell){
     for(int i = 0; i < cell->contents.size(); i++){
         if(cell->contents[i]->is_Edible) {
+            grass = (EdibleGameObj *)cell->contents[i];
             return true;
         }
     }

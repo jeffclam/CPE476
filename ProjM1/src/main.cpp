@@ -90,30 +90,24 @@ static void init()
     prog->addUniform("lightColor");
     
 	world.grid.initGrid();
-
-    GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
-    ground->setName("ground");
-    ground->setPos(0, -1, 0);
-    ground->setScale(60, 0.1, 60);
-    ground->setVel(0, 0, 0);
     
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
-    player->setPos(10, 5, 10);
+    player->setPos(10, 2, 10);
 	world.cam.eyePt = player->getPos();
 
     EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
-    edible->setPos(10, 4, 10);
+    edible->setPos(10, 1.9, 10);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
-    enemy->setPos(0, 4, 0);
+    enemy->setPos(42, 2, 45);
 
     world.addObj(player);
-    world.addObj(ground);
     world.addObj(edible);
 	world.grid.addToGrid(edible);
     world.addObj(enemy);
 	world.grid.addToGrid(enemy);
+	world.makeFence(13, 23);
 }
 
 static void render()
