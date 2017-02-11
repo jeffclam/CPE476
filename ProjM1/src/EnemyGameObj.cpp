@@ -30,6 +30,7 @@ vec3 EnemyGameObj::setRandomVel() {
 }
 
 void EnemyGameObj::update(GameState state) {
+    grid->removeFromGrid(this);
     GameObj::update(state);
     if(goal == NULL){
         GridCell *next = grid->randomGrid();
@@ -48,7 +49,7 @@ void EnemyGameObj::update(GameState state) {
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
         if(normGoal[0] + normGoal[1] + normGoal[2] != 0)
             normGoal = normalize(normGoal);
-        setVel(normGoal[0]/2.0f, vel[1], normGoal[2]/2.0f);
+        setVel(normGoal[0]/1.2f, vel[1], normGoal[2]/1.2f);
         cout << "Moving\n";
     } else {
         if(grass->is_Edible)
@@ -58,6 +59,7 @@ void EnemyGameObj::update(GameState state) {
         setVel(0,0,0);
         cout << "Not moving\n";
     }
+    grid->addToGrid(this);
 }
 
 bool EnemyGameObj::canEatCell(GridCell *cell){

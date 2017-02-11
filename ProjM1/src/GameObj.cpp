@@ -54,7 +54,6 @@ void GameObj::render(shared_ptr<Program> prog, bool sendData) {
     shape->draw(prog);
     M->popMatrix();
     oldScale = scale;
-    //texture->unbind();
 }
 
 void GameObj::setShape(shared_ptr<Shape> s) {

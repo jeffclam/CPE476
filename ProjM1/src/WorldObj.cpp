@@ -42,14 +42,10 @@ void WorldObj::update(double time) {
     if(state.timeSinceSpawn > state.timeBetweenSpawn) {
         state.timeSinceSpawn = 0;
 
-        /*EdibleGameObj *ed = new EdibleGameObj(objs[2]->shape, objs[2]->texture);
-        ed->setPos(dis(gen), 0, 50);
-        addObj(ed);
-
-        EnemyGameObj *e = new EnemyGameObj(objs[3]->shape, objs[3]->texture);
-        e->setPos(dis(gen), 0, -50);
-        addObj(e);
-        e->setRandomVel();*/
+        EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
+        enemy->setPos(42, 2, 45);
+        addObj(enemy);
+        grid.addToGrid(enemy);
     }
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 
@@ -78,6 +74,7 @@ void WorldObj::setWindows(GLFWwindow *win) {
 void WorldObj::makeFence(int row, int col){
     for(int r = 0; r <= row; r++){
         GameObj *fence = new GameObj(getShape("cube"), getTexture("fence"));
+        fence->name = "fence";
         fence->setPos(r * grid.offset, 2, col * grid.offset);
         fence->setScale(1.5,1,0.5);
         addObj(fence);

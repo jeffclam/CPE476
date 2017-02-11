@@ -46,10 +46,10 @@ void PlayerGameObj::update(GameState state) {
     jump(state);
     pos += getVel()*((float)5*state.deltaTime);
 
-    GameObj *collider = check_Collision_Radius();
+   /* GameObj *collider = check_Collision_Radius();
     if(collider != NULL && collider->getName() != "grass") {
         pos -= getVel()*((float)5*state.deltaTime);
-    }
+    }*/
     setRot(0, theta, 0);
 }
 
