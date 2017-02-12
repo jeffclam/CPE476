@@ -92,20 +92,25 @@ static void init()
     Light sun;
 	sun.pos = vec4(1.0, 0.8, 0.6, 0);
 	sun.intensity = vec3(1.0, 1.0, 1.0);
-	sun.ambCoeff = 0.55;
+	sun.ambCoeff = 0.05;
 	lighting.push_back(sun);
 
     Light other;
     other.pos = vec4(0, 50, 0, 1);
     other.intensity = vec3(1.0);
-    other.ambCoeff = 0.55;
+    other.ambCoeff = 0.05;
     lighting.push_back(other);
+
+    prog->bind();
+
     glUniform1i(prog->getUniform("numLights"), lighting.size());
     cout << "in main " << lighting.size() << endl;
 
     prog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(prog);
-    
+
+    prog->unbind();
+
     GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
     ground->setName("ground");
     ground->setPos(0, -1, 0);

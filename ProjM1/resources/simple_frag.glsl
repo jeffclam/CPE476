@@ -24,9 +24,6 @@ uniform struct Light {
 vec3 calcLight(Light light, vec3 normal, vec3 view) {
    vec3 surfaceToLight;
    float attenuation = 1.0;
-   if (light.ambCoeff == 0.55) {
-       return vec3(0, 0, 1);
-   }
    if (light.pos.w == 0.0) {
       // directional light
       surfaceToLight = normalize(light.pos.xyz);
@@ -62,22 +59,22 @@ void main()
     vec4 texColor = texture(tex, vTexCoord);
     vec3 normal = normalize(fragNor);
     vec3 view = normalize(-1 * vec3(worldPos));
-    vec3 sumColor;
 
+    vec3 sumColor = vec3(0);
+    /*
     if (numLights == 0) {
         sumColor = vec3(1);
     }
     else {
         sumColor = vec3(1,0,0);
     }
-
+    */
     for (int i = 0; i < numLights; i++) {
       sumColor += calcLight(lights[i], normal, view);
-      sumColor = vec3(.5, .5, .5);
    }
 
     if (sumColor == vec3(0)) {
-        sumColor = vec3(0, 1, 0);
+        sumColor = vec3(.5, .5, .5);
     }
 
     /*
