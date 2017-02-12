@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <string>
 
 #include "GLSL.h"
 #include "Texture.h"
@@ -110,6 +111,32 @@ void Program::addUniform(const string &name)
 	uniforms[name] = GLSL::getUniformLocation(pid, name.c_str(), isVerbose());
 }
 
+void Program::addUniformArray(const string &name, const int size) 
+{
+    string index = "[#]";
+    for (int i = 0; i < size; i++) {
+        index[1] = (char)(i + '0');
+        uniforms[name + index] = GLSL::getUniformLocation(pid, name.c_str(), isVerbose());
+        uniforms[name + index] = GLSL::getUniformLocation(pid, (name + index).c_str(), isVerbose());
+    }
+}
+
+void Program::addUniformLights(const string &name, const int size) {
+    string index = "[#]";
+    string pos = ".pos";
+    string intensity = ".intensity";
+    string ambientCoeff = ".ambCoeff";
+    string lights = "lights";
+    if (uniforms.count("lights") == 0) {
+        for (int i = 0; i < size; i++) {
+            index[1] = (char)(i + '0');
+            uniforms[name + index + pos] = GLSL::getUniformLocation(pid, (name + index + pos).c_str(), isVerbose());
+            uniforms[name + index + intensity] = GLSL::getUniformLocation(pid, (name + index + intensity).c_str(), isVerbose());
+            uniforms[name + index + ambientCoeff] = GLSL::getUniformLocation(pid, (name + index + ambientCoeff).c_str(), isVerbose());
+        }
+    }
+}
+
 void Program::addTexture(Texture *texture)
 {
    const string &name = texture->getName();
@@ -117,8 +144,6 @@ void Program::addTexture(Texture *texture)
    texture->setHandle(handle);
    textures[name] = texture;
 }
-
-
 
 GLint Program::getAttribute(const string &name) const
 {

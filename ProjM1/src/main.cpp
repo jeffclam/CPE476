@@ -28,6 +28,7 @@
 #include "PlayerGameObj.h"
 #include "Texture.h"
 #include "Stuff.h"
+#include "Lighting.h"
 
 using namespace std;
 using namespace glm;
@@ -39,6 +40,7 @@ shared_ptr<Program> prog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
+Lighting lighting = Lighting();
 
 static void error_callback(int error, const char *description)
 {
@@ -85,8 +87,24 @@ static void init()
     prog->addUniform("specShine");
     prog->addUniform("diffuseColor");
     prog->addUniform("ambColor");
-    prog->addUniform("lightPos");
-    prog->addUniform("lightColor");
+	prog->addUniform("numLights");
+
+    Light sun;
+	sun.pos = vec4(1.0, 0.8, 0.6, 0);
+	sun.intensity = vec3(1.0, 1.0, 1.0);
+	sun.ambCoeff = 0.55;
+	lighting.push_back(sun);
+
+    Light other;
+    other.pos = vec4(0, 50, 0, 1);
+    other.intensity = vec3(1.0);
+    other.ambCoeff = 0.55;
+    lighting.push_back(other);
+    glUniform1i(prog->getUniform("numLights"), lighting.size());
+    cout << "in main " << lighting.size() << endl;
+
+    prog->addUniformLights("lights", lighting.size());
+	lighting.SetLightUniforms(prog);
     
     GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
     ground->setName("ground");

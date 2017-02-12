@@ -25,10 +25,12 @@ public:
 	virtual void unbind();
 
 	void addAttribute(const std::string &name);
-   void addTexture(Texture *texture);
+    void addTexture(Texture *texture);
 
 	void addUniform(const std::string &name);
-	GLint getAttribute(const std::string &name) const;
+    void addUniformArray(const std::string &name, const int size);
+    void addUniformLights(const std::string &name, const int size);
+    GLint getAttribute(const std::string &name) const;
 	GLint getUniform(const std::string &name) const;
 
   	Texture *getTexture(const std::string &name) const;

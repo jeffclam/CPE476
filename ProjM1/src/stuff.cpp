@@ -61,8 +61,6 @@ shared_ptr<Texture> getTexture(string name) {
 }
 
 void setMat(int mat, shared_ptr<Program> prog) {
-    glUniform3f(prog->getUniform("lightColor"), 1, 1, 1);
-    glUniform3f(prog->getUniform("lightPos"), 0, 0, 0);
     switch (mat) {
         case 0: //shiny blue plastic
             glUniform3f(prog->getUniform("ambColor"), 0.02, 0.04, 0.2);
