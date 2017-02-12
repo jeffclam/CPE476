@@ -44,7 +44,6 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    vec3 diff = diffuseCoeff * diffuseColor.rgb * light.intensity;
    
    // Specular = Spec * pow(dot(vec3(view), R), shine)) * intensity
-   // R = -lightV + 2 * dot(normal, lightV) * normal
    float specularCoeff = 0.0;
    if (diffuseCoeff > 0.0) {
       specularCoeff = pow(max(0.0, dot(view, reflect(-surfaceToLight, normal))), specShine);
@@ -61,28 +60,14 @@ void main()
     vec3 view = normalize(-1 * vec3(worldPos));
 
     vec3 sumColor = vec3(0);
-    /*
-    if (numLights == 0) {
-        sumColor = vec3(1);
-    }
-    else {
-        sumColor = vec3(1,0,0);
-    }
-    */
+
     for (int i = 0; i < numLights; i++) {
       sumColor += calcLight(lights[i], normal, view);
    }
 
-    if (sumColor == vec3(0)) {
-        sumColor = vec3(.5, .5, .5);
-    }
-
-    /*
     color = vec4(sumColor[0] * texColor[0], 
                  sumColor[1] * texColor[1], 
                  sumColor[2] * texColor[2], 
                                         1.0);
-	 */
-	 color = vec4(sumColor[0], sumColor[1], sumColor[2], 1.0);
 }
 
