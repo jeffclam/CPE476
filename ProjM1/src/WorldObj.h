@@ -46,12 +46,13 @@ public:
     void spawnGrass(EdibleGameObj *e);
     void spawnEnemy(EnemyGameObj *e);
     void makeFence(int row, int col);
+    void cleanUp();
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
     WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
-private:
     GameState state;
+private:
     string lastRendered = "";
 };
 

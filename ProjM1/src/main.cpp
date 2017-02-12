@@ -40,6 +40,7 @@ shared_ptr<Program> prog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
+bool gameOver = false;
 
 static void error_callback(int error, const char *description)
 {
@@ -93,19 +94,20 @@ static void init()
     prog->addUniform("lightColor");
     
 	world.grid.initGrid();
-    
+
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
     player->setPos(10, 2, 10);
 	world.cam.eyePt = player->getPos();
+	world.addObj(player);
+
+	world.makeFence(12, 22);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
     enemy->setPos(42, 2, 45);
 
-    world.addObj(player);
     world.addObj(enemy);
 	world.grid.addToGrid(enemy);
-	world.makeFence(13, 23);
 }
 
 static void render()
@@ -142,12 +144,24 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(100,50), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Hello");
+    ImGui::Text("Score: %d", world.state.score);
+	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     ImGui::End();
     ImGui::Render();
+	if(world.state.grassAlive < world.edibles.size()/2) {
+        ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
+		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Text("GAME OVER");
+		ImGui::Text("YOUR LAWN DIED D:");
+		ImGui::End();
+    	ImGui::Render();
+		gameOver = true;
+    }
 
 }
 
@@ -215,8 +229,8 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
-        
-        world.update(glfwGetTime() - lastTime);
+        if(!gameOver)
+        	world.update(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
 	}
 	// Quit program.

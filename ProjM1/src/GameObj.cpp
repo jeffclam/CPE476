@@ -15,14 +15,15 @@ GameObj::GameObj(shared_ptr<Shape> s,shared_ptr< Texture> tex) {
     vel = vec3(0, 0, 0);
     srand (time(NULL));
     texture = tex;
+    dead = false;
 }
 
 GameObj::~GameObj() {
-
+    grid->removeFromGrid(this);
 }
 
-void GameObj::update(GameState state) {
-    float time = state.deltaTime;
+void GameObj::update(GameState *state) {
+    float time = state->deltaTime;
     
     if(vel[0] != 0 || vel[2] != 0) {
         rot[1] = atan2(vel[0],vel[2]);
@@ -136,15 +137,15 @@ bool GameObj::check_Interact_Radius(GameObj obj) {
     return false;
 }
 
-GameObj *GameObj::check_Collision_Radius() {
+GameObj *GameObj::check_Collision_Radius(vector<GameObj *> *objs) {
     float dist, minDist;
-    for (int i = 0; i < worldObjs->size(); i++) {
-        GameObj *other = (*worldObjs)[i];
-        if (other->name != noInteract && other->name != "ground") {
+    for (int i = 0; i < objs->size(); i++) {
+        GameObj *other = (*objs)[i];
+        if (other != NULL && other->name != noInteract && other->name != "ground") {
             dist = distance(this->getPos(), other->getPos());
             minDist = this->b_sphere.radius + other->b_sphere.radius;
             if (dist > 0 && dist < minDist) {
-                return (*worldObjs)[i];
+                return (*objs)[i];
             }
         }
     }

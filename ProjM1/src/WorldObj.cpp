@@ -16,8 +16,8 @@ uniform_int_distribution<> dis(-30, 30);
 
 WorldObj::WorldObj() :
     objs(),
-    state(),
-    cam()
+    cam(),
+    state()
 {
 }
 
@@ -31,15 +31,33 @@ void WorldObj::render(shared_ptr<Program> prog) {
     for(int i = 0; i < objs.size(); i++) {
         objs[i]->render(prog, (lastRendered != objs[i]->name));
     }
+    for(int i = 0; i < edibles.size(); i++) {
+        edibles[i]->render(prog, (i==0));
+    }
+}
+
+void WorldObj::cleanUp() {
+    for(int i = 0; i < objs.size(); i++) {
+        if(objs[i]->dead) {
+            cout << "dead \n";
+            GameObj *dead = objs[i];
+            objs.erase(objs.begin() + i);
+            delete dead;
+        }
+    }
 }
 
 void WorldObj::update(double time) {
+    state.grassAlive = 0;
+    cleanUp();
     updateTime += time;
     //update game state
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
     state.timeSinceSpawn += (float) time;
-    if(state.timeSinceSpawn > state.timeBetweenSpawn) {
+    if(state.timeSinceSpawn > state.timeBetweenSpawn && state.enemyCount < 11) {
+        state.enemyCount++;
+        state.score++;
         state.timeSinceSpawn = 0;
 
         EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
@@ -50,11 +68,11 @@ void WorldObj::update(double time) {
     glfwGetCursorPos(state.window, &(state.mouseX), &(state.mouseY));
 
     for(int i = 0; i < objs.size(); i++) {
-        objs[i]->update(state);
+        objs[i]->update(&state);
     }
 
     for (int j = 0; j < edibles.size(); j++) {
-        edibles[j]->update(state);
+        edibles[j]->update(&state);
     }
     //update camera
     cam.avatar = objs[0];
@@ -94,8 +112,11 @@ void WorldObj::makeFence(int row, int col){
         for(int c = 0; c < col; c++) {
             EdibleGameObj *grass = new EdibleGameObj(getShape("grass"), getTexture("grassUV"));
             grass->setPos(r * grid.offset, 2, c * grid.offset);
-            addObj(grass);
+            grass->worldObjs = &objs;
+            edibles.push_back(grass);
+            grass->grid = &grid;
             grid.addToGrid(grass);
+            state.grassAlive++;
         }
     }
 }

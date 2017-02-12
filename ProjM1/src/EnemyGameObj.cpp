@@ -29,7 +29,7 @@ vec3 EnemyGameObj::setRandomVel() {
     return velocity;
 }
 
-void EnemyGameObj::update(GameState state) {
+void EnemyGameObj::update(GameState *state) {
     grid->removeFromGrid(this);
     GameObj::update(state);
     if(goal == NULL){
@@ -38,26 +38,29 @@ void EnemyGameObj::update(GameState state) {
             next = grid->randomGrid();
         }
         goal = next;
-        nextGoal = grid->getNextPoint(goal, grid->getCellFromCoords(pos[0],pos[2]));
+        nextGoal = grid->getNextPoint(goal, this);
+    }else if(abs(distance(vec3(nextGoal[0], 0, nextGoal[2]), vec3(pos[0], 0, pos[2]))) < 0.1) {
+        nextGoal = grid->getNextPoint(goal, this);
     }
-    if(abs(distance(vec3(nextGoal[0], 0, nextGoal[2]), vec3(pos[0], 0, pos[2]))) < 0.1) {
-        nextGoal = grid->getNextPoint(goal, grid->getCellFromCoords(pos[0],pos[2]));
-    }
-    cout << pos[0] << " " << pos[1] << " " << pos[2] << " Pos\n";
-    cout << nextGoal[0] << " " << nextGoal[1] << " " << nextGoal[2] << " Goal\n";
     if(abs(distance(vec3(goal->xPos, pos[1], goal->yPos),getPos())) > 0.1) {
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
-        if(normGoal[0] + normGoal[1] + normGoal[2] != 0)
+        if(normGoal[0] != 0 || normGoal[1] != 0 || normGoal[2] != 0)
             normGoal = normalize(normGoal);
         setVel(normGoal[0]/1.2f, vel[1], normGoal[2]/1.2f);
-        cout << "Moving\n";
     } else {
-        if(grass->is_Edible)
-            grass->eat(state);
-        else
-            goal = NULL;
-        setVel(0,0,0);
-        cout << "Not moving\n";
+        if(isLeaving){
+            dead = true;
+            state->enemyCount--;
+        }else if(isScared) {
+            goal = grid->getCellFromCoords((grid->grid.size() - 1) * grid->offset, (grid->grid[0].size() - 1) * grid->offset);
+            isLeaving = true;
+        } else {
+            setVel(0,0,0);
+            if(grass->is_Edible)
+                grass->eat(*state);
+            else
+                goal = NULL;
+        }
     }
     grid->addToGrid(this);
 }
@@ -70,4 +73,15 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
         }
     }
     return false;
+}
+
+void EnemyGameObj::scare(GameObj *scarer){
+    isScared = true;
+    GridCell *next = grid->randomGrid();
+    while(abs(distance(vec3(pos[0], 0, pos[2]), vec3(next->xPos, 0, next->yPos))) < abs(distance(vec3(scarer->pos[0], 0, scarer->pos[2]), vec3(next->xPos, 0, next->yPos)))
+            && !next->isEmpty()) {
+        next = grid->randomGrid();
+    }
+    goal = next;
+    nextGoal = grid->getNextPoint(goal, this); 
 }

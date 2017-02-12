@@ -21,6 +21,17 @@ bool GridCell::isEmpty(){
     return true;
 }
 
+bool GridCell::hasCollision(GameObj *checker){
+    if(contents.size() == 0)
+        return false;
+    GameObj *test = checker->check_Collision_Radius(&contents);
+    if(test != NULL) {
+        cout << "Collided with " << test->name << " \n";
+        //tile->pos[1] = 1.5;
+    }
+    return NULL != test;
+}
+
 /**
  * WORLDGRID
  */
@@ -74,6 +85,8 @@ void WorldGrid::addToGrid(GameObj *toAdd) {
 void WorldGrid::removeFromGrid(GameObj *toRemove) {
     int i;
     GridCell *cell = getCellFromCoords(toRemove->getPos()[0], toRemove->getPos()[2]);
+    if(cell == NULL)
+        return;
     for(i=0; i < cell->contents.size(); i++) {
         if(cell->contents[i] == toRemove) {
             cell->contents.erase(cell->contents.begin()+i);
@@ -88,7 +101,37 @@ GridCell *WorldGrid::randomGrid(){
     return &grid[i][j];
 }
 
-vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
+vector <GridCell *>WorldGrid::getNeighs(GridCell *start, int radius) {
+    vector <GridCell *> arr;
+    for(int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
+                if(start->idxX + i > -1 && start->idxX + i < grid.size()
+                    && start->idxY + j > -1 && start->idxY + i < grid[0].size()){
+                        arr.push_back(&(grid[start->idxX + i][start->idxY + j]));
+                }
+            }
+    }
+    return arr;
+}
+
+bool WorldGrid::isNeighValid(GridCell *neigh, GameObj *mover){
+    vector <GridCell *> close = getNeighs(neigh, 1);
+    vec3 oldPos = mover->getPos();
+    mover->pos[0] = neigh->xPos;
+    mover->pos[2] = neigh->yPos;
+    for(int i = 0; i < close.size(); i++){
+        if(close[i]->hasCollision(mover)){
+            cout << "Has collision " << close.size() << "\n";
+            mover->pos = oldPos;
+            return false;
+        }
+    }
+    mover->pos = oldPos;
+    return true;
+}
+
+vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
+    GridCell *start = getCellFromCoords(mover->pos[0] + 0.5, mover->pos[2] + 0.5);
     int i,j, toClose, lookedAt = 0;
     vector<GridCell *> closedSet;
     vector<GridCell *> openSet;
@@ -123,7 +166,8 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
                 neigh = &grid[current->idxX+i][current->idxY+j];
                 //check if neigh is a valid location, and that it's not in the open set
                 if (neigh != current && current->idxX+i > -1 && current->idxX+i < grid.size() &&
-                    current->idxY+j > -1 && current->idxY+j < grid[0].size() && neigh->isEmpty() &&
+                    current->idxY+j > -1 && current->idxY+j < grid[0].size() &&
+                    neigh->isEmpty() && /*isNeighValid(neigh, mover) &&*/
                     none_of(closedSet.begin(), closedSet.end(), [=](GridCell *g){return g==neigh;})) {
                     //If it's not already in the openSet add it
                     if (none_of(openSet.begin(), openSet.end(), [=](GridCell *g){return g==neigh;})) {
@@ -138,13 +182,13 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GridCell *start) {
                            neigh->accumulatedCost = current->accumulatedCost + 1; 
                         }
                     }
-                }
+                } 
             }
         }
         //empty out current since we are done with it
         current = NULL;
     }
     //if no path was found, return the start node as the next destination
-    cout << "No path:" << lookedAt << "\n";
+    cout << "No path: " << lookedAt << "\n";
     return vec3(start->idxX * offset ,0,start->idxY * offset);
 }

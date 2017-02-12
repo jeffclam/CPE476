@@ -20,6 +20,7 @@ class GridCell {
     void setXPos(float x);
     void setYPos(float y);
     bool isEmpty();
+    bool hasCollision(GameObj *checker);
     //scratch space variable for A*
     int accumulatedCost = -1;
     int toGoCost = -1;
@@ -37,10 +38,12 @@ class WorldGrid {
     void initGrid();
     void removeFromGrid(GameObj *toRemove);
     void addToGrid(GameObj *toAdd);
+    bool isNeighValid(GridCell *neigh, GameObj *mover);
     GridCell *randomGrid();
     vector<vector<GridCell>> grid;
     GridCell *getCellFromCoords(float x, float y);
-    vec3 getNextPoint(GridCell *dest,  GridCell *start);
+    vec3 getNextPoint(GridCell *dest, GameObj *mover);
+    vector <GridCell *>getNeighs(GridCell *start, int radius);
     float offset = 3;
     private:
 };

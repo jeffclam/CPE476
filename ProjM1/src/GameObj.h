@@ -40,7 +40,7 @@ public:
     GameObj();
     GameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~GameObj();
-    virtual void update(GameState state);
+    virtual void update(GameState *state);
     void render(shared_ptr<Program> p, bool sendData);
     void setShape(shared_ptr<Shape> s);
     void setWorldObjs(vector<GameObj*> *objs);
@@ -59,7 +59,7 @@ public:
     float calcBoundingRadius();
     void calcBoundingSphere();
     bool check_Interact_Radius(GameObj obj);
-    GameObj *check_Collision_Radius();
+    GameObj *check_Collision_Radius(vector<GameObj *> *objs);
     int mat;
     vec3 vel;
     vec3 dir;
@@ -78,6 +78,7 @@ public:
     string noInteract = "_NONE_";
     WorldGrid *grid = NULL;
     bool solid = true;
+    bool dead;
 private:
     vec3 oldScale = vec3(0,0,0);
 };
