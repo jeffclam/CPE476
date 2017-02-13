@@ -68,6 +68,6 @@ void main()
     color = vec4(sumColor[0] * texColor[0], 
                  sumColor[1] * texColor[1], 
                  sumColor[2] * texColor[2], 
-                                        1.0);
+                                        texColor[3]);
 }
 

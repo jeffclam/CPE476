@@ -46,7 +46,9 @@ void EnemyGameObj::update(GameState *state) {
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
         if(normGoal[0] != 0 || normGoal[1] != 0 || normGoal[2] != 0)
             normGoal = normalize(normGoal);
-        setVel(normGoal[0]/1.2f, vel[1], normGoal[2]/1.2f);
+        else
+            goal = NULL;
+        setVel(normGoal[0], vel[1], normGoal[2]);
     } else {
         if(isLeaving){
             dead = true;
@@ -78,8 +80,7 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 void EnemyGameObj::scare(GameObj *scarer){
     isScared = true;
     GridCell *next = grid->randomGrid();
-    while(abs(distance(vec3(pos[0], 0, pos[2]), vec3(next->xPos, 0, next->yPos))) < abs(distance(vec3(scarer->pos[0], 0, scarer->pos[2]), vec3(next->xPos, 0, next->yPos)))
-            && !next->isEmpty()) {
+    while(abs(distance(vec3(pos[0], 0, pos[2]), vec3(next->xPos, 0, next->yPos))) > abs(distance(vec3(scarer->pos[0], 0, scarer->pos[2]), vec3(next->xPos, 0, next->yPos)))) {
         next = grid->randomGrid();
     }
     goal = next;

@@ -66,8 +66,8 @@ void WorldGrid::initGrid() {
 }
 
 GridCell *WorldGrid::getCellFromCoords(float x, float y) {
-    int r = (x/offset);
-    int c = (y/offset);
+    int r = (x+0.5)/offset;
+    int c = (y+0.5)/offset;
     if(r >= grid.size() || c >= grid[0].size()) {
         cout << "NULL\n";
         return NULL;
@@ -83,11 +83,10 @@ void WorldGrid::addToGrid(GameObj *toAdd) {
 }
 
 void WorldGrid::removeFromGrid(GameObj *toRemove) {
-    int i;
     GridCell *cell = getCellFromCoords(toRemove->getPos()[0], toRemove->getPos()[2]);
     if(cell == NULL)
         return;
-    for(i=0; i < cell->contents.size(); i++) {
+    for(int i=0; i < cell->contents.size(); i++) {
         if(cell->contents[i] == toRemove) {
             cell->contents.erase(cell->contents.begin()+i);
             return;
@@ -106,7 +105,7 @@ vector <GridCell *>WorldGrid::getNeighs(GridCell *start, int radius) {
     for(int i = -radius; i <= radius; i++) {
             for (int j = -radius; j <= radius; j++) {
                 if(start->idxX + i > -1 && start->idxX + i < grid.size()
-                    && start->idxY + j > -1 && start->idxY + i < grid[0].size()){
+                    && start->idxY + j > -1 && start->idxY + j < grid[0].size()){
                         arr.push_back(&(grid[start->idxX + i][start->idxY + j]));
                 }
             }
@@ -131,7 +130,7 @@ bool WorldGrid::isNeighValid(GridCell *neigh, GameObj *mover){
 }
 
 vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
-    GridCell *start = getCellFromCoords(mover->pos[0] + 0.5, mover->pos[2] + 0.5);
+    GridCell *start = getCellFromCoords(mover->pos[0], mover->pos[2]);
     int i,j, toClose, lookedAt = 0;
     vector<GridCell *> closedSet;
     vector<GridCell *> openSet;
@@ -167,7 +166,7 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
                 //check if neigh is a valid location, and that it's not in the open set
                 if (neigh != current && current->idxX+i > -1 && current->idxX+i < grid.size() &&
                     current->idxY+j > -1 && current->idxY+j < grid[0].size() &&
-                    neigh->isEmpty() && /*isNeighValid(neigh, mover) &&*/
+                    neigh->isEmpty() && //isNeighValid(neigh, mover) &&
                     none_of(closedSet.begin(), closedSet.end(), [=](GridCell *g){return g==neigh;})) {
                     //If it's not already in the openSet add it
                     if (none_of(openSet.begin(), openSet.end(), [=](GridCell *g){return g==neigh;})) {
