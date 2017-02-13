@@ -39,7 +39,6 @@ void WorldObj::render(shared_ptr<Program> prog) {
 void WorldObj::cleanUp() {
     for(int i = 0; i < objs.size(); i++) {
         if(objs[i]->dead) {
-            cout << "dead \n";
             GameObj *dead = objs[i];
             objs.erase(objs.begin() + i);
             delete dead;

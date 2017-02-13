@@ -140,7 +140,6 @@ bool GameObj::check_Interact_Radius(GameObj obj) {
 GameObj *GameObj::check_Collision_Radius(vector<GameObj *> *objs) {
     float dist, minDist;
     for (int i = 0; i < objs->size(); i++) {
-        cout << i << " " << objs->size() << "\n";
         GameObj *other = (*objs)[i];
         if (other != NULL && other->name != noInteract && other->name != "ground") {
             dist = distance(this->getPos(), other->getPos());

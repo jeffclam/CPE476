@@ -38,17 +38,20 @@ void EnemyGameObj::update(GameState *state) {
             next = grid->randomGrid();
         }
         goal = next;
+        //DEBUG GOALS goal->tile->pos[1] = 1.2;
         nextGoal = grid->getNextPoint(goal, this);
     }else if(abs(distance(vec3(nextGoal[0], 0, nextGoal[2]), vec3(pos[0], 0, pos[2]))) < 0.1) {
         nextGoal = grid->getNextPoint(goal, this);
     }
     if(abs(distance(vec3(goal->xPos, pos[1], goal->yPos),getPos())) > 0.1) {
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
-        if(normGoal[0] != 0 || normGoal[1] != 0 || normGoal[2] != 0)
+        if(normGoal[0] != 0 || normGoal[1] != 0 || normGoal[2] != 0) {
             normGoal = normalize(normGoal);
-        else
-            goal = NULL;
-        setVel(normGoal[0], vel[1], normGoal[2]);
+        } else {
+            if(!isLeaving)
+                goal = NULL;
+        }
+        setVel(normGoal[0] * (isScared + 1), vel[1], normGoal[2] * (isScared + 1));
     } else {
         if(isLeaving){
             dead = true;

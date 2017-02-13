@@ -10,6 +10,7 @@
 #include "PlayerGameObj.h"
 
 void PlayerGameObj::update(GameState *state) {
+    vec3 startPos = getPos();
     int height, width, speed = 0;
     grid->removeFromGrid(this);
     if(oldX == 0) {
@@ -49,7 +50,7 @@ void PlayerGameObj::update(GameState *state) {
 
     GameObj *collider = check_Collision_Radius(worldObjs);
     if(collider != NULL && collider->getName() != "grass") {
-        pos -= getVel()*((float)5*state->deltaTime);
+        pos = startPos;
     }
     setRot(0, theta, 0);
     grid->addToGrid(this);

@@ -166,7 +166,7 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
                 //check if neigh is a valid location, and that it's not in the open set
                 if (neigh != current && current->idxX+i > -1 && current->idxX+i < grid.size() &&
                     current->idxY+j > -1 && current->idxY+j < grid[0].size() &&
-                    neigh->isEmpty() && //isNeighValid(neigh, mover) &&
+                    neigh->isEmpty() && isNeighValid(neigh, mover) &&
                     none_of(closedSet.begin(), closedSet.end(), [=](GridCell *g){return g==neigh;})) {
                     //If it's not already in the openSet add it
                     if (none_of(openSet.begin(), openSet.end(), [=](GridCell *g){return g==neigh;})) {
@@ -189,5 +189,5 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
     }
     //if no path was found, return the start node as the next destination
     cout << "No path: " << lookedAt << "\n";
-    return vec3(start->idxX * offset ,0,start->idxY * offset);
+    return mover->getPos();
 }
