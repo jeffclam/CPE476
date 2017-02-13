@@ -2,6 +2,7 @@
 #define _WORLDGRID_H_
 
 #include <vector>
+#include <algorithm>
 #include "GameObj.h"
 #include "Program.h"
 #include <glm/gtc/type_ptr.hpp>
