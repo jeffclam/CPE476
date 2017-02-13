@@ -11,6 +11,10 @@
         {
         "name": "pointer",
         "obj": "pointer.obj"
+        },
+        {
+        "name": "grass",
+        "obj": "grass.obj"
         }
         ],
    "textures" : [
@@ -29,6 +33,22 @@
         {
         "name": "cloud",
         "text": "cloud.bmp"
+        },
+        {
+        "name": "fence",
+        "text": "fence.jpeg"
+        },
+        {
+        "name": "dirt",
+        "text": "dirt.jpeg"
+        },
+        {
+        "name": "grassTrans",
+        "text": "grass.png"
+        },
+        {
+        "name": "grassUV",
+        "text": "grassUV.png"
         }
         ]
 }

@@ -6,12 +6,15 @@
 class EnemyGameObj: public GameObj {
 public:
     EnemyGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
-    //virtual ~EnemyGameObj();
     vec3 setRandomVel();
-    void update(GameState state);
-    void pushed();
+    virtual void update(GameState *state);
+    void scare(GameObj *scarer);
 private:
-    float oldx;
-    float theta;
     bool was_pushed;
+    bool canEatCell(GridCell *cell);
+    vec3 nextGoal = vec3(-1,-1,-1);
+    GridCell *goal = NULL;
+    EdibleGameObj *grass;
+    bool isScared = false;
+    bool isLeaving = false;
 };

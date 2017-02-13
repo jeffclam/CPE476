@@ -15,23 +15,24 @@ GameObj::GameObj(shared_ptr<Shape> s,shared_ptr< Texture> tex) {
     vel = vec3(0, 0, 0);
     srand (time(NULL));
     texture = tex;
+    dead = false;
 }
 
 GameObj::~GameObj() {
-
+    grid->removeFromGrid(this);
 }
 
-void GameObj::update(GameState state) {
-    float time = state.deltaTime;
+void GameObj::update(GameState *state) {
+    float time = state->deltaTime;
     
     if(vel[0] != 0 || vel[2] != 0) {
         rot[1] = atan2(vel[0],vel[2]);
     }
     
-    GameObj *collider = check_Collision_Radius();
+    /*GameObj *collider = check_Collision_Radius();
     if (collider != NULL) {
         setVel(vec3(0, 0, 0));
-    }
+    }*/
     pos += getVel()*((float)5 * time);
 }
 
@@ -41,16 +42,19 @@ void GameObj::setRandomVel() {
     vel[2] = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 2.0 - 1.0) * 2;
 }
 
-void GameObj::render(shared_ptr<Program> prog) {
-    texture->bind();
+void GameObj::render(shared_ptr<Program> prog, bool sendData) {
+    if(sendData)
+        texture->bind();
     auto M = make_shared<MatrixStack>();
     M = getM(M);
-    calcBoundingBox(M->topMatrix());
-    calcBoundingSphere();
+    if(oldScale[0] != scale[0] || oldScale[1] != scale[1] || oldScale[2] != scale[2]){
+        calcBoundingBox(M->topMatrix());
+        calcBoundingSphere();
+    }
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     shape->draw(prog);
     M->popMatrix();
-    texture->unbind();
+    oldScale = scale;
 }
 
 void GameObj::setShape(shared_ptr<Shape> s) {
@@ -118,7 +122,7 @@ void GameObj::calcBoundingBox(mat4 transform) {
 }
 
 float GameObj::calcBoundingRadius() {
-    return distance(b_box.min, b_box.max) / 2.0f;
+    return distance(b_box.min, b_box.max) / 4.0f;
 }
 
 void GameObj::calcBoundingSphere() {
@@ -133,15 +137,15 @@ bool GameObj::check_Interact_Radius(GameObj obj) {
     return false;
 }
 
-GameObj *GameObj::check_Collision_Radius() {
+GameObj *GameObj::check_Collision_Radius(vector<GameObj *> *objs) {
     float dist, minDist;
-    for (int i = 0; i < worldObjs->size(); i++) {
-        GameObj *other = (*worldObjs)[i];
-        if (other->name != noInteract && other->name != "ground") {
+    for (int i = 0; i < objs->size(); i++) {
+        GameObj *other = (*objs)[i];
+        if (other != NULL && other->name != noInteract && other->name != "ground") {
             dist = distance(this->getPos(), other->getPos());
             minDist = this->b_sphere.radius + other->b_sphere.radius;
             if (dist > 0 && dist < minDist) {
-                return (*worldObjs)[i];
+                return (*objs)[i];
             }
         }
     }

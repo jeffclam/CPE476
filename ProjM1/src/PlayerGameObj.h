@@ -19,7 +19,7 @@ class PlayerGameObj: public GameObj {
 public:
     PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~PlayerGameObj();
-    virtual void update(GameState state);
+    virtual void update(GameState *state);
     void push();
 private:
     float oldX;

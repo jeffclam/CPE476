@@ -27,7 +27,7 @@ public:
     GameObj *avatar;
     void updateCamera();
 private:
-    float oldTheta = 0;
+    //float oldTheta = 0;
 };
 
 #endif /* ManualCamera_h */

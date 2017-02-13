@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <random>
+#include "WorldGrid.h"
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
@@ -26,6 +27,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "ManualCamera.h"
 
+class WroldGrid;
 
 using namespace glm;
 using namespace std;
@@ -43,11 +45,15 @@ public:
     void setWindows(GLFWwindow *win);
     void spawnGrass(EdibleGameObj *e);
     void spawnEnemy(EnemyGameObj *e);
+    void makeFence(int row, int col);
+    void cleanUp();
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
-private:
-    GameState state;
+    WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
+    GameState state;
+private:
+    string lastRendered = "";
 };
 
 #endif /* WorldObject_hpp */

@@ -21,6 +21,9 @@ public:
     double mouseX = 0;    //Current position of mouse (X)
     double mouseY = 0;    //Current position of mouse (Y)
     float timeBetweenSpawn = 5;
+    int enemyCount = 0;
+    int score = 0;
+    int grassAlive = 0;
     GLFWwindow *window = NULL;
     //use glfwGetKey (GLFWwindow *window, int key) to check key input
 private:

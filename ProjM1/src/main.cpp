@@ -26,6 +26,7 @@
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
 #include "PlayerGameObj.h"
+#include "GameObjPather.h"
 #include "Texture.h"
 #include "Stuff.h"
 #include "Lighting.h"
@@ -40,6 +41,7 @@ shared_ptr<Program> prog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
+bool gameOver = false;
 Lighting lighting = Lighting();
 
 static void error_callback(int error, const char *description)
@@ -71,6 +73,9 @@ static void init()
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glBlendFunc (GL_ONE, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
     
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
@@ -103,27 +108,22 @@ static void init()
 
     prog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(prog);
-
-    GameObj *ground = new GameObj(getShape("cube"), getTexture("grass"));
-    ground->setName("ground");
-    ground->setPos(0, -1, 0);
-    ground->setScale(60, 0.1, 60);
-    ground->setVel(0, 0, 0);
+    
+	world.grid.initGrid();
     
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     player->setVel(1, 0, 1);
-    player->setPos(0, 0, 55);
+    player->setPos(10, 2, 10);
+	world.cam.eyePt = player->getPos();
+	world.addObj(player);
 
-    EdibleGameObj *edible = new EdibleGameObj(getShape("cube"), getTexture("grass"));
-    edible->setPos(0, -200, 0);
+	world.makeFence(12, 22);
 
     EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
-    enemy->setPos(0, -20, 0);
+    enemy->setPos(42, 2, 45);
 
-    world.addObj(player);
-    world.addObj(ground);
-    world.addObj(edible);
     world.addObj(enemy);
+	world.grid.addToGrid(enemy);
 }
 
 static void render()
@@ -160,12 +160,24 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(100,50), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Hello");
+    ImGui::Text("Score: %d", world.state.score);
+	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     ImGui::End();
     ImGui::Render();
+	if(world.state.grassAlive < world.edibles.size()/2) {
+        ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
+		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Text("GAME OVER");
+		ImGui::Text("YOUR LAWN DIED D:");
+		ImGui::End();
+    	ImGui::Render();
+		gameOver = true;
+    }
 
 }
 
@@ -233,8 +245,8 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
-        
-        world.update(glfwGetTime() - lastTime);
+        if(!gameOver)
+            world.update(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
 	}
 	// Quit program.

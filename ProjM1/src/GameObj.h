@@ -18,9 +18,12 @@
 #include "MatrixStack.h"
 #include "GameState.h"
 #include "Texture.h"
+#include "WorldGrid.h"
 
 using namespace std;
 using namespace glm;
+
+class WorldGrid;
 
 struct Bounding_Box {
     vec3 min;
@@ -37,8 +40,8 @@ public:
     GameObj();
     GameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~GameObj();
-    virtual void update(GameState state);
-    void render(shared_ptr<Program> p);
+    virtual void update(GameState *state);
+    void render(shared_ptr<Program> p, bool sendData);
     void setShape(shared_ptr<Shape> s);
     void setWorldObjs(vector<GameObj*> *objs);
     vec3 getPos();
@@ -56,7 +59,7 @@ public:
     float calcBoundingRadius();
     void calcBoundingSphere();
     bool check_Interact_Radius(GameObj obj);
-    GameObj *check_Collision_Radius();
+    GameObj *check_Collision_Radius(vector<GameObj *> *objs);
     int mat;
     vec3 vel;
     vec3 dir;
@@ -73,7 +76,11 @@ public:
     bool was_Pushed = false;
     string name = "";
     string noInteract = "_NONE_";
+    WorldGrid *grid = NULL;
+    bool solid = true;
+    bool dead;
 private:
+    vec3 oldScale = vec3(0,0,0);
 };
 
 #endif
