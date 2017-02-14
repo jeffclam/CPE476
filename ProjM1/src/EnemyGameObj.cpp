@@ -82,6 +82,7 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 
 void EnemyGameObj::scare(GameObj *scarer){
     isScared = true;
+    isLeaving = false;
     GridCell *next = grid->randomGrid();
     while(abs(distance(vec3(pos[0], 0, pos[2]), vec3(next->xPos, 0, next->yPos))) > abs(distance(vec3(scarer->pos[0], 0, scarer->pos[2]), vec3(next->xPos, 0, next->yPos)))) {
         next = grid->randomGrid();
