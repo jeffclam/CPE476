@@ -52,6 +52,7 @@ public:
     WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
     GameState state;
+    mat4 PMat = mat4(0);
 private:
     string lastRendered = "";
 };

@@ -149,6 +149,7 @@ static void render()
 
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+	world.PMat = P->topMatrix();
     setMat(1, prog);
     world.render(prog);
     
