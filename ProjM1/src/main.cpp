@@ -112,8 +112,11 @@ static void init()
 	world.grid.initGrid();
     
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
+    shared_ptr<CharModel> model = make_shared<CharModel>(CharModel(getShape("cube")));
     player->setVel(1, 0, 1);
     player->setPos(10, 2, 10);
+    player->setModel(model);
+    player->getModel()->init_PlayerModel();
 	world.cam.eyePt = player->getPos();
 	world.addObj(player);
 
