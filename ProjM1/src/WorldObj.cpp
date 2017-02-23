@@ -101,7 +101,7 @@ int ViewFrustCull(vec3 center, float radius) {
     for (int i=0; i < 6; i++) {
         dist = DistToPlane(planes[i].x, planes[i].y, planes[i].z, planes[i].w, center);
         if(dist < -radius) {
-            cout << "Culled" << dist << " " << radius <<"\n";
+            //cout << "Culled" << dist << " " << radius <<"\n";
             return 1;
         }
     }
@@ -113,7 +113,7 @@ void WorldObj::render(shared_ptr<Program> prog) {
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     ExtractVFPlanes(cam.getLookAt(), PMat);
     for(int i = 0; i < objs.size(); i++) {
-        if(ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius))
+        //if(ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius))
             objs[i]->render(prog, (lastRendered != objs[i]->name));
     }
     for(int i = 0; i < edibles.size(); i++) {
