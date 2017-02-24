@@ -19,6 +19,7 @@
 #include "GameState.h"
 #include "Texture.h"
 #include "WorldGrid.h"
+#include "CharModel.h"
 
 using namespace std;
 using namespace glm;
@@ -54,6 +55,8 @@ public:
     void setRot(float x, float y, float z);
     void setName(string name);
     string getName();
+    void setModel(shared_ptr<CharModel> c);
+    shared_ptr<CharModel> getModel();
     shared_ptr<MatrixStack> getM(shared_ptr<MatrixStack> M);
     void calcBoundingBox(mat4 transform);
     float calcBoundingRadius();
@@ -81,6 +84,7 @@ public:
     bool dead;
 private:
     vec3 oldScale = vec3(0,0,0);
+    shared_ptr<CharModel> model = NULL;
 };
 
 #endif
