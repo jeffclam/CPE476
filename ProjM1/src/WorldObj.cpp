@@ -145,7 +145,7 @@ void WorldObj::update(double time) {
         state.score++;
         state.timeSinceSpawn = 0;
 
-        EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
+        EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
         enemy->setPos(42, 2, 45);
         addObj(enemy);
         grid.addToGrid(enemy);
