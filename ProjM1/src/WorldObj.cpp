@@ -195,8 +195,9 @@ void WorldObj::makeFence(int row, int col){
     }
     for(int r = 0; r < row; r++) {
         for(int c = 0; c < col; c++) {
-            EdibleGameObj *grass = new EdibleGameObj(getShape("grass"), getTexture("grassUV"));
-            grass->setPos(r * grid.offset, 2, c * grid.offset);
+            EdibleGameObj *grass = new EdibleGameObj(getShape("goodGrass"), getTexture("grassText"));
+            grass->setPos(r * grid.offset, 1.5, c * grid.offset);
+            grass->setScale(1.5, 1, 1.5);
             grass->worldObjs = &objs;
             edibles.push_back(grass);
             grass->grid = &grid;

@@ -27,6 +27,10 @@
         {
         "name": "sheepHead",
         "obj": "sheepHead.obj"
+        },
+        {
+        "name": "goodGrass",
+        "obj": "grassGoodOneObj.obj"
         }
         ],
    "textures" : [
@@ -73,6 +77,10 @@
         {
         "name": "sheepHeadText",
         "text": "sheepHeadText.png"
+        },
+        {
+        "name": "grassText",
+        "text": "grassText.png"
         }
         ]
 }
