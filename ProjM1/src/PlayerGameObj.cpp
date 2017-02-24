@@ -31,6 +31,7 @@ void PlayerGameObj::update(GameState *state) {
     if (glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isJumping = true;
         push();
+        getModel()->scare_Motion();
     }
     //strafing
     if(glfwGetKey(state->window, GLFW_KEY_A) == GLFW_PRESS) {

@@ -47,13 +47,19 @@ void GameObj::render(shared_ptr<Program> prog, bool sendData) {
         texture->bind();
     auto M = make_shared<MatrixStack>();
     M = getM(M);
-    if(oldScale[0] != scale[0] || oldScale[1] != scale[1] || oldScale[2] != scale[2]){
+    if (oldScale[0] != scale[0] || oldScale[1] != scale[1] || oldScale[2] != scale[2]) {
         calcBoundingBox(M->topMatrix());
         calcBoundingSphere();
     }
-    glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-    shape->draw(prog);
-    M->popMatrix();
+    if (model != NULL) {
+        model->setMatrix(M);
+        model->render_Model(prog);
+    }
+    else {
+        glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+        shape->draw(prog);
+        M->popMatrix();
+    }
     oldScale = scale;
 }
 
@@ -103,6 +109,14 @@ void GameObj::setName(string name) {
 
 string GameObj::getName() {
     return name;
+}
+
+void GameObj::setModel(shared_ptr<CharModel> c) {
+    model = c;
+}
+
+shared_ptr<CharModel> GameObj::getModel() {
+    return model;
 }
 
 shared_ptr<MatrixStack> GameObj::getM(shared_ptr<MatrixStack> M) {
