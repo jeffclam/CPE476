@@ -23,6 +23,10 @@
         {
         "name": "sheepBod",
         "obj": "sheepBod.obj"
+        },
+        {
+        "name": "sheepHead",
+        "obj": "sheepHead.obj"
         }
         ],
    "textures" : [
@@ -65,6 +69,10 @@
         {
         "name": "sheepBodText",
         "text": "sheepBodText.png"
+        },
+        {
+        "name": "sheepHeadText",
+        "text": "sheepHeadText.png"
         }
         ]
 }
