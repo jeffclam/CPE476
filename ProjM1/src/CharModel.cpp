@@ -119,5 +119,4 @@ void CharModel::scare_Motion() {
             scare = 1;
         }
     }
-    cout << theta << endl;
 }
