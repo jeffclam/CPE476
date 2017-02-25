@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "normal": [
+			{ "model": "cobblestone" },
+			{ "model": "bdc_cobblestone01" },
+			{ "model": "bdc_cobblestone02" },
+			{ "model": "bdc_cobblestone03" },
+			{ "model": "bdc_cobblestone04" },
+			{ "model": "bdc_cobblestone05" },
+			{ "model": "bdc_cobblestone06" },
+			{ "model": "bdc_cobblestone07" },
+			{ "model": "bdc_cobblestone08" },
+			{ "model": "bdc_cobblestone09" },
+			{ "model": "bdc_cobblestone10" },
+			{ "model": "bdc_cobblestone11" }
+		]
+    }
+}

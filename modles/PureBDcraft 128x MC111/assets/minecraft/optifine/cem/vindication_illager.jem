@@ -1,0 +1,18 @@
+{
+  "models": 
+  [
+    {
+      "model": "screws.jpm",
+      "part": "head", 
+	  "attach": true,
+      "translate": [8, 5, -7],
+      "rotate": [0, 0, 0]
+    },
+    {
+      "model": "illager_arm_fix.jpm",
+      "part": "arms", 
+	  "attach": false,
+      "translate": [8, 7, -8]
+    }
+  ]
+}

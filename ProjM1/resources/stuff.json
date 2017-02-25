@@ -15,6 +15,46 @@
         {
         "name": "grass",
         "obj": "grass.obj"
+        },
+        {
+        "name": "sheepLeg",
+        "obj": "sheepLeg.obj"
+        },
+        {
+        "name": "sheepBod",
+        "obj": "sheepBod.obj"
+        },
+        {
+        "name": "sheepHead",
+        "obj": "sheepHead.obj"
+        },
+        {
+        "name": "goodGrass",
+        "obj": "grassGoodOneObj.obj"
+        },
+        {
+        "name": "fence",
+        "obj": "fence.obj"
+        },
+        {
+        "name": "manHead",
+        "obj": "manHead.obj"
+        },
+        {
+        "name": "manBody",
+        "obj": "manBody.obj"
+        },
+        {
+        "name": "manArm",
+        "obj": "manArm.obj"
+        },
+        {
+        "name": "manLeg",
+        "obj": "manLeg.obj"
+        },
+        {
+        "name": "manPants",
+        "obj": "manPants.obj"
         }
         ],
    "textures" : [
@@ -49,6 +89,46 @@
         {
         "name": "grassUV",
         "text": "grassUV.png"
+        },
+        {
+        "name": "legText",
+        "text": "legText.png"
+        },
+        {
+        "name": "sheepBodText",
+        "text": "sheepBodText.png"
+        },
+        {
+        "name": "sheepHeadText",
+        "text": "sheepHeadText.png"
+        },
+        {
+        "name": "grassText",
+        "text": "grassText.png"
+        },
+        {
+        "name": "fenceText",
+        "text": "fenceText.png"
+        },
+        {
+        "name": "faceText",
+        "text": "faceText.png"
+        },
+        {
+        "name": "manBodyText",
+        "text": "manBodyText.png"
+        },
+        {
+        "name": "manArmText",
+        "text": "manArmText.png"
+        },
+        {
+        "name": "manLegText",
+        "text": "manLegText.png"
+        },
+        {
+        "name": "manPantText",
+        "text": "manPantText.png"
         }
         ]
 }

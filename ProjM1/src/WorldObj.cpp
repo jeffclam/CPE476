@@ -123,7 +123,7 @@ void WorldObj::render(shared_ptr<Program> prog) {
             objs[i]->render(prog, (lastRendered != objs[i]->name));
     }
     for(int i = 0; i < edibles.size(); i++) {
-        if(ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius))
+        //if(ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius))
             edibles[i]->render(prog, true);
     }
 }
@@ -151,7 +151,7 @@ void WorldObj::update(double time) {
         state.score++;
         state.timeSinceSpawn = 0;
 
-        EnemyGameObj *enemy = new EnemyGameObj(getShape("sphere"), getTexture("fur"));
+        EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
         enemy->setPos(42, 2, 45);
         addObj(enemy);
         grid.addToGrid(enemy);
@@ -182,18 +182,19 @@ void WorldObj::setWindows(GLFWwindow *win) {
 
 void WorldObj::makeFence(int row, int col){
     for(int r = 0; r <= row; r++){
-        GameObj *fence = new GameObj(getShape("cube"), getTexture("fence"));
+        GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
         fence->name = "fence";
         fence->setPos(r * grid.offset, 2, col * grid.offset);
-        fence->setScale(1.5,1,0.5);
+        fence->setScale(0.5,1.5,1.5);
+        fence->setRot(0,M_PI/2,0);
         addObj(fence);
         grid.addToGrid(fence);
     }
     for(int c = 0; c <= col; c++){
         if(c != col/2 && c!= col/2 + 1) {
-            GameObj *fence = new GameObj(getShape("cube"), getTexture("fence"));
+            GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
             fence->setPos(row * grid.offset, 2, c * grid.offset);
-            fence->setScale(0.5,1,1.5);
+            fence->setScale(0.5,1.5,1.5);
             fence->name = "fence";
             addObj(fence);
             grid.addToGrid(fence);
@@ -201,8 +202,9 @@ void WorldObj::makeFence(int row, int col){
     }
     for(int r = 0; r < row; r++) {
         for(int c = 0; c < col; c++) {
-            EdibleGameObj *grass = new EdibleGameObj(getShape("grass"), getTexture("grassUV"));
-            grass->setPos(r * grid.offset, 2, c * grid.offset);
+            EdibleGameObj *grass = new EdibleGameObj(getShape("goodGrass"), getTexture("grassText"));
+            grass->setPos(r * grid.offset, 1.5, c * grid.offset);
+            grass->setScale(1.5, 1, 1.5);
             grass->worldObjs = &objs;
             edibles.push_back(grass);
             grass->grid = &grid;
