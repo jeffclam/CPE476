@@ -1,0 +1,9 @@
+{
+    "block.lever.click": {
+        "category": "block",
+        "replace": true,
+        "sounds": [
+            "random/lever"
+        ]
+    }
+}

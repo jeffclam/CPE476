@@ -1,0 +1,92 @@
+{
+"__comment": "Designed by Sphax with Cubik for PureBDcraft",
+"textures": {
+    "particle": "blocks/bed_head_side",
+    "top": "blocks/bed_head_top",
+    "end": "blocks/bed_head_end",
+    "side": "blocks/bed_head_side",
+    "bottom": "blocks/planks_spruce"
+},
+"elements": [ 
+{
+    "__comment": "Bed",
+    "from": [ 0.5, 3, 0 ],
+    "to": [ 15.5, 9, 16 ],
+    "faces": {
+        "up":    { "uv": [ 0, 0.5, 16, 15.5 ], "rotation": 90, "texture": "#top" },
+        "south": { "uv": [ 0.5, 7, 15.5, 13 ], "texture": "#end" },
+        "west":  { "uv": [ 0, 7, 16, 13 ], "texture": "#side" },
+        "east":  { "uv": [ 16, 7, 0, 13 ], "texture": "#side" }
+    }
+},
+{
+    "__comment": "Pillow",
+    "from": [ 1.5, 9, 8.5 ],
+    "to": [ 14.5, 9.75, 15 ],
+    "faces": {
+        "up":    { "uv": [ 8.5, 1.5, 15, 14.5 ], "rotation": 90, "texture": "#top" },
+        "north": { "uv": [ 8.5, 14.5, 8.75, 1.5 ], "rotation": 90, "texture": "#top" },
+        "south": { "uv": [ 14.75, 1.5, 15, 14.5 ], "rotation": 90, "texture": "#top" },
+        "west":  { "uv": [ 8.5, 14.25, 15, 14.5 ], "rotation": 90, "texture": "#top" },
+        "east":  { "uv": [ 15, 1.5, 8.5, 1.75 ], "rotation": 90, "texture": "#top" }
+    }
+},
+{
+    "__comment": "Cover1",
+    "from": [ 0, 0, 2 ],
+    "to": [ 16, 9.5, 6.75 ],
+    "faces": {
+        "up":    { "uv": [ 2, 0, 6.75, 16 ], "rotation": 90, "texture": "#top" },
+        "west":  { "uv": [ 2, 7, 6.75, 16 ], "texture": "#side" },
+        "east":  { "uv": [ 6.75, 7, 2, 16 ], "texture": "#side" }
+    }
+},
+{
+    "__comment": "Bedbase",
+    "from": [ 0, 2.25, 0 ],
+    "to": [ 16, 3, 16 ],
+    "faces": {
+        "down":  { "uv": [ 0, 16, 16, 0 ], "texture": "#bottom" },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#bottom" },
+        "south": { "uv": [ 0, 13, 16, 13.75 ], "texture": "#end" },
+        "west":  { "uv": [ 0, 13, 16, 13.75 ], "texture": "#side" },
+        "east":  { "uv": [ 16, 13, 0, 13.75 ], "texture": "#side" }
+    }
+},
+{
+    "from": [ 0.5, 0, 13.5 ],
+    "to": [ 2.5, 2.25, 15.5 ],
+    "faces": {
+        "down":  { "uv": [ 14, 15.75, 16, 16 ], "texture": "#side" },
+        "north": { "uv": [ 2, 13.75, 0, 16 ], "texture": "#end" },
+        "east":  { "uv": [ 16, 13.75, 14, 16 ], "texture": "#side" }
+    }
+},
+{
+    "from": [ 0, 3, 2 ],
+    "to": [ 16, 9.5, 6.75 ],
+    "faces": {
+        "north": { "uv": [ 5.5, 13.75, 6.25, 14.5 ], "texture": "#side" },
+        "south": { "uv": [ 5.5, 13.75, 6.25, 14.5 ], "texture": "#side" }
+    }
+},
+{
+    "from": [ 13.5, 0, 13.5 ],
+    "to": [ 15.5, 2.25, 15.5 ],
+    "faces": {
+        "down":  { "uv": [ 14, 15.75, 16, 16 ], "texture": "#side" },
+        "north": { "uv": [ 16, 13.75, 14, 16 ], "texture": "#end" },
+        "west":  { "uv": [ 14, 13.75, 16, 16 ], "texture": "#side" }
+    }
+},
+{
+    "from": [ 0.5, 0, 10.5 ],
+    "to": [ 15.5, 2.25, 15.5 ],
+    "faces": {
+        "south": { "uv": [ 0, 13.75, 16, 16 ], "texture": "#end" },
+        "west":  { "uv": [ 11, 13.75, 16, 16 ], "texture": "#side" },
+        "east":  { "uv": [ 16, 13.75, 11, 16 ], "texture": "#side" }
+    }
+}
+]
+}
