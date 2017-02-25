@@ -31,6 +31,14 @@
         {
         "name": "goodGrass",
         "obj": "grassGoodOneObj.obj"
+        },
+        {
+        "name": "fence",
+        "obj": "fence.obj"
+        },
+        {
+        "name": "manHead",
+        "obj": "manHead.obj"
         }
         ],
    "textures" : [
@@ -81,6 +89,15 @@
         {
         "name": "grassText",
         "text": "grassText.png"
+        },
+        {
+        "name": "fenceText",
+        "text": "fenceText.png"
+        }
+        ,
+        {
+        "name": "faceText",
+        "text": "faceText.png"
         }
         ]
 }

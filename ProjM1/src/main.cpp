@@ -123,7 +123,7 @@ static void init()
 
 	world.makeFence(12, 22);
 
-    EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepHead"), getTexture("sheepHeadText"));
+    EnemyGameObj *enemy = new EnemyGameObj(getShape("manHead"), getTexture("faceText"));
     enemy->setPos(42, 2, 45);
 
     world.addObj(enemy);
