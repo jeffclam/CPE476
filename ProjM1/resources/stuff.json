@@ -39,6 +39,22 @@
         {
         "name": "manHead",
         "obj": "manHead.obj"
+        },
+        {
+        "name": "manBody",
+        "obj": "manBody.obj"
+        },
+        {
+        "name": "manArm",
+        "obj": "manArm.obj"
+        },
+        {
+        "name": "manLeg",
+        "obj": "manLeg.obj"
+        },
+        {
+        "name": "manPants",
+        "obj": "manPants.obj"
         }
         ],
    "textures" : [
@@ -93,11 +109,26 @@
         {
         "name": "fenceText",
         "text": "fenceText.png"
-        }
-        ,
+        },
         {
         "name": "faceText",
         "text": "faceText.png"
+        },
+        {
+        "name": "manBodyText",
+        "text": "manBodyText.png"
+        },
+        {
+        "name": "manArmText",
+        "text": "manArmText.png"
+        },
+        {
+        "name": "manLegText",
+        "text": "manLegText.png"
+        },
+        {
+        "name": "manPantText",
+        "text": "manPantText.png"
         }
         ]
 }

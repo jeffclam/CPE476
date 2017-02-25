@@ -179,7 +179,7 @@ void WorldObj::makeFence(int row, int col){
         GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
         fence->name = "fence";
         fence->setPos(r * grid.offset, 2, col * grid.offset);
-        fence->setScale(0.5,1,1.5);
+        fence->setScale(0.5,1.5,1.5);
         fence->setRot(0,M_PI/2,0);
         addObj(fence);
         grid.addToGrid(fence);
@@ -188,7 +188,7 @@ void WorldObj::makeFence(int row, int col){
         if(c != col/2 && c!= col/2 + 1) {
             GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
             fence->setPos(row * grid.offset, 2, c * grid.offset);
-            fence->setScale(0.5,1,1.5);
+            fence->setScale(0.5,1.5,1.5);
             fence->name = "fence";
             addObj(fence);
             grid.addToGrid(fence);
