@@ -26,6 +26,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "ManualCamera.h"
+#include "camera.h"
+
+#define CAM true
+#define FREE_CAM false
 
 class WroldGrid;
 
@@ -51,10 +55,12 @@ public:
     vector<EnemyGameObj *> enemies;
     WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
+    Camera free_Cam;
     GameState state;
     mat4 PMat = mat4(0);
 private:
     string lastRendered = "";
+    bool camera = CAM;
 };
 
 #endif /* WorldObject_hpp */
