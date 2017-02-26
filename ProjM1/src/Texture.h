@@ -35,6 +35,7 @@ public:
 	void init();
 	void bind();
 	void unbind();
+	Image *image;
 	
 private:
 	std::string filename;

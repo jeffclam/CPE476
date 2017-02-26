@@ -130,11 +130,11 @@ Texture::~Texture()
 
 void Texture::init()
 {
-	Texture::Image *image0 = (Texture::Image *)malloc(sizeof(Texture::Image));
-	if(image0 == NULL) {
+	image= (Texture::Image *)malloc(sizeof(Texture::Image));
+	if(image == NULL) {
 		printf("Error allocating space for image");
 	}
-	if(!Texture::ImageLoad(filename.c_str(), image0)) {
+	if(!Texture::ImageLoad(filename.c_str(), image)) {
 		printf("Error loading texture image\n");
 	}
 	
@@ -146,8 +146,8 @@ void Texture::init()
 	glBindTexture(GL_TEXTURE_2D, tid);
 	// Load the actual texture data
 	// Base level is 0, number of channels is 3, and border is 0.
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image0->sizeX, image0->sizeY,
-				 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*) image0->data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->sizeX, image->sizeY,
+				 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLubyte*) image->data);
 
 	// Generate image pyramid
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -160,7 +160,7 @@ void Texture::init()
 	// Unbind
 	glBindTexture(GL_TEXTURE_2D, 0);
 	// Free image, since the data is now on the GPU
-	free(image0);
+	//free(image0);
 }
 
 void Texture::bind()
