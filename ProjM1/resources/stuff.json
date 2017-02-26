@@ -129,6 +129,30 @@
         {
         "name": "manPantText",
         "text": "manPantText.png"
+        },
+        {
+        "name": "skyBack",
+        "text": "miramar_bk.tga"
+        },
+        {
+        "name": "skyDown",
+        "text": "miramar_dn.tga"
+        },
+        {
+        "name": "skyFront",
+        "text": "miramar_ft.tga"
+        },
+        {
+        "name": "skyLeft",
+        "text": "miramar_lf.tga"
+        },
+        {
+        "name": "skyRight",
+        "text": "miramar_rt.tga"
+        },
+        {
+        "name": "skyUp",
+        "text": "miramar_up.tga"
         }
         ]
 }

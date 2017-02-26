@@ -133,12 +133,12 @@ static void init()
     world.addObj(enemy);
 	world.grid.addToGrid(enemy);
 
-	sky.setRight(getTexture("cloud"));
-	sky.setLeft(getTexture("cloud"));
-	sky.setTop(getTexture("cloud"));
-	sky.setBottom(getTexture("cloud"));
-	sky.setBack(getTexture("cloud"));
-	sky.setFront(getTexture("cloud"));
+	sky.setRight(getTexture("skyRight"));
+	sky.setLeft(getTexture("skyLeft"));
+	sky.setTop(getTexture("skyUp"));
+	sky.setBottom(getTexture("skyDown"));
+	sky.setBack(getTexture("skyBack"));
+	sky.setFront(getTexture("skyFront"));
 	sky.loadCubemap();
 }
 
