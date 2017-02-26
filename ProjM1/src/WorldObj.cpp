@@ -101,7 +101,7 @@ int ViewFrustCull(vec3 center, float radius) {
     for (int i=0; i < 6; i++) {
         dist = DistToPlane(planes[i].x, planes[i].y, planes[i].z, planes[i].w, center);
         if(dist < -radius * 2) {
-            cout << "Culled " << dist << " " << radius << " " << i <<"\n";
+            //cout << "Culled " << dist << " " << radius << " " << i <<"\n";
             return 1;
         }
     }
