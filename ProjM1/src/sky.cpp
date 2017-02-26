@@ -103,16 +103,20 @@ GLuint Sky::loadCubemap()
 
 void Sky::render(mat4 P, mat4 V) {
     skyProg->bind();
+    //chop off position altering so it doesn't move
     glm::mat4 view = glm::mat4(glm::mat3(V)); 
+    //send uniforms
     glUniformMatrix4fv(skyProg->getUniform("V"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(skyProg->getUniform("P"), 1, GL_FALSE, glm::value_ptr(P));
-    // skybox cube
+    //bind texture
     glBindVertexArray(skyboxVAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture);
     glUniform1i(skyProg->getUniform("skybox"), 0);
+    //draw
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
     skyProg->unbind();
+    //clear depth so everything else will pass after this
     glClear(GL_DEPTH_BUFFER_BIT);
 }

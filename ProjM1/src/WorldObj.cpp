@@ -109,7 +109,6 @@ int ViewFrustCull(vec3 center, float radius) {
 }
 
 void WorldObj::render(shared_ptr<Program> prog) {
-    grid.renderGrid(prog);
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     ExtractVFPlanes(cam.getLookAt(), PMat);
     for(int i = 0; i < objs.size(); i++) {
@@ -120,6 +119,7 @@ void WorldObj::render(shared_ptr<Program> prog) {
         //if(ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius))
             edibles[i]->render(prog, true);
     }
+    grid.renderGrid(prog);
 }
 
 void WorldObj::cleanUp() {
