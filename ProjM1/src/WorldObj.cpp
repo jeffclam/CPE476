@@ -29,7 +29,7 @@ WorldObj::~WorldObj(){
 vec4 Left, Right, Bottom, Top, Near, Far;
 vec4 planes[6];
 
-void ExtractVFPlanes(mat4 P, mat4 V) {
+void ExtractVFPlanes(mat4 V, mat4 P) {
 
 	/* composite matrix */
     //mat 4 is [col][row] like other GPU stuff
@@ -100,8 +100,8 @@ int ViewFrustCull(vec3 center, float radius) {
 
     for (int i=0; i < 6; i++) {
         dist = DistToPlane(planes[i].x, planes[i].y, planes[i].z, planes[i].w, center);
-        if(dist < -radius) {
-            //cout << "Culled" << dist << " " << radius <<"\n";
+        if(dist < -radius * 2) {
+            cout << "Culled " << dist << " " << radius << " " << i <<"\n";
             return 1;
         }
     }
@@ -112,11 +112,11 @@ void WorldObj::render(shared_ptr<Program> prog) {
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     ExtractVFPlanes(cam.getLookAt(), PMat);
     for(int i = 0; i < objs.size(); i++) {
-        //if(ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius))
+        if(!ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius + 1))
             objs[i]->render(prog, (lastRendered != objs[i]->name));
     }
     for(int i = 0; i < edibles.size(); i++) {
-        //if(ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius))
+        if(!ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius + 1))
             edibles[i]->render(prog, true);
     }
     grid.renderGrid(prog);
