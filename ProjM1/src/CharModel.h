@@ -18,6 +18,7 @@
 #include "MatrixStack.h"
 
 #include "GameState.h"
+#include "Texture.h"
 
 #define TORSO 0
 #define HEAD 1
@@ -30,6 +31,7 @@ using namespace std;
 
 struct Part {
     shared_ptr<Shape> shape;
+    shared_ptr<Texture> tex;
     vec3 offset = vec3(0,0,0);
     vec3 attach_Limb = vec3(0, 0, 0);
     vec3 rotation = vec3(1, 0, 0);
@@ -42,6 +44,7 @@ public:
     CharModel(shared_ptr<Shape> s);
     CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso, shared_ptr<Shape> arm, shared_ptr<Shape> leg);
     CharModel(shared_ptr<Shape> s, shared_ptr<MatrixStack> g);
+    CharModel(vector<shared_ptr<Shape>>, vector<shared_ptr<Texture>>);
     void init();
     //virtual void render();
     //virtual void scare();
@@ -55,6 +58,7 @@ public:
     void walk_Motion();
 private:
     vector<unique_ptr<Part>> body;
+    vector<shared_ptr<Texture>> body_texs;
     shared_ptr<MatrixStack> model_transform;
     bool walk, scare;
     float arms, legs;

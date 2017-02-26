@@ -116,13 +116,20 @@ static void init()
 	world.grid.initGrid();
     
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
-    shared_ptr<CharModel> player_model = make_shared<CharModel>(CharModel(getShape("cube")));
     
-    /*
-    shared_ptr<CharModel> player_model2 = make_shared<CharModel>(
-        CharModel(getShape("manHead"), getShape("manBody"), getShape("manArm"), getShape("manLeg"))
-        );
-        */
+    vector<shared_ptr<Shape>> playerParts = {
+        getShape("manBody"), getShape("manHead"),
+        getShape("manArm"),getShape("manArm"),
+        getShape("manLeg"), getShape("manLeg")};
+
+    vector<shared_ptr<Texture>> playerTexs = { 
+        getTexture("manBodyText"), getTexture("faceText"),
+        getTexture("manArmText"), getTexture("manArmText"),
+        getTexture("manLegText"), getTexture("manLegText") };
+        
+    shared_ptr<CharModel> player_model = 
+        make_shared<CharModel>(CharModel(playerParts, playerTexs));
+
     player->setVel(1, 0, 1);
     player->setPos(10, 2.5, 10);
     player->setScale(.5, .5, .5);
