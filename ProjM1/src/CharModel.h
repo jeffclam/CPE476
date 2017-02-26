@@ -17,6 +17,8 @@
 #include "Shape.h"
 #include "MatrixStack.h"
 
+#include "GameState.h"
+
 #define TORSO 0
 #define HEAD 1
 #define LEFT_ARM 2
@@ -38,6 +40,7 @@ class CharModel
 {
 public:
     CharModel(shared_ptr<Shape> s);
+    CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso, shared_ptr<Shape> arm, shared_ptr<Shape> leg);
     CharModel(shared_ptr<Shape> s, shared_ptr<MatrixStack> g);
     void init();
     //virtual void render();
@@ -48,10 +51,11 @@ public:
     void render_Part(shared_ptr<Program> prog, int part);
     shared_ptr<MatrixStack> getMatrix();
     shared_ptr<MatrixStack> setMatrix(shared_ptr<MatrixStack> M);
-    void scare_Motion();
+    bool scare_Motion();
+    void walk_Motion();
 private:
     vector<unique_ptr<Part>> body;
     shared_ptr<MatrixStack> model_transform;
-    bool scare;
-    float theta;
+    bool walk, scare;
+    float arms, legs;
 };

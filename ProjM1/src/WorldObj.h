@@ -9,13 +9,17 @@
 #ifndef WorldObject_hpp
 #define WorldObject_hpp
 
+#define _USE_MATH_DEFINES
+
 #include <stdio.h>
 #include <random>
+#include <vector>
+#include <math.h>
+
 #include "WorldGrid.h"
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
-#include <vector>
 #include "GLSL.h"
 #include "Program.h"
 #include "MatrixStack.h"
@@ -55,12 +59,10 @@ public:
     vector<EnemyGameObj *> enemies;
     WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
-    Camera free_Cam;
     GameState state;
     mat4 PMat = mat4(0);
 private:
     string lastRendered = "";
-    bool camera = CAM;
 };
 
 #endif /* WorldObject_hpp */

@@ -19,35 +19,45 @@ void PlayerGameObj::update(GameState *state) {
     glfwGetWindowSize(state->window, &width, &height);
     theta += (state->mouseX-oldX)/width;
     oldX = state->mouseX;
-    if(glfwGetKey(state->window, GLFW_KEY_W) == GLFW_PRESS) {
-        speed = 2;
-    } else if(glfwGetKey(state->window, GLFW_KEY_S) == GLFW_PRESS) {
-        speed = -2;
-    } else {
-        setVel(0, getVel()[1], 0);
-    }
 
-    setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
     if (glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        isJumping = true;
+        isScaring = true;
         push();
         getModel()->scare_Motion();
     }
-    //strafing
-    if(glfwGetKey(state->window, GLFW_KEY_A) == GLFW_PRESS) {
-        vec3 oldPos = getPos();
-        vec3 strafe = cross(vec3(0,1,0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
-        strafe = strafe * ((float)10*state->deltaTime);
-        setPos(oldPos[0]-strafe[0], oldPos[1], oldPos[2]-strafe[2]);
-    } 
-    if(glfwGetKey(state->window, GLFW_KEY_D) == GLFW_PRESS) {
-        vec3 oldPos = getPos();
-        vec3 strafe = cross(vec3(0,1,0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
-        strafe = strafe * ((float)10*state->deltaTime);
-        setPos(oldPos[0]+strafe[0], oldPos[1], oldPos[2]+strafe[2]);
-    } 
-    //jump(state);
-    pos += getVel()*((float)5*state->deltaTime);
+
+    if (isScaring) {
+        isScaring = getModel()->scare_Motion();
+    } else {
+        /* walking */
+        if (glfwGetKey(state->window, GLFW_KEY_W) == GLFW_PRESS) {
+            getModel()->walk_Motion();
+            speed = 1.5;
+        }
+        else if (glfwGetKey(state->window, GLFW_KEY_S) == GLFW_PRESS) {
+            getModel()->walk_Motion();
+            speed = -1.5;
+        }
+        else {
+            setVel(0, getVel()[1], 0);
+        }
+        /* strafing */
+        if (glfwGetKey(state->window, GLFW_KEY_A) == GLFW_PRESS) {
+            vec3 oldPos = getPos();
+            vec3 strafe = cross(vec3(0, 1, 0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
+            strafe = strafe * ((float)2.5 * state->deltaTime);
+            setPos(oldPos[0] - strafe[0], oldPos[1], oldPos[2] - strafe[2]);
+        }
+        if (glfwGetKey(state->window, GLFW_KEY_D) == GLFW_PRESS) {
+            vec3 oldPos = getPos();
+            vec3 strafe = cross(vec3(0, 1, 0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
+            strafe = strafe * ((float)2.5 * state->deltaTime);
+            setPos(oldPos[0] + strafe[0], oldPos[1], oldPos[2] + strafe[2]);
+        }
+
+        setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
+        pos += getVel()*((float)5 * state->deltaTime);
+    }
 
     GameObj *collider = check_Collision_Radius(worldObjs);
     if(collider != NULL && collider->getName() != "grass") {
@@ -69,6 +79,7 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     name = "player";
 }
 
+/*
 void PlayerGameObj::jump(GameState state) {
     if(getVel()[1] != 0 && isJumping && getPos()[1] <= 0) {
         setPos(getPos()[0], 0, getPos()[2]);
@@ -82,7 +93,7 @@ void PlayerGameObj::jump(GameState state) {
     if(isJumping && getPos()[1] > 1) {
         setVel(getVel()[0], -0.3, getVel()[2]);
     }
-}
+} */
 
 void PlayerGameObj::push() {
     EnemyGameObj *enemy;

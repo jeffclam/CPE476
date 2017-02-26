@@ -17,6 +17,15 @@ CharModel::CharModel(shared_ptr<Shape> shape) {
     }
 }
 
+CharModel::CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso,
+    shared_ptr<Shape> arm, shared_ptr<Shape> leg) {
+    init();
+    body[HEAD]->shape = head;
+    body[TORSO]->shape = torso;
+    body[LEFT_ARM]->shape = body[RIGHT_ARM]->shape = arm;
+    body[LEFT_LEG]->shape = body[RIGHT_LEG]->shape = leg;
+}
+
 CharModel::CharModel(shared_ptr<Shape> shape, shared_ptr<MatrixStack> global) {
     init();
     for (int i = 0; i < body.size(); i++) {
@@ -46,11 +55,13 @@ void CharModel::init_PlayerModel() {
 
         body[LEFT_LEG]->scale = vec3(.40, .70, .50);
         body[LEFT_LEG]->offset = vec3(.40, -.35, 0);
-        body[LEFT_LEG]->attach_Limb = vec3(.20, -1.15, 0);
+        body[LEFT_LEG]->rotation = vec3(1, 0, 0);
+        body[LEFT_LEG]->attach_Limb = vec3(.20, -1, 0);
 
         body[RIGHT_LEG]->scale = vec3(.40, .70, .50);
         body[RIGHT_LEG]->offset = vec3(-.4, -.35, 0);
-        body[RIGHT_LEG]->attach_Limb = vec3(-.20, -1.15, 0);
+        body[RIGHT_LEG]->rotation = vec3(1, 0, 0);
+        body[RIGHT_LEG]->attach_Limb = vec3(-.20, -1, 0);
     }
 }
 
@@ -76,14 +87,16 @@ shared_ptr<MatrixStack> CharModel::adjust_Part(int part, float rotation) {
 }
 
 void CharModel::render_Part(shared_ptr<Program> prog, int part) {
-    float angle;
-    if (part != LEFT_ARM && part != RIGHT_ARM) {
-        angle = 0;
+    float rotation = 0;
+    if (part == LEFT_LEG || part == RIGHT_LEG) {
+        if (part == LEFT_LEG)
+            rotation = legs;
+        else
+            rotation = -legs;
+    } else if (part == LEFT_ARM || part == RIGHT_ARM) {
+        rotation = arms;
     }
-    else {
-        angle = theta;
-    }
-    shared_ptr<MatrixStack> M = adjust_Part(part, angle);
+    shared_ptr<MatrixStack> M = adjust_Part(part, rotation);
 
 
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
@@ -107,16 +120,33 @@ shared_ptr<MatrixStack> CharModel::setMatrix(shared_ptr<MatrixStack> M) {
     return model_transform = M;
 }
 
-void CharModel::scare_Motion() {
+bool CharModel::scare_Motion() {
     if (scare) {
-        theta -= 0.25;
-        if (theta < -2)
+        arms -= 0.10;
+        if (arms < -2) {
             scare = 0;
+        }
     }
     else {
-        theta += 0.25;
-        if (theta > 0) {
+        arms += 0.10;
+        if (arms > 0) {
             scare = 1;
+            return false;
+        }
+    }
+    return true;
+}
+
+void CharModel::walk_Motion() {
+    if (walk) {
+        legs -= 0.05;
+        if (legs < -1)
+            walk = 0;
+    }
+    else {
+        legs += 0.05;
+        if (legs > 1) {
+            walk = 1;
         }
     }
 }

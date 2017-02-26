@@ -24,8 +24,8 @@ public:
 private:
     float oldX;
     float theta;
-    void jump(GameState state);
-    bool isJumping;
+    //void jump(GameState state);
+    bool isScaring = false;
 };
 
 #endif /* PlayerGameObj_h */

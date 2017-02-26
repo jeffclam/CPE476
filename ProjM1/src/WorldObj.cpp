@@ -17,7 +17,6 @@ uniform_int_distribution<> dis(-30, 30);
 WorldObj::WorldObj() :
     objs(),
     cam(),
-    free_Cam(),
     state()
 {
 }
@@ -111,11 +110,6 @@ int ViewFrustCull(vec3 center, float radius) {
 
 void WorldObj::render(shared_ptr<Program> prog) {
     grid.renderGrid(prog);
-    mat4 lookAt;
-    if (camera == CAM)
-        lookAt = cam.getLookAt();
-    else if (camera == FREE_CAM)
-        lookAt = free_Cam.getLookAt();
     glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
     ExtractVFPlanes(cam.getLookAt(), PMat);
     for(int i = 0; i < objs.size(); i++) {

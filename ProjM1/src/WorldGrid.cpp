@@ -26,7 +26,7 @@ bool GridCell::hasCollision(GameObj *checker){
         return false;
     GameObj *test = checker->check_Collision_Radius(&contents);
     if(test != NULL) {
-        cout << "Collided with " << test->name << " \n";
+        //cout << "Collided with " << test->name << " \n";
         //tile->pos[1] = 1.5;
     }
     return NULL != test;
@@ -120,7 +120,7 @@ bool WorldGrid::isNeighValid(GridCell *neigh, GameObj *mover){
     mover->pos[2] = neigh->yPos;
     for(int i = 0; i < close.size(); i++){
         if(close[i]->hasCollision(mover)){
-            cout << "Has collision " << close.size() << "\n";
+            //cout << "Has collision " << close.size() << "\n";
             mover->pos = oldPos;
             return false;
         }
