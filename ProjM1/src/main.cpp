@@ -15,6 +15,7 @@
 #include "Shape.h"
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
+#include "sky.h"
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
@@ -43,6 +44,7 @@ int g_width, g_height;
 WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
+Sky sky;
 
 static void error_callback(int error, const char *description)
 {
@@ -77,6 +79,8 @@ static void init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     
+	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
+
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
 	prog->setVerbose(true);
@@ -137,6 +141,14 @@ static void init()
 
     world.addObj(enemy);
 	world.grid.addToGrid(enemy);
+
+	sky.setRight(getTexture("skyRight"));
+	sky.setLeft(getTexture("skyLeft"));
+	sky.setTop(getTexture("skyUp"));
+	sky.setBottom(getTexture("skyDown"));
+	sky.setBack(getTexture("skyBack"));
+	sky.setFront(getTexture("skyFront"));
+	sky.loadCubemap();
 }
 
 static void render()
@@ -159,7 +171,7 @@ static void render()
    // Apply perspective projection.
    P->pushMatrix();
    P->perspective(45.0f, aspect, 0.01f, 100.0f);
-
+	sky.render(P->topMatrix(), world.cam.getLookAt());
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 	world.PMat = P->topMatrix();
@@ -167,6 +179,8 @@ static void render()
     world.render(prog);
     
 	prog->unbind();
+
+	
 
    // Pop matrix stacks.
    P->popMatrix();
