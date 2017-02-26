@@ -9,13 +9,17 @@
 #ifndef WorldObject_hpp
 #define WorldObject_hpp
 
+#define _USE_MATH_DEFINES
+
 #include <stdio.h>
 #include <random>
+#include <vector>
+#include <math.h>
+
 #include "WorldGrid.h"
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
-#include <vector>
 #include "GLSL.h"
 #include "Program.h"
 #include "MatrixStack.h"
@@ -26,6 +30,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "ManualCamera.h"
+#include "camera.h"
+
+#define CAM true
+#define FREE_CAM false
 
 class WroldGrid;
 
