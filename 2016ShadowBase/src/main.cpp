@@ -170,7 +170,7 @@ static void initGeom() {
     glGenBuffers(1, &GrndNorBuffObj);
     glBindBuffer(GL_ARRAY_BUFFER, GrndNorBuffObj);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GrndNorm), GrndNorm, GL_STATIC_DRAW);
-    
+
 	 glGenBuffers(1, &GrndTexBuffObj);
     glBindBuffer(GL_ARRAY_BUFFER, GrndTexBuffObj);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GrndTex), GrndTex, GL_STATIC_DRAW);
@@ -214,10 +214,10 @@ void initShadow() {
 	//generate the texture
 	glGenTextures(1, &depthMap);
  	glBindTexture(GL_TEXTURE_2D, depthMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, S_WIDTH, S_HEIGHT, 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, S_WIDTH, S_HEIGHT,
 										 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -249,7 +249,7 @@ static void init()
    shape->loadMesh(RESOURCE_DIR + "dog.obj");
    shape->resize();
    shape->init();
-   
+
 	world = make_shared<Shape>();
    world->loadMesh(RESOURCE_DIR + "sphere.obj");
    world->resize();
@@ -260,17 +260,17 @@ static void init()
 	DepthProg->setVerbose(true);
 	DepthProg->setShaderNames(RESOURCE_DIR + "depth_vert.glsl", RESOURCE_DIR + "depth_frag.glsl");
 	DepthProg->init();
-	
+
 	DepthProgDebug = make_shared<Program>();
 	DepthProgDebug->setVerbose(true);
 	DepthProgDebug->setShaderNames(RESOURCE_DIR + "depth_vertDebug.glsl", RESOURCE_DIR + "depth_fragDebug.glsl");
 	DepthProgDebug->init();
-	
+
 	ShadowProg = make_shared<Program>();
 	ShadowProg->setVerbose(true);
 	ShadowProg->setShaderNames(RESOURCE_DIR + "shadow_vert.glsl", RESOURCE_DIR + "shadow_frag.glsl");
 	ShadowProg->init();
-	
+
 	DebugProg = make_shared<Program>();
 	DebugProg->setVerbose(true);
 	DebugProg->setShaderNames(RESOURCE_DIR + "pass_vert.glsl", RESOURCE_DIR + "pass_texfrag.glsl");
@@ -289,7 +289,7 @@ static void init()
    texture1->init();
    texture1->setUnit(0);
    texture1->setWrapModes(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
-   
+
 	texture2 = make_shared<Texture>();
    texture2->setFilename(RESOURCE_DIR + "grass.jpg");
    texture2->init();
@@ -304,7 +304,7 @@ static void init()
 	//un-needed, but easier then modifying shape
 	DepthProg->addAttribute("vertNor");
 	DepthProg->addAttribute("vertTex");
-	
+
 	DepthProgDebug->addUniform("LP");
 	DepthProgDebug->addUniform("LV");
 	DepthProgDebug->addUniform("M");
@@ -312,7 +312,7 @@ static void init()
 	//un-needed, but easier then modifying shape
 	DepthProgDebug->addAttribute("vertNor");
 	DepthProgDebug->addAttribute("vertTex");
-	
+
 	ShadowProg->addUniform("P");
 	ShadowProg->addUniform("M");
 	ShadowProg->addUniform("V");
@@ -323,7 +323,7 @@ static void init()
 	ShadowProg->addAttribute("vertTex");
    ShadowProg->addUniform("Texture0");
    ShadowProg->addUniform("shadowDepth");
-	
+
 	DebugProg->addUniform("texBuf");
 	DebugProg->addAttribute("vertPos");
 
@@ -342,7 +342,7 @@ void SetProjectionMatrix(shared_ptr<Program> curShade) {
 mat4 SetOrthoMatrix(shared_ptr<Program> curShade) {
 	mat4 ortho = glm::ortho(-10.0, 10.0, -10.0, 10.0, 0.1, 30.0);
 	glUniformMatrix4fv(curShade->getUniform("LP"), 1, GL_FALSE, value_ptr(ortho));
-   return ortho;
+  return ortho;
 }
 
 /* camera controls - do not change */
@@ -378,21 +378,21 @@ void drawScene(shared_ptr<Program> shader, GLint texID, int TexOn) {
 	if (TexOn) {
    	texture0->bind(texID);
 	}
-	//draw the dog mesh 	
+	//draw the dog mesh
 	SetModel(vec3(-1, 0, -5), 0, 0, 1, shader);
    shape->draw(shader);
 
 	if (TexOn) {
    	texture1->bind(texID);
 	}
-	//draw the world sphere	
+	//draw the world sphere
 	SetModel(vec3(1, 0, -5), 0, 0, 1, shader);
 	world->draw(shader);
-	
-	if (TexOn) { 
+
+	if (TexOn) {
    	texture2->bind(texID);
-	}	
-	//draw the ground plane only if not shadow mapping	
+	}
+	//draw the ground plane only if not shadow mapping
 	SetModel(vec3(0, -1, 0), 0, 0, 1, shader);
 	glEnableVertexAttribArray(0);
    glBindBuffer(GL_ARRAY_BUFFER, GrndBuffObj);
@@ -401,7 +401,7 @@ void drawScene(shared_ptr<Program> shader, GLint texID, int TexOn) {
 	glEnableVertexAttribArray(1);
    glBindBuffer(GL_ARRAY_BUFFER, GrndNorBuffObj);
    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	 
+
 	glEnableVertexAttribArray(2);
    glBindBuffer(GL_ARRAY_BUFFER, GrndTexBuffObj);
    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -413,7 +413,7 @@ void drawScene(shared_ptr<Program> shader, GLint texID, int TexOn) {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-	
+
 }
 
 /* let's draw */
@@ -430,7 +430,7 @@ static void render() {
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glCullFace(GL_FRONT);
-		
+
 		//set up shadow shader
 		//render scene
    	DepthProg->bind();
@@ -449,11 +449,11 @@ static void render() {
 	// Clear framebuffer.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (DEBUG_LIGHT) {	
+	if (DEBUG_LIGHT) {
 		/* code to draw the light depth buffer */
 		//geometry style debug on light - test transforms, draw geometry from light
 		//perspective
-		if (GEOM_DEBUG) { 
+		if (GEOM_DEBUG) {
   			DepthProgDebug->bind();
 			//render scene from light's point of view
   			SetOrthoMatrix(DepthProgDebug);
@@ -514,7 +514,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	//request the highest possible version of OGL - important for mac
-	
+
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

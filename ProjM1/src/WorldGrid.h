@@ -35,7 +35,7 @@ class WorldGrid {
     public:
     WorldGrid(int rows, int cols);
     WorldGrid();
-    void renderGrid(shared_ptr<Program> prog);
+    void renderGrid(shared_ptr<Program> prog, bool shadowPass);
     void initGrid();
     void removeFromGrid(GameObj *toRemove);
     void addToGrid(GameObj *toAdd);

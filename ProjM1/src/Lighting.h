@@ -28,5 +28,14 @@ public:
     void SetLightUniforms(shared_ptr<Program> prog);
     void push_back(Light l);
     int size();
+    void initShadow();
+    void initShadowProg(string resDir);
+    mat4 SetOrthoMatrix();
+    mat4 SetLightView();
+    bool hasShadow = false;
+    shared_ptr<Program> DepthProg;
+    GLuint depthMapFBO;
+    const GLuint S_WIDTH = 1024, S_HEIGHT = 1024;
+    GLuint depthMap;
 private:
 };

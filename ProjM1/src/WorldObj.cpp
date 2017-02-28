@@ -108,18 +108,23 @@ int ViewFrustCull(vec3 center, float radius) {
     return 0;
 }
 
-void WorldObj::render(shared_ptr<Program> prog) {
-    glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
-    ExtractVFPlanes(cam.getLookAt(), PMat);
+void WorldObj::render(shared_ptr<Program> prog, bool shadowPass) {
+    if(!shadowPass) {
+        glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
+        ExtractVFPlanes(cam.getLookAt(), PMat);
+        lastRendered = "_NONE_";
+    }
     for(int i = 0; i < objs.size(); i++) {
-        if(!ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius + 1))
-            objs[i]->render(prog, (lastRendered != objs[i]->name));
+        if(shadowPass || !ViewFrustCull(objs[i]->pos, objs[i]->b_sphere.radius + 1))
+            objs[i]->render(prog, (lastRendered != objs[i]->name && !shadowPass));
     }
+    if(shadowPass)
+        return;
     for(int i = 0; i < edibles.size(); i++) {
-        if(!ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius + 1))
-            edibles[i]->render(prog, true);
+        if(shadowPass || !ViewFrustCull(edibles[i]->pos, edibles[i]->b_sphere.radius + 1))
+            edibles[i]->render(prog, !shadowPass);
     }
-    grid.renderGrid(prog);
+    grid.renderGrid(prog, shadowPass);
 }
 
 void WorldObj::cleanUp() {
