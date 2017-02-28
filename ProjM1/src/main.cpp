@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <random>
+#include <map>
 
 #include "GLSL.h"
 #include "Program.h"
@@ -126,14 +127,27 @@ static void init()
         getShape("manBody"), getShape("manHead"),
         getShape("manArm"),getShape("manArm"),
         getShape("manLeg"), getShape("manLeg")};
-
     vector<shared_ptr<Texture>> playerTexs = { 
         getTexture("manBodyText"), getTexture("faceText"),
         getTexture("manArmText"), getTexture("manArmText"),
         getTexture("manLegText"), getTexture("manLegText") };
-        
     shared_ptr<CharModel> player_model = 
         make_shared<CharModel>(CharModel(playerParts, playerTexs));
+
+    vector<shared_ptr<Shape>> sheepParts = {
+        getShape("sheepBod"), getShape("sheepHead"),
+        getShape("sheepLeg"), getShape("sheepLeg"),
+        getShape("sheepLeg"), getShape("sheepLeg")
+    };
+    vector<shared_ptr<Texture>> sheepTexs = {
+        getTexture("sheepHeadText"), getTexture("sheepBodText"),
+        getTexture("legText"), getTexture("legText"),
+        getTexture("legText"), getTexture("legText")
+    };
+    shared_ptr<CharModel> sheep_model =
+        make_shared<CharModel>(CharModel(sheepParts, sheepTexs));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
 
     player->setVel(1, 0, 1);
     player->setPos(10, 2.2, 10);
