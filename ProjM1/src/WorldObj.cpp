@@ -17,7 +17,8 @@ uniform_int_distribution<> dis(-30, 30);
 WorldObj::WorldObj() :
     objs(),
     cam(),
-    state()
+    state(),
+    charModels()
 {
 }
 
@@ -146,6 +147,8 @@ void WorldObj::update(double time) {
         state.timeSinceSpawn = 0;
 
         EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
+        enemy->setModel(charModels.at("sheep_model"));
+        enemy->getModel()->init_SheepModel();
         enemy->setPos(42, 2, 45);
         addObj(enemy);
         grid.addToGrid(enemy);

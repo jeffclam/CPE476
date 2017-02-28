@@ -57,6 +57,7 @@ public:
     void cleanUp();
     vector<EdibleGameObj *> edibles;
     vector<EnemyGameObj *> enemies;
+    map<string, shared_ptr<CharModel>> charModels;
     WorldGrid grid = WorldGrid(15, 25);
     ManualCamera cam;
     GameState state;

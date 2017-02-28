@@ -49,6 +49,7 @@ public:
     //virtual void render();
     //virtual void scare();
     void init_PlayerModel();
+    void init_SheepModel();
     void render_Model(shared_ptr<Program> prog);
     shared_ptr<MatrixStack> adjust_Part(int part, float rotation);
     void render_Part(shared_ptr<Program> prog, int part);
