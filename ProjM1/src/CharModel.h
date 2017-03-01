@@ -4,6 +4,9 @@
 #include <memory>
 #include <string>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -34,7 +37,8 @@ struct Part {
     shared_ptr<Texture> tex;
     vec3 offset = vec3(0,0,0);
     vec3 attach_Limb = vec3(0, 0, 0);
-    vec3 rotation = vec3(1, 0, 0);
+    vec3 rotation = vec3(0, 0, 0);
+    vec3 action_rotation = vec3(1, 0, 0);
     vec3 scale = vec3(1.0, 1.0, 1.0);
 } ;
 
@@ -62,5 +66,5 @@ private:
     vector<shared_ptr<Texture>> body_texs;
     shared_ptr<MatrixStack> model_transform;
     bool walk, scare;
-    float arms, legs;
+    float arms = 0, legs = 0;
 };

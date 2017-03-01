@@ -44,6 +44,8 @@ void EnemyGameObj::update(GameState *state) {
         nextGoal = grid->getNextPoint(goal, this);
     }
     if(abs(distance(vec3(goal->xPos, pos[1], goal->yPos),getPos())) > 0.1) {
+        if (getModel() != NULL && vel != vec3(0,0,0))
+            getModel()->walk_Motion();
         vec3 normGoal = vec3(nextGoal[0] - pos[0], vel[1], nextGoal[2] - pos[2]);
         if(normGoal[0] != 0 || normGoal[1] != 0 || normGoal[2] != 0) {
             normGoal = normalize(normGoal);

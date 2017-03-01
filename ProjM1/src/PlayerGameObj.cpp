@@ -43,12 +43,14 @@ void PlayerGameObj::update(GameState *state) {
         }
         /* strafing */
         if (glfwGetKey(state->window, GLFW_KEY_A) == GLFW_PRESS) {
+            getModel()->walk_Motion();
             vec3 oldPos = getPos();
             vec3 strafe = cross(vec3(0, 1, 0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
             strafe = strafe * ((float)2.5 * state->deltaTime);
             setPos(oldPos[0] - strafe[0], oldPos[1], oldPos[2] - strafe[2]);
         }
         if (glfwGetKey(state->window, GLFW_KEY_D) == GLFW_PRESS) {
+            getModel()->walk_Motion();
             vec3 oldPos = getPos();
             vec3 strafe = cross(vec3(0, 1, 0), -normalize(vec3(sin(theta), getVel()[1], cos(theta))));
             strafe = strafe * ((float)2.5 * state->deltaTime);
