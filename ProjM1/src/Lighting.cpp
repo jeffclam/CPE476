@@ -70,13 +70,14 @@ void Lighting::initShadowProg(string resDir) {
 }
 
 mat4 Lighting::SetOrthoMatrix() {
-	mat4 ortho = glm::ortho(-10.0, 10.0, -10.0, 10.0, -20.0, 80.0);
+	mat4 ortho = glm::ortho(-50.0, 50.0, -50.0, 50.0, 0.1, 100.0);
 	glUniformMatrix4fv(DepthProg->getUniform("LP"), 1, GL_FALSE, value_ptr(ortho));
   return ortho;
 }
 
 mat4 Lighting::SetLightView() {
- 	mat4 Cam = glm::lookAt(vec3(lights[0].pos), vec3(0,0,0), vec3(0,1,0));
+    vec3 pos = vec3(lights[0].pos);
+ 	mat4 Cam = glm::lookAt(pos, vec3(pos[0],0,pos[1]-1), vec3(0,1,0));
 	glUniformMatrix4fv(DepthProg->getUniform("LV"), 1, GL_FALSE, value_ptr(Cam));
 	return Cam;
 }

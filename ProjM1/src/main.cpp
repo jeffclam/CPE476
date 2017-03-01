@@ -46,7 +46,6 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
-float SHOW_SM = 3.0f;
 
 static void error_callback(int error, const char *description)
 {
@@ -105,7 +104,7 @@ static void init()
 	prog->addUniform("LS");
 
     Light sun1;
-	sun1.pos = vec4(20.0, 5.0, 20.0, 0);
+	sun1.pos = vec4(20.0, 30.0, 20.0, 0);
 	sun1.intensity = vec3(1.0, 1.0, 1.0);
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
@@ -158,11 +157,6 @@ static void init()
 	world.addObj(player);
 
 	world.makeFence(12, 22);
-
-	GameObj *lightProx = new GameObj(getShape("cube"), getTexture("test"));
-	lightProx->pos = sun1.pos;
-	lightProx->pos[1] += 1;
-	world.addObj(lightProx);
 
     //EnemyGameObj *enemy = new EnemyGameObj(getShape("manPants"), getTexture("manPantText"));
     //shared_ptr<CharModel> enemy_model = make_shared<CharModel>();
@@ -250,12 +244,12 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130 * SHOW_SM,200 * SHOW_SM), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130 , 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
-	ImGui::Image((void *)lighting.depthMap, ImVec2(lighting.S_WIDTH/8 * SHOW_SM, lighting.S_HEIGHT/8 * SHOW_SM));
+	//ImGui::Image((void *)lighting.depthMap, ImVec2(lighting.S_WIDTH/8 * SHOW_SM, lighting.S_HEIGHT/8 * SHOW_SM));
     ImGui::End();
     ImGui::Render();
 	if(world.state.grassAlive < world.edibles.size()/2) {
