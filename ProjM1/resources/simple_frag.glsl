@@ -23,6 +23,14 @@ uniform struct Light {
    float ambCoeff;
 } lights[MAX_LIGHTS];
 
+float shadowWidth = 2048.0;
+//gaus blur
+const float M[25]=float[25](0.003f, 0.013f, 0.022f, 0.013f, 0.003f,
+                 0.013f, 0.059f, 0.097f, 0.059f, 0.013f,
+                 0.022f, 0.097f, 0.159f, 0.097f, 0.022f,
+                 0.013f, 0.059f, 0.097f, 0.059f, 0.013f,
+                 0.003f, 0.013f, 0.022f, 0.013f, 0.003f);
+
 vec3 calcLight(Light light, vec3 normal, vec3 view) {
    vec3 surfaceToLight;
    float attenuation = 1.0;
@@ -57,19 +65,25 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
 
 /* returns 1 if shadowed */
 /* called with the point projected into the light's coordinate space */
-bool TestShadow(vec4 LSfPos) {
-
+float TestShadow(vec4 LSfPos) {
+  float contribution = 1.2;
+  float offset = 1.0/shadowWidth;
 	//1: shift the coordinates from -1, 1 to 0 ,1
   vec3 shift = (LSfPos.xyz + vec3(1.0))/2.0;
 	//2: read off the stored depth (.) from the ShadowDepth, using the shifted.xy 
   float curD = shift.z;
-	//3: compare to the current depth (.z) of the projected depth
-  float lightD = texture(shadowDepth, shift.xy).r;
-	//4: return 1 if the point is shadowed
-  if(curD >= lightD + 0.01) {
-    return true;
+  for(int i = -2; i <= 2; i++) {
+    for(int j = -2; j <= 2; j++) {
+      //3: compare to the current depth (.z) of the projected depth
+      vec2 sTexCord = vec2(shift.x + i * offset, shift.y + j * offset);
+      float lightD = texture(shadowDepth, sTexCord).r;
+      //4: subtract shadow contribution
+      if(curD >= lightD + 0.01) {
+        contribution -= M[(i + 2) * 5 + (j + 2)];
+      }
+    }
   }
-	return false;
+	return contribution;
 }
 
 void main()
@@ -80,19 +94,15 @@ void main()
 
     vec3 sumColor = vec3(0);
 
-    bool inShade = TestShadow(fPosLS);
+    float inShade = TestShadow(fPosLS);
 
-    if(!inShade) {
-      for (int i = 0; i < numLights; i++) {
-        sumColor += calcLight(lights[i], normal, view);
-      }
-
-      color = vec4(sumColor[0] * texColor[0], 
-                  sumColor[1] * texColor[1], 
-                  sumColor[2] * texColor[2], 
-                                          texColor[3]);
-    } else {
-      color = vec4(ambColor * vec3(texColor), texColor[3]);
+    for (int i = 0; i < numLights; i++) {
+      sumColor += calcLight(lights[i], normal, view);
     }
+
+    color = vec4(sumColor[0] * texColor[0] * inShade, 
+                sumColor[1] * texColor[1] * inShade, 
+                sumColor[2] * texColor[2] * inShade, 
+                                        texColor[3]);
 }
 

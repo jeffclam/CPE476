@@ -35,7 +35,7 @@ public:
     bool hasShadow = false;
     shared_ptr<Program> DepthProg;
     GLuint depthMapFBO;
-    const GLuint S_WIDTH = 1024 * 2, S_HEIGHT = 1024 * 2;
+    const GLuint S_WIDTH = 2048, S_HEIGHT = 2048;
     GLuint depthMap;
 private:
 };
