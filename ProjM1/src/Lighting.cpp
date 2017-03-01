@@ -65,10 +65,12 @@ void Lighting::initShadowProg(string resDir) {
 	DepthProg->addUniform("LV");
 	DepthProg->addUniform("M");
 	DepthProg->addAttribute("vertPos");
+    DepthProg->addAttribute("vertTex");
+    DepthProg->addAttribute("vertNor");
 }
 
 mat4 Lighting::SetOrthoMatrix() {
-	mat4 ortho = glm::ortho(-10.0, 10.0, -10.0, 10.0, 0.1, 80.0);
+	mat4 ortho = glm::ortho(-10.0, 10.0, -10.0, 10.0, -20.0, 80.0);
 	glUniformMatrix4fv(DepthProg->getUniform("LP"), 1, GL_FALSE, value_ptr(ortho));
   return ortho;
 }

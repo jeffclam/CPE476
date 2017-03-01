@@ -46,7 +46,7 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
-float SHOW_SM = 1.0f;
+float SHOW_SM = 3.0f;
 
 static void error_callback(int error, const char *description)
 {
