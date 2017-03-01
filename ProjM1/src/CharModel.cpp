@@ -38,7 +38,6 @@ CharModel::CharModel(vector<shared_ptr<Shape>> parts,
     vector<shared_ptr<Texture>> texs) {
     init();
     for (int i = 0; i < body.size(); i++) {
-        cout << i << endl;
         body[i]->shape = parts[i];
         body[i]->tex = texs[i];
     }
@@ -46,32 +45,28 @@ CharModel::CharModel(vector<shared_ptr<Shape>> parts,
 
 void CharModel::init_PlayerModel() {
     if (!body.empty()) {
-        //body[TORSO]->scale = vec3(1, 1.25, .5);
         body[TORSO]->offset = vec3(0, 0, 0);
 
-        //body[HEAD]->scale = vec3(.50, .50, .50);
         body[HEAD]->offset = vec3(0, .50, 0);
         body[HEAD]->attach_Limb = vec3(0, .65, 0);
 
-        //body[LEFT_ARM]->scale = vec3(.25, .75, .25);
-        body[LEFT_ARM]->offset = vec3(.25, -.375, 0);
-        body[LEFT_ARM]->rotation = vec3(1, 0, 0);
-        body[LEFT_ARM]->attach_Limb = vec3(1, 0.25, 0);
+        body[LEFT_ARM]->offset = vec3(0, -.50, 0);
+        body[LEFT_ARM]->rotation = vec3(0, 0, 1);
+        body[LEFT_ARM]->action_rotation = vec3(1, 0, 0);
+        body[LEFT_ARM]->attach_Limb = vec3(-1, -.20, 0);
 
-        //body[RIGHT_ARM]->scale = vec3(.25, .75, .25);
-        body[RIGHT_ARM]->offset = vec3(-.25, -.375, 0);
-        body[RIGHT_ARM]->rotation = vec3(1, 0, 0);
-        body[RIGHT_ARM]->attach_Limb = vec3(-1, 0.25, 0);
+        body[RIGHT_ARM]->offset = vec3(0, -.5, 0);
+        body[RIGHT_ARM]->rotation = vec3(0, 0, 1);
+        body[RIGHT_ARM]->action_rotation = vec3(1, 0, 0);
+        body[RIGHT_ARM]->attach_Limb = vec3(1, -.20, 0);
 
-        //body[LEFT_LEG]->scale = vec3(.40, .70, .50);
-        body[LEFT_LEG]->offset = vec3(.40, -.35, 0);
-        body[LEFT_LEG]->rotation = vec3(1, 0, 0);
-        body[LEFT_LEG]->attach_Limb = vec3(.20, -1.5, 0);
+        body[LEFT_LEG]->offset = vec3(0, -.35, 0);
+        body[LEFT_LEG]->action_rotation = vec3(1, 0, 0);
+        body[LEFT_LEG]->attach_Limb = vec3(-.50, -1.5, 0);
 
-        //body[RIGHT_LEG]->scale = vec3(.40, .70, .50);
-        body[RIGHT_LEG]->offset = vec3(-.4, -.35, 0);
-        body[RIGHT_LEG]->rotation = vec3(1, 0, 0);
-        body[RIGHT_LEG]->attach_Limb = vec3(-.20, -1.5, 0);
+        body[RIGHT_LEG]->offset = vec3(0, -.35, 0);
+        body[RIGHT_LEG]->action_rotation = vec3(1, 0, 0);
+        body[RIGHT_LEG]->attach_Limb = vec3(.50, -1.5, 0);
     }
 }
 
@@ -86,31 +81,33 @@ void CharModel::init_SheepModel() {
 
         body[LEFT_ARM]->scale = vec3(.25, .25, .25);
         body[LEFT_ARM]->offset = vec3(0, -.25, 0);
-        body[LEFT_ARM]->rotation = vec3(1, 0, 0);
+        body[LEFT_ARM]->action_rotation = vec3(1, 0, 0);
         body[LEFT_ARM]->attach_Limb = vec3(-.35, -.35, .35);
 
         body[RIGHT_ARM]->scale = vec3(.25, .25, .25);
         body[RIGHT_ARM]->offset = vec3(0, -.25, 0);
-        body[RIGHT_ARM]->rotation = vec3(1, 0, 0);
+        body[RIGHT_ARM]->action_rotation = vec3(1, 0, 0);
         body[RIGHT_ARM]->attach_Limb = vec3(.35, -.35, .35);
 
         body[LEFT_LEG]->scale = vec3(.25, .25, .25);
         body[LEFT_LEG]->offset = vec3(0, -.25, 0);
-        body[LEFT_LEG]->rotation = vec3(1, 0, 0);
+        body[LEFT_LEG]->action_rotation = vec3(1, 0, 0);
         body[LEFT_LEG]->attach_Limb = vec3(-.35, -.35, -.35);
 
         body[RIGHT_LEG]->scale = vec3(.25, .25, .25);
         body[RIGHT_LEG]->offset = vec3(0, -.25, 0);
-        body[RIGHT_LEG]->rotation = vec3(1, 0, 0);
+        body[RIGHT_LEG]->action_rotation = vec3(1, 0, 0);
         body[RIGHT_LEG]->attach_Limb = vec3(.35, -.35, -.35);
     }
 }
 
 
 void CharModel::render_Model(shared_ptr<Program> prog) {
+
     shared_ptr<MatrixStack> M = adjust_Part(TORSO, 0);
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE,
         value_ptr(M->topMatrix()));
+
     body[TORSO]->tex->bind();
     body[TORSO]->shape->draw(prog);
 
@@ -119,15 +116,6 @@ void CharModel::render_Model(shared_ptr<Program> prog) {
     }
 
     M->popMatrix();
-}
-
-shared_ptr<MatrixStack> CharModel::adjust_Part(int part, float rotation) {
-    model_transform->pushMatrix();
-    model_transform->translate(body[part]->attach_Limb);
-    model_transform->rotate(rotation, body[part]->rotation);
-    model_transform->translate(body[part]->offset);
-    model_transform->scale(body[part]->scale);
-    return model_transform;
 }
 
 void CharModel::render_Part(shared_ptr<Program> prog, int part) {
@@ -141,12 +129,13 @@ void CharModel::render_Part(shared_ptr<Program> prog, int part) {
     else if (part == LEFT_ARM || part == RIGHT_ARM) {
         rotation = arms;
     }
+    model_transform->pushMatrix();
     shared_ptr<MatrixStack> M = adjust_Part(part, rotation);
 
     body[part]->tex->bind();
     glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
     body[part]->shape->draw(prog);
-    M->popMatrix();
+    model_transform->popMatrix();
 }
 
 void CharModel::init() {
@@ -155,6 +144,19 @@ void CharModel::init() {
             body.push_back(unique_ptr<Part>(new Part));
         }
     }
+}
+
+shared_ptr<MatrixStack> CharModel::adjust_Part(int part, float rotation) {
+    model_transform->translate(body[part]->attach_Limb);
+    model_transform->rotate(rotation, body[part]->action_rotation);
+    model_transform->translate(body[part]->offset);
+    model_transform->scale(body[part]->scale);
+
+    if (body[part]->rotation != vec3(0)) {
+        model_transform->rotate(-M_PI / 2.0, body[part]->rotation);
+    }
+
+    return model_transform;
 }
 
 shared_ptr<MatrixStack> CharModel::getMatrix() {

@@ -135,7 +135,7 @@ static void init()
         getShape("sheepLeg"), getShape("sheepLeg")
     };
     vector<shared_ptr<Texture>> sheepTexs = {
-        getTexture("sheepHeadText"), getTexture("sheepBodText"),
+        getTexture("sheepBodText"), getTexture("sheepHeadText"),
         getTexture("legText"), getTexture("legText"),
         getTexture("legText"), getTexture("legText")
     };
