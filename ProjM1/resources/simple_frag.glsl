@@ -1,5 +1,6 @@
 #version 330 core
 uniform sampler2D tex;
+uniform sampler2D shadowDepth;
 
 
 in vec2 vTexCoord;
@@ -7,6 +8,7 @@ in vec3 fragNor;
 in vec4 worldPos;
 //in vec4 gl_fragCoord;
 out vec4 color;
+in vec4 fPosLS;
 
 uniform vec3 ambColor;
 uniform vec3 specColor;
@@ -53,6 +55,23 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    return amb + attenuation * (diff + spec);
 }
 
+/* returns 1 if shadowed */
+/* called with the point projected into the light's coordinate space */
+bool TestShadow(vec4 LSfPos) {
+
+	//1: shift the coordinates from -1, 1 to 0 ,1
+  vec3 shift = (LSfPos.xyz + vec3(1.0))/2.0;
+	//2: read off the stored depth (.) from the ShadowDepth, using the shifted.xy 
+  float curD = shift.z;
+	//3: compare to the current depth (.z) of the projected depth
+  float lightD = texture(shadowDepth, shift.xy).r;
+	//4: return 1 if the point is shadowed
+  if(curD >= lightD + 0.01) {
+    return true;
+  }
+	return false;
+}
+
 void main()
 {
     vec4 texColor = texture(tex, vTexCoord);
@@ -61,13 +80,19 @@ void main()
 
     vec3 sumColor = vec3(0);
 
-    for (int i = 0; i < numLights; i++) {
-      sumColor += calcLight(lights[i], normal, view);
-   }
+    bool inShade = TestShadow(fPosLS);
 
-    color = vec4(sumColor[0] * texColor[0], 
-                 sumColor[1] * texColor[1], 
-                 sumColor[2] * texColor[2], 
-                                        texColor[3]);
+    if(!inShade) {
+      for (int i = 0; i < numLights; i++) {
+        sumColor += calcLight(lights[i], normal, view);
+      }
+
+      color = vec4(sumColor[0] * texColor[0], 
+                  sumColor[1] * texColor[1], 
+                  sumColor[2] * texColor[2], 
+                                          texColor[3]);
+    } else {
+      color = vec4(ambColor * vec3(texColor), texColor[3]);
+    }
 }
 

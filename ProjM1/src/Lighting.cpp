@@ -25,3 +25,56 @@ void Lighting::push_back(Light l) {
 int Lighting::size() {
     return lights.size();
 }
+
+/* set up the FBO for the light's depth */
+void Lighting::initShadow() {
+
+	//generate the FBO for the shadow depth
+	glGenFramebuffers(1, &depthMapFBO);
+
+	//generate the texture
+	glGenTextures(1, &depthMap);
+ 	glBindTexture(GL_TEXTURE_2D, depthMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, S_WIDTH, S_HEIGHT, 
+										 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	//bind with framebuffer's depth buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+}
+
+void Lighting::initShadowProg(string resDir) {
+    hasShadow = true;
+    // Initialize the GLSL programs
+	DepthProg = make_shared<Program>();
+	DepthProg->setVerbose(true);
+	DepthProg->setShaderNames(resDir + "depth_vert.glsl", resDir + "depth_frag.glsl");
+	DepthProg->init();
+
+    // Add uniform and attributes to each of the programs
+	DepthProg->addUniform("LP");
+	DepthProg->addUniform("LV");
+	DepthProg->addUniform("M");
+	DepthProg->addAttribute("vertPos");
+}
+
+mat4 Lighting::SetOrthoMatrix() {
+	mat4 ortho = glm::ortho(-10.0, 10.0, -10.0, 10.0, 0.1, 80.0);
+	glUniformMatrix4fv(DepthProg->getUniform("LP"), 1, GL_FALSE, value_ptr(ortho));
+  return ortho;
+}
+
+mat4 Lighting::SetLightView() {
+ 	mat4 Cam = glm::lookAt(vec3(lights[0].pos), vec3(0,0,0), vec3(0,1,0));
+	glUniformMatrix4fv(DepthProg->getUniform("LV"), 1, GL_FALSE, value_ptr(Cam));
+	return Cam;
+}

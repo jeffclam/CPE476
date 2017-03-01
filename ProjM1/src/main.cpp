@@ -46,6 +46,7 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
+float SHOW_SM = 1.0f;
 
 static void error_callback(int error, const char *description)
 {
@@ -76,11 +77,13 @@ static void init()
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glBlendFunc (GL_ONE, GL_ONE);
+	/*glBlendFunc (GL_ONE, GL_ONE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
+    glEnable(GL_BLEND);*/
     
 	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
+	lighting.initShadow();
+    lighting.initShadowProg(RESOURCE_DIR);
 
 	// Initialize the GLSL program.
 	prog = make_shared<Program>();
@@ -98,9 +101,11 @@ static void init()
     prog->addUniform("diffuseColor");
     prog->addUniform("ambColor");
 	prog->addUniform("numLights");
+	prog->addUniform("shadowDepth");
+	prog->addUniform("LS");
 
     Light sun1;
-	sun1.pos = vec4(0, 1, 0.5, 0);
+	sun1.pos = vec4(20.0, 5.0, 20.0, 0);
 	sun1.intensity = vec3(1.0, 1.0, 1.0);
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
@@ -115,7 +120,7 @@ static void init()
 	lighting.SetLightUniforms(prog);
     
 	world.grid.initGrid();
-    
+
     PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
     
     vector<shared_ptr<Shape>> playerParts = {
@@ -145,7 +150,7 @@ static void init()
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
 
     player->setVel(1, 0, 1);
-    player->setPos(10, 2.5, 10);
+    player->setPos(10, 2.2, 10);
     player->setScale(.5, .5, .5);
     player->setModel(player_model);
     player->getModel()->init_PlayerModel();
@@ -154,14 +159,19 @@ static void init()
 
 	world.makeFence(12, 22);
 
-    EnemyGameObj *enemy = new EnemyGameObj(getShape("manPants"), getTexture("manPantText"));
+	GameObj *lightProx = new GameObj(getShape("cube"), getTexture("test"));
+	lightProx->pos = sun1.pos;
+	lightProx->pos[1] += 1;
+	world.addObj(lightProx);
+
+    //EnemyGameObj *enemy = new EnemyGameObj(getShape("manPants"), getTexture("manPantText"));
     //shared_ptr<CharModel> enemy_model = make_shared<CharModel>();
 
-    enemy->setPos(0, 0, 0);
-    enemy->setVel(0, 0, 0);
+    //enemy->setPos(0, 0, 0);
+    //enemy->setVel(0, 0, 0);
 
-    world.addObj(enemy);
-	world.grid.addToGrid(enemy);
+    //world.addObj(enemy);
+	//world.grid.addToGrid(enemy);
 
 	sky.setRight(getTexture("skyRight"));
 	sky.setLeft(getTexture("skyLeft"));
@@ -176,6 +186,7 @@ static void render()
 {
 	// Get current frame buffer size.
 	int width, height;
+	mat4 LS;
     bool show_another_window = true;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
@@ -192,12 +203,42 @@ static void render()
    // Apply perspective projection.
    P->pushMatrix();
    P->perspective(45.0f, aspect, 0.01f, 100.0f);
+
+	//shadow render
+	if (lighting.hasShadow) {
+	  //set up light's depth map
+		glViewport(0, 0, lighting.S_WIDTH, lighting.S_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, lighting.depthMapFBO);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//set up shadow shader
+		//render scene
+   		lighting.DepthProg->bind();
+		//TODO you will need to fix these
+  		mat4 LO = lighting.SetOrthoMatrix();
+   		mat4 LV = lighting.SetLightView();
+		LS = LO * LV;
+		world.render(lighting.DepthProg, true);
+   		lighting.DepthProg->unbind();
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	glViewport(0, 0, width, height);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
+
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 	world.PMat = P->topMatrix();
     setMat(1, prog);
-    world.render(prog);
+	glActiveTexture(GL_TEXTURE1);
+   	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
+	glUniform1i(prog->getUniform("shadowDepth"), 1);
+	glUniformMatrix4fv(prog->getUniform("LS"), 1, GL_FALSE, value_ptr(LS));
+    world.render(prog, false);
     
 	prog->unbind();
 
@@ -209,11 +250,12 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130 * SHOW_SM,200 * SHOW_SM), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+	ImGui::Image((void *)lighting.depthMap, ImVec2(lighting.S_WIDTH/8 * SHOW_SM, lighting.S_HEIGHT/8 * SHOW_SM));
     ImGui::End();
     ImGui::Render();
 	if(world.state.grassAlive < world.edibles.size()/2) {

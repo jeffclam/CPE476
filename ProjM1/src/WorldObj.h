@@ -46,7 +46,7 @@ public:
     WorldObj();
     ~WorldObj();
     std::vector<GameObj*> objs;
-    void render(shared_ptr<Program> prog);
+    void render(shared_ptr<Program> prog, bool shadowPass);
     void update(double time);
     void addObj(GameObj *newObj);
     void addShape(shared_ptr<Shape> s);
