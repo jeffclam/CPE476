@@ -155,7 +155,7 @@ static void init()
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
 
     player->setVel(1, 0, 1);
-    player->setPos(10, 2.2, 10);
+    player->setPos(10, 2.6, 10);
     player->setScale(.5, .5, .5);
     player->setModel(player_model);
     player->getModel()->init_PlayerModel();
@@ -230,22 +230,28 @@ static void render()
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
 
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+
     toonshading.toonProg->bind();
     glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_CCW);
-    glDepthMask(GL_TRUE);
+    
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_BACK);
+    //glDepthMask(GL_TRUE);
     glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
-    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), -0.65f);
+    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.05);
     world.render(toonshading.toonProg, false);
-
-    glCullFace(GL_CW);
+    
+    /*
+    glCullFace(GL_CCW);
     glDepthMask(GL_FALSE);
     glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 1.0, 1.0, 1.0);
     glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.0);
     world.render(toonshading.toonProg, false);
+    */
     toonshading.toonProg->unbind();
-
+    
     glDisable(GL_CULL_FACE);
     glDepthMask(GL_TRUE);
 
