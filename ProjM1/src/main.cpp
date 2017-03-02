@@ -30,6 +30,7 @@
 #include "PlayerGameObj.h"
 #include "GameObjPather.h"
 #include "Texture.h"
+#include "toonshading.h"
 #include "Stuff.h"
 #include "Lighting.h"
 
@@ -38,13 +39,14 @@ using namespace glm;
 
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
-shared_ptr<Program> prog;
+shared_ptr<Program> main_prog, prog;
 
 int g_width, g_height;
 
 WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
+ToonShading toonshading = ToonShading();
 Sky sky;
 
 static void error_callback(int error, const char *description)
@@ -83,9 +85,11 @@ static void init()
 	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
 	lighting.initShadow();
     lighting.initShadowProg(RESOURCE_DIR);
+    toonshading.initShader(RESOURCE_DIR);
 
 	// Initialize the GLSL program.
-	prog = make_shared<Program>();
+	main_prog = make_shared<Program>();
+    prog = main_prog;
 	prog->setVerbose(true);
 	prog->setShaderNames(RESOURCE_DIR + "simple_vert.glsl", RESOURCE_DIR + "simple_frag.glsl");
 	prog->init();
@@ -102,6 +106,8 @@ static void init()
 	prog->addUniform("numLights");
 	prog->addUniform("shadowDepth");
 	prog->addUniform("LS");
+
+    //prog = toonshading.toonProg;
 
     Light sun1;
 	sun1.pos = vec4(20.0, 30.0, 20.0, 0);
@@ -224,6 +230,25 @@ static void render()
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
 
+    toonshading.toonProg->bind();
+    glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_CCW);
+    glDepthMask(GL_TRUE);
+    glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
+    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), -0.65f);
+    world.render(toonshading.toonProg, false);
+
+    glCullFace(GL_CW);
+    glDepthMask(GL_FALSE);
+    glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 1.0, 1.0, 1.0);
+    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.0);
+    world.render(toonshading.toonProg, false);
+    toonshading.toonProg->unbind();
+
+    glDisable(GL_CULL_FACE);
+    glDepthMask(GL_TRUE);
+
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 	world.PMat = P->topMatrix();
@@ -233,7 +258,6 @@ static void render()
 	glUniform1i(prog->getUniform("shadowDepth"), 1);
 	glUniformMatrix4fv(prog->getUniform("LS"), 1, GL_FALSE, value_ptr(LS));
     world.render(prog, false);
-    
 	prog->unbind();
 
 	

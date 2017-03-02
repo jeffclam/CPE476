@@ -47,12 +47,10 @@ public:
     ~WorldObj();
     std::vector<GameObj*> objs;
     void render(shared_ptr<Program> prog, bool shadowPass);
+    void toon_render(shared_ptr<Program>);
     void update(double time);
     void addObj(GameObj *newObj);
-    void addShape(shared_ptr<Shape> s);
     void setWindows(GLFWwindow *win);
-    void spawnGrass(EdibleGameObj *e);
-    void spawnEnemy(EnemyGameObj *e);
     void makeFence(int row, int col);
     void cleanUp();
     vector<EdibleGameObj *> edibles;

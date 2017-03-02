@@ -128,6 +128,10 @@ void WorldObj::render(shared_ptr<Program> prog, bool shadowPass) {
     grid.renderGrid(prog, shadowPass);
 }
 
+void WorldObj::toon_render(shared_ptr<Program> prog) {
+
+}
+
 void WorldObj::cleanUp() {
     for(int i = 0; i < objs.size(); i++) {
         if(objs[i]->dead) {
