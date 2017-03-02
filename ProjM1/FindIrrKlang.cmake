@@ -28,6 +28,7 @@ else (IRRKLANG_LIBRARIES AND IRRKLANG_INCLUDE_DIRS)
       /usr/local/include/irrklang
       /opt/local/include
       /sw/include
+	 /lib/irrklang/include
   )
 
   find_library(IRRKLANG_LIBRARY
@@ -38,6 +39,7 @@ else (IRRKLANG_LIBRARIES AND IRRKLANG_INCLUDE_DIRS)
       /usr/local/lib
       /opt/local/lib
       /sw/lib
+	 /lib/irrklang/lib
   )
 
   if (IRRKLANG_LIBRARY)
