@@ -10,6 +10,9 @@
 #include <random>
 #include <map>
 
+#include <irrKlang.h>
+using namespace irrklang;
+
 #include "GLSL.h"
 #include "Program.h"
 #include "MatrixStack.h"
@@ -46,6 +49,8 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
+
+ISoundEngine* engine = createIrrKlangDevice();
 
 static void error_callback(int error, const char *description)
 {
@@ -174,6 +179,15 @@ static void init()
 	sky.setBack(getTexture("skyBack"));
 	sky.setFront(getTexture("skyFront"));
 	sky.loadCubemap();
+
+	ISound* music = engine->play3D((RESOURCE_DIR + "Funky_Chunk.ogg").c_str(),
+	                               vec3df(0,0,0), true, false, true);
+
+	if (music) {
+		music->setMinDistance(5.0f);
+		music->setIsPaused(false);
+	}
+	engine->setListenerPosition(vec3df(0,0,0), vec3df(0,0,1));
 }
 
 static void render()
