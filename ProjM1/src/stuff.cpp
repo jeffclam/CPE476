@@ -2,11 +2,21 @@
 
 unordered_map<string, shared_ptr<Shape>> loadedThings;
 unordered_map<string, shared_ptr<Texture>> loadedText;
+unordered_map<string, string> loadedSound;
+
+ISoundEngine* engine = createIrrKlangDevice();
+
+string RESDIR = "";
+
+void setSndPos(vec3 pos) {
+    engine->setListenerPosition(vec3df(pos[0],pos[1],pos[2]), vec3df(0,0,1));
+}
 
 void loadStuff(string resourceDir, string stuffFile){
     Json::Value root;
     Json::Reader reader;
     std::ifstream stuffIn(resourceDir + stuffFile, std::ifstream::binary);
+    RESDIR = resourceDir;
     
     bool parsingSuccessful = reader.parse( stuffIn, root, false );
     if ( !parsingSuccessful )
@@ -48,11 +58,26 @@ void loadStuff(string resourceDir, string stuffFile){
         loadedText.insert(newText);
     }
 
+    things = root["sounds"];
+    for ( int index = 0; index < things.size(); ++index ) {
+        Json::Value rootThing = things[index];
+
+        std::string nameText = rootThing.get("name", "NAME_NONE" ).asString();
+        std::string sound = RESDIR + rootThing.get("sound", "OBJ_NONE" ).asString();
+        pair<string, string> newSnd (nameText, sound);
+        loadedSound.insert(newSnd);
+    }
+
 }
 
 shared_ptr<Shape> getShape(string name) {
     std::unordered_map<std::string,shared_ptr<Shape>>::const_iterator got = loadedThings.find (name);
     return got->second;
+}
+
+void playSound(string name, vec3 pos) {
+    std::unordered_map<std::string,string>::const_iterator got = loadedSound.find (name);
+    engine->play3D(got->second.c_str(), vec3df(pos[0], pos[1], pos[2]));
 }
 
 shared_ptr<Texture> getTexture(string name) {

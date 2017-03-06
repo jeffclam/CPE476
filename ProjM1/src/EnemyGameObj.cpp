@@ -83,6 +83,8 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 }
 
 void EnemyGameObj::scare(GameObj *scarer){
+    if (!isScared)
+        playSound("sheepScare", pos);
     isScared = true;
     isLeaving = false;
     GridCell *next = grid->randomGrid();
