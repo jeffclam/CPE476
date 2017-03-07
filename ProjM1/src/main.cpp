@@ -126,9 +126,9 @@ static void init()
     lighting.push_back(other);
     
     Light overcast;
-    overcast.pos = vec4(15, 10, 15, 1);
+    overcast.pos = vec4(0, 10, 0, 1);
     overcast.intensity = vec3(.90, .95, 1);
-    overcast.ambCoeff = 1.0;
+    overcast.ambCoeff = .70;
     lighting.push_back(overcast);
     
     prog->addUniformLights("lights", lighting.size());
