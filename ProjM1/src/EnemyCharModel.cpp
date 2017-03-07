@@ -47,7 +47,7 @@ bool EnemyCharModel::scare_Motion() {
     }
     else {
         body[TORSO]->scale -= .25;
-        if (body[TORSO]->scale == vec3(1.25)) {
+        if (body[TORSO]->scale[0] <= 1.25) {
             scare = true;
             return false;
         }

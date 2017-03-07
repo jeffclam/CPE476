@@ -286,7 +286,7 @@ static void render()
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
-    //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+    ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
 	//ImGui::Image((void *)lighting.depthMap, ImVec2(lighting.S_WIDTH/8 * SHOW_SM, lighting.S_HEIGHT/8 * SHOW_SM));
     ImGui::End();
     ImGui::Render();
