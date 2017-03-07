@@ -26,7 +26,9 @@
 #include "WorldObj.h"
 #include "GameObj.h"
 #include "EdibleGameObj.h"
+#include "EnemyCharModel.h"
 #include "EnemyGameObj.h"
+#include "PlayerCharModel.h"
 #include "PlayerGameObj.h"
 #include "GameObjPather.h"
 #include "Texture.h"
@@ -147,7 +149,7 @@ static void init()
         getTexture("manArmText"), getTexture("manArmText"),
         getTexture("manLegText"), getTexture("manLegText") };
     shared_ptr<CharModel> player_model = 
-        make_shared<CharModel>(CharModel(playerParts, playerTexs));
+        make_shared<CharModel>(PlayerCharModel(playerParts, playerTexs));
 
     vector<shared_ptr<Shape>> sheepParts = {
         getShape("sheepBod"), getShape("sheepHead"),
@@ -160,7 +162,7 @@ static void init()
         getTexture("legText"), getTexture("legText")
     };
     shared_ptr<CharModel> sheep_model =
-        make_shared<CharModel>(CharModel(sheepParts, sheepTexs));
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
     world.charModels.insert(
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
 
@@ -168,7 +170,7 @@ static void init()
     player->setPos(10, 2.5, 10);
     player->setScale(.5, .5, .5);
     player->setModel(player_model);
-    player->getModel()->init_PlayerModel();
+    player->getModel()->init_Model();
 	world.cam.eyePt = player->getPos();
 	world.addObj(player);
 

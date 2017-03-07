@@ -15,6 +15,7 @@ private:
     vec3 nextGoal = vec3(-1,-1,-1);
     GridCell *goal = NULL;
     EdibleGameObj *grass;
+    bool scareMotion = false;
     bool isScared = false;
     bool isLeaving = false;
 };

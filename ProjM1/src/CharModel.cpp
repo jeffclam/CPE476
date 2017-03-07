@@ -10,6 +10,10 @@
 #define RIGHT_LEG 5
 */
 
+CharModel::CharModel() {
+    //printf("You need to put parameters into this\n");
+}
+
 CharModel::CharModel(shared_ptr<Shape> shape) {
     init();
     for (int i = 0; i < body.size(); i++) {
@@ -43,7 +47,7 @@ CharModel::CharModel(vector<shared_ptr<Shape>> parts,
     }
 }
 
-void CharModel::init_PlayerModel() {
+void CharModel::init_Model() {
     if (!body.empty()) {
         body[TORSO]->offset = vec3(0, 0, 0);
 
@@ -67,37 +71,6 @@ void CharModel::init_PlayerModel() {
         body[RIGHT_LEG]->offset = vec3(0, -.35, 0);
         body[RIGHT_LEG]->action_rotation = vec3(1, 0, 0);
         body[RIGHT_LEG]->attach_Limb = vec3(.50, -1.5, 0);
-    }
-}
-
-void CharModel::init_SheepModel() {
-    if (!body.empty()) {
-        body[TORSO]->scale = vec3(1.25, 1.25, 1.25);
-        body[TORSO]->offset = vec3(0, 0, 0);
-
-        //body[HEAD]->scale = vec3(.50, .50, .50);
-        body[HEAD]->offset = vec3(0, 0, 1);
-        body[HEAD]->attach_Limb = vec3(0, .65, 0);
-
-        body[LEFT_ARM]->scale = vec3(.25, .25, .25);
-        body[LEFT_ARM]->offset = vec3(0, -.25, 0);
-        body[LEFT_ARM]->action_rotation = vec3(1, 0, 0);
-        body[LEFT_ARM]->attach_Limb = vec3(-.35, -.35, .35);
-
-        body[RIGHT_ARM]->scale = vec3(.25, .25, .25);
-        body[RIGHT_ARM]->offset = vec3(0, -.25, 0);
-        body[RIGHT_ARM]->action_rotation = vec3(1, 0, 0);
-        body[RIGHT_ARM]->attach_Limb = vec3(.35, -.35, .35);
-
-        body[LEFT_LEG]->scale = vec3(.25, .25, .25);
-        body[LEFT_LEG]->offset = vec3(0, -.25, 0);
-        body[LEFT_LEG]->action_rotation = vec3(1, 0, 0);
-        body[LEFT_LEG]->attach_Limb = vec3(-.35, -.35, -.35);
-
-        body[RIGHT_LEG]->scale = vec3(.25, .25, .25);
-        body[RIGHT_LEG]->offset = vec3(0, -.25, 0);
-        body[RIGHT_LEG]->action_rotation = vec3(1, 0, 0);
-        body[RIGHT_LEG]->attach_Limb = vec3(.35, -.35, -.35);
     }
 }
 
