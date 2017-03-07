@@ -1,4 +1,7 @@
 #version 330 core
+
+#define VARIATION 20
+
 uniform sampler2D tex;
 uniform sampler2D shadowDepth;
 
@@ -60,7 +63,7 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    }
    vec3 spec = specularCoeff * specColor * light.intensity;
    
-   return amb + attenuation * (diff + spec);
+   return amb + attenuation * diff; //(diff + spec);
 }
 
 /* returns 1 if shadowed */
@@ -100,7 +103,7 @@ void main()
       sumColor += calcLight(lights[i], normal, view);
     }
 
-	vec3 shadeIntensity = ceil(sumColor * 60) / 50;
+	vec3 shadeIntensity = ceil(sumColor * VARIATION) / VARIATION;
 
 	/*
     color = vec4(sumColor[0] * texColor[0] * inShade, 

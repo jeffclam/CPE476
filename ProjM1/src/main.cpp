@@ -107,8 +107,6 @@ static void init()
 	prog->addUniform("shadowDepth");
 	prog->addUniform("LS");
 
-    //prog = toonshading.toonProg;
-
     Light sun1;
 	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
 	sun1.intensity = vec3(1.0, .80, .90);
