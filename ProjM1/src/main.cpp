@@ -115,16 +115,16 @@ static void init()
 
     Light other;
     other.pos = vec4(0, 10, -.5, 0);
-    other.intensity = vec3(1, .9, .4);
+    other.intensity = vec3(1, .9, .6);
     other.ambCoeff = 0.20;
     lighting.push_back(other);
-
+    /*
     Light overcast;
-    overcast.pos = vec4(10, 50, 10, 1);
+    overcast.pos = vec4(15, 10, 15, 1);
     overcast.intensity = vec3(.90, .95, 1);
     overcast.ambCoeff = .5;
     lighting.push_back(overcast);
-
+    */
     prog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(prog);
     

@@ -1,6 +1,6 @@
 #version 330 core
 
-#define VARIATION 20
+#define VARIATION 5
 
 uniform sampler2D tex;
 uniform sampler2D shadowDepth;
@@ -63,7 +63,7 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    }
    vec3 spec = specularCoeff * specColor * light.intensity;
    
-   return amb + attenuation * diff; //(diff + spec);
+   return amb + attenuation * diff;//(diff + spec);
 }
 
 /* returns 1 if shadowed */
@@ -95,6 +95,11 @@ void main()
     vec3 normal = normalize(fragNor);
     vec3 view = normalize(-1 * vec3(worldPos));
 
+
+	float metallic = dot(-fragNor, view);
+	metallic = smoothstep(0.3, .6, metallic);
+	metallic = metallic/2 + 0.5;
+
     vec3 sumColor = vec3(0);
 
     float inShade = TestShadow(fPosLS);
@@ -102,16 +107,12 @@ void main()
     for (int i = 0; i < numLights; i++) {
       sumColor += calcLight(lights[i], normal, view);
     }
-
-	vec3 shadeIntensity = ceil(sumColor * VARIATION) / VARIATION;
-
-	/*
-    color = vec4(sumColor[0] * texColor[0] * inShade, 
-                sumColor[1] * texColor[1] * inShade, 
-                sumColor[2] * texColor[2] * inShade, 
-                                        texColor[3]);
-		*/								
-
-	color = vec4(texColor.xyz * shadeIntensity * inShade, texColor[3]);
+	//sumColor = ceil(sumColor * VARIATION) / VARIATION;
+	//sumColor *= metallic;
+	//color = vec4(texColor.xyz * metallic * inShade, texColor.w);
+	color = vec4(sumColor.xyz * texColor.xyz, texColor[3]);
+    //color = vec4(color.xyz * metallic, texColor[3]);
+	//color = vec4(texColor.xyz * inShade * metallic, texColor[3]);
+	//color = vec4(ceil(texColor.xyz * VARIATION) / VARIATION * inShade, texColor[3]);
 }
 
