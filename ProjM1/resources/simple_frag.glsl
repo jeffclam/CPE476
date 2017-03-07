@@ -110,7 +110,7 @@ void main()
 	//sumColor = ceil(sumColor * VARIATION) / VARIATION;
 	//sumColor *= metallic;
 	//color = vec4(texColor.xyz * metallic * inShade, texColor.w);
-	color = vec4(sumColor.xyz * texColor.xyz, texColor[3]);
+	color = vec4(sumColor.xyz * texColor.xyz * inShade, texColor[3]);
     //color = vec4(color.xyz * metallic, texColor[3]);
 	//color = vec4(texColor.xyz * inShade * metallic, texColor[3]);
 	//color = vec4(ceil(texColor.xyz * VARIATION) / VARIATION * inShade, texColor[3]);
