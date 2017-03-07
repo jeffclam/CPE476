@@ -45,23 +45,21 @@ struct Part {
 class CharModel 
 {
 public:
+    CharModel();
     CharModel(shared_ptr<Shape> s);
     CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso, shared_ptr<Shape> arm, shared_ptr<Shape> leg);
     CharModel(shared_ptr<Shape> s, shared_ptr<MatrixStack> g);
     CharModel(vector<shared_ptr<Shape>>, vector<shared_ptr<Texture>>);
     void init();
-    //virtual void render();
-    //virtual void scare();
-    void init_PlayerModel();
-    void init_SheepModel();
+    virtual void init_Model();
     void render_Model(shared_ptr<Program> prog);
     shared_ptr<MatrixStack> adjust_Part(int part, float rotation);
     void render_Part(shared_ptr<Program> prog, int part);
     shared_ptr<MatrixStack> getMatrix();
     shared_ptr<MatrixStack> setMatrix(shared_ptr<MatrixStack> M);
-    bool scare_Motion();
-    void walk_Motion();
-private:
+    virtual bool scare_Motion();
+    virtual void walk_Motion();
+protected:
     vector<unique_ptr<Part>> body;
     vector<shared_ptr<Texture>> body_texs;
     shared_ptr<MatrixStack> model_transform;

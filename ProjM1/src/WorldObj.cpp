@@ -157,7 +157,7 @@ void WorldObj::update(double time) {
 
         EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
         enemy->setModel(charModels.at("sheep_model"));
-        enemy->getModel()->init_SheepModel();
+        enemy->getModel()->init_Model();
         enemy->setScale(.75, .75, .75);
         enemy->setPos(42, 2, 45);
         addObj(enemy);
