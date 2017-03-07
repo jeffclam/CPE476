@@ -100,9 +100,15 @@ void main()
       sumColor += calcLight(lights[i], normal, view);
     }
 
+	vec3 shadeIntensity = ceil(sumColor * 60) / 50;
+
+	/*
     color = vec4(sumColor[0] * texColor[0] * inShade, 
                 sumColor[1] * texColor[1] * inShade, 
                 sumColor[2] * texColor[2] * inShade, 
                                         texColor[3]);
+		*/								
+
+	color = vec4(texColor.xyz * shadeIntensity * inShade, texColor[3]);
 }
 

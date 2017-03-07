@@ -97,7 +97,7 @@ void setMat(int mat, shared_ptr<Program> prog) {
             glUniform3f(prog->getUniform("ambColor"), 0.13, 0.13, 0.14);
             glUniform3f(prog->getUniform("diffuseColor"), 0.3, 0.3, 0.4);
             glUniform3f(prog->getUniform("specColor"), 0.3, 0.3, 0.4);
-            glUniform1f(prog->getUniform("specShine"), 4.0);
+            glUniform1f(prog->getUniform("specShine"), 25.0);
             break;
         case 2: //brass
             glUniform3f(prog->getUniform("ambColor"), 0.3294, 0.2235, 0.02745);

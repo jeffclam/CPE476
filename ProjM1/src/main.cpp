@@ -110,16 +110,22 @@ static void init()
     //prog = toonshading.toonProg;
 
     Light sun1;
-	sun1.pos = vec4(20.0, 30.0, 20.0, 0);
-	sun1.intensity = vec3(1.0, 1.0, 1.0);
+	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
+	sun1.intensity = vec3(1.0, .80, .90);
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
 
     Light other;
     other.pos = vec4(0, 10, -.5, 0);
-    other.intensity = vec3(1, .8, .6);
+    other.intensity = vec3(1, .9, .4);
     other.ambCoeff = 0.20;
     lighting.push_back(other);
+
+    Light overcast;
+    overcast.pos = vec4(10, 50, 10, 1);
+    overcast.intensity = vec3(.90, .95, 1);
+    overcast.ambCoeff = .5;
+    lighting.push_back(overcast);
 
     prog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(prog);
@@ -155,7 +161,7 @@ static void init()
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
 
     player->setVel(1, 0, 1);
-    player->setPos(10, 2.6, 10);
+    player->setPos(10, 2.5, 10);
     player->setScale(.5, .5, .5);
     player->setModel(player_model);
     player->getModel()->init_PlayerModel();
@@ -241,28 +247,15 @@ static void render()
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
+    glDepthMask(GL_TRUE);
 
     toonshading.toonProg->bind();
     glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    
-    //glEnable(GL_CULL_FACE);
-    //glCullFace(GL_BACK);
-    //glDepthMask(GL_TRUE);
     glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
     glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.05);
     world.render(toonshading.toonProg, false);
-    
-    /*
-    glCullFace(GL_CCW);
-    glDepthMask(GL_FALSE);
-    glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 1.0, 1.0, 1.0);
-    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.0);
-    world.render(toonshading.toonProg, false);
-    */
     toonshading.toonProg->unbind();
-    
     glDisable(GL_CULL_FACE);
-    glDepthMask(GL_TRUE);
 
 	prog->bind();
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
