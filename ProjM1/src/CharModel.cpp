@@ -11,7 +11,7 @@
 */
 
 CharModel::CharModel() {
-    printf("You need to put parameters into this\n");
+    //printf("You need to put parameters into this\n");
 }
 
 CharModel::CharModel(shared_ptr<Shape> shape) {
