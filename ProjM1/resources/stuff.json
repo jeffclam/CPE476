@@ -154,5 +154,11 @@
         "name": "skyUp",
         "text": "miramar_up.tga"
         }
+        ],
+   "sounds" : [
+        {
+        "name": "sheepScare",
+        "sound": "sheepScare.ogg"
+        }
         ]
 }

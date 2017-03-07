@@ -5,7 +5,7 @@ project(ProjM1)
 
 # Use glob to get the list of all source files.
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}")
 # We don't really need to include header and resource files to build, but it's
 # nice to have them show up in IDEs.
 file(GLOB_RECURSE HEADERS "src/*.h")
@@ -13,6 +13,15 @@ file(GLOB_RECURSE GLSL "resources/*.glsl")
 
 # Set the executable.
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS} ${GLSL})
+
+#find irrKlang
+find_package (IrrKlang)
+if (IRRKLANG_FOUND)
+  include_directories(${IRRKLANG_INCLUDE_DIRS})
+  target_link_libraries (${CMAKE_PROJECT_NAME}  ${IRRKLANG_LIBRARIES})
+else()
+  MESSAGE("irrKlang not found!")
+endif (IRRKLANG_FOUND)
 
 # Get the GLM environment variable. Since GLM is a header-only library, we
 # just need to add it to the include directory.

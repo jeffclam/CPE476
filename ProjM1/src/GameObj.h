@@ -20,6 +20,7 @@
 #include "Texture.h"
 #include "WorldGrid.h"
 #include "CharModel.h"
+#include "stuff.h"
 
 using namespace std;
 using namespace glm;

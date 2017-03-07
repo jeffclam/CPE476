@@ -7,6 +7,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <fstream>
+#include <irrKlang.h>
 
 
 #include "Shape.h"
@@ -25,11 +26,14 @@
 using namespace glm;
 using namespace Json;
 using namespace std;
+using namespace irrklang;
 
 void loadStuff(string resourceDir, string stuffFile);
 shared_ptr<Shape> getShape(string name);
 shared_ptr<Texture> getTexture(string name);
+void playSound(string name, vec3 pos);
 void setMat(int mat, shared_ptr<Program> prog);
+void setSndPos(vec3 pos);
 
 
 
