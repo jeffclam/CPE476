@@ -111,7 +111,9 @@ int ViewFrustCull(vec3 center, float radius) {
 
 void WorldObj::render(shared_ptr<Program> prog, bool shadowPass) {
     if(!shadowPass) {
+        //cam.eyePt[1] = 2;
         glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(cam.getLookAt()));
+        //glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(glm::lookAt(vec3(0,-7,0), vec3(0), vec3(0,1,0))));
         ExtractVFPlanes(cam.getLookAt(), PMat);
         lastRendered = "_NONE_";
     }

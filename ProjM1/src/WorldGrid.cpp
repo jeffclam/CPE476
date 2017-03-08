@@ -69,7 +69,7 @@ GridCell *WorldGrid::getCellFromCoords(float x, float y) {
     int r = (x+0.5)/offset;
     int c = (y+0.5)/offset;
     if(r >= grid.size() || c >= grid[0].size()) {
-        cout << "NULL\n";
+        //cout << "NULL\n";
         return NULL;
     }
     return &(grid[r][c]);
