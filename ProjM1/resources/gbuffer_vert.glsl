@@ -13,7 +13,8 @@ out vec2 vTexCoord;
 void main()
 {
 	gl_Position = P * V * M * vec4(vertPos, 1.0);
-	fragNor = (M * vec4(vertNor, 0.0)).xyz;
-    worldPos = V * M * vec4(vertPos, 1.0);
+    mat3 normalMatrix = transpose(inverse(mat3(M)));
+	fragNor = (M * vec4(vertNor, 1.0)).xyz;
+    worldPos = M * vec4(vertPos, 1.0);
     vTexCoord = vertTex;
 }

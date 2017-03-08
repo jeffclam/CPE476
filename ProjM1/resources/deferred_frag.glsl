@@ -11,7 +11,7 @@ uniform mat4 LS;
 vec3 ambColor = vec3(0.1, 0.1, 0.1);
 vec3 specColor = vec3(0.5, 0.5, 0.5);
 
-#define MAX_LIGHTS 10
+#define MAX_LIGHTS 35
 uniform int numLights;
 uniform struct Light {
    vec4 pos;
@@ -102,5 +102,7 @@ void main() {
 
     //color = vec4(diffuseColor, 1.0);
     color = vec4(sumColor.xyz * diffuseColor.xyz * inShade, 1.0);
+    if(diffuseColor.xyz == vec3(0))
+      discard;
 
 }

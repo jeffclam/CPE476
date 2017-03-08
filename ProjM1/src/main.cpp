@@ -99,7 +99,7 @@ void RenderQuad()
 }
 
 GLuint gBuffer;
-GLuint gPosition, gNormal, gAlbedoSpec;
+GLuint gPosition, gNormal, gAlbedoSpec, rboDepth;
 void defferedInit() {
 	glGenFramebuffers(1, &gBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
@@ -107,7 +107,7 @@ void defferedInit() {
 	// - Position color buffer
 	glGenTextures(1, &gPosition);
 	glBindTexture(GL_TEXTURE_2D, gPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width, g_height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * 2, g_height * 2, 0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
@@ -115,7 +115,7 @@ void defferedInit() {
 	// - Normal color buffer
 	glGenTextures(1, &gNormal);
 	glBindTexture(GL_TEXTURE_2D, gNormal);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width, g_height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * 2, g_height * 2, 0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
@@ -123,7 +123,7 @@ void defferedInit() {
 	// - Color + Specular color buffer
 	glGenTextures(1, &gAlbedoSpec);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width, g_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width * 2, g_height * 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
@@ -131,6 +131,12 @@ void defferedInit() {
 	// - Tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
 	GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
 	glDrawBuffers(3, attachments);
+
+	//set up depth buffer
+	glGenRenderbuffers(1, &rboDepth);
+	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, g_width * 2, g_height * 2);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 }
 
 
@@ -141,7 +147,7 @@ static void init()
 	defferedInit();
     loadStuff(RESOURCE_DIR, "stuff.json");
 	// Set background color.
-	glClearColor(.12f, .34f, .56f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	// Enable z-buffer test.
 	glEnable(GL_DEPTH_TEST);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -175,31 +181,26 @@ static void init()
     defprog->addAttribute("vertTex");
 	defprog->addUniform("numLights");
 	defprog->addUniform("shadowDepth");
+	defprog->addUniform("gNormal");
+	defprog->addUniform("gPosition");
+	defprog->addUniform("gAlbedoSpec");
 	defprog->addUniform("LS");
 
     Light sun1;
-	sun1.pos = vec4(-10.0, 30.0, -10.0, 0);
-	sun1.intensity = vec3(1.0, .80, .90);
+	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
+	sun1.intensity = vec3(0.2, 0.2, 0.2);
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
 
-    Light sun2;
-    sun1.pos = vec4(-10.0, 30.0, -10.0, 0);
-    sun1.intensity = vec3(1.0, .80, .90);
-    sun1.ambCoeff = 1.0;
-    lighting.push_back(sun2);
-
-    Light other;
-    other.pos = vec4(10, 10, -.5, 0);
-    other.intensity = vec3(1, .9, .6);
-    other.ambCoeff = 0.50;
-    lighting.push_back(other);
-    
-    Light overcast;
-    overcast.pos = vec4(0, 10, 0, 1);
-    overcast.intensity = vec3(.90, .95, 1);
-    overcast.ambCoeff = .70;
-    lighting.push_back(overcast);
+	for(int i = 0; i < 5; i++) {
+		for(int j = 0; j < 5; j++) {
+			Light newLight;
+			newLight.pos = vec4( i * 35, 2.0, j * 35, 1.0);
+    		newLight.intensity = vec3(0.25, 0.25, 0.3);
+    		newLight.ambCoeff = 1.0;
+    		lighting.push_back(newLight);
+		}
+	}
     
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
@@ -315,7 +316,6 @@ static void render()
 
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
 
@@ -324,15 +324,16 @@ static void render()
     glDepthMask(GL_TRUE);
 
 	//toon render
-    toonshading.toonProg->bind();
+    /*toonshading.toonProg->bind();
     glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
     glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
     glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.05);
     world.render(toonshading.toonProg, false);
-    toonshading.toonProg->unbind();
-    glDisable(GL_CULL_FACE);
-
+    toonshading.toonProg->unbind();*/
+   
+   	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+	glDepthFunc(GL_LESS); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//geomtry render
 	gprog->bind();
@@ -343,19 +344,22 @@ static void render()
 	gprog->unbind();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_DEPTH_BUFFER_BIT);
 	//lighting render
 	defprog->bind();
 	glActiveTexture(GL_TEXTURE3);
    	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
-	glUniform1i(defprog->getUniform("shadowDepth"), 1);
+	glUniform1i(defprog->getUniform("shadowDepth"), 3);
 	glUniformMatrix4fv(defprog->getUniform("LS"), 1, GL_FALSE, value_ptr(LS));
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gPosition);
+	glUniform1i(defprog->getUniform("gPosition"), 0);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, gNormal);
+	glUniform1i(defprog->getUniform("gNormal"), 1);
     glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+	glUniform1i(defprog->getUniform("gAlbedoSpec"), 2);
 	RenderQuad();
 	defprog->unbind();
 
@@ -365,12 +369,14 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130 * 10 , 75 * 10), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130 , 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
-	ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
+	//ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
+	//ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
+	//ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
     ImGui::End();
     ImGui::Render();
 	if(world.state.grassAlive < world.edibles.size()/2) {
