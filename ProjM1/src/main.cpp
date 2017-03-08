@@ -365,12 +365,12 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130 , 75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130 * 10 , 75 * 10), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
     ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
-	//ImGui::Image((void *)lighting.depthMap, ImVec2(lighting.S_WIDTH/8 * SHOW_SM, lighting.S_HEIGHT/8 * SHOW_SM));
+	ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
     ImGui::End();
     ImGui::Render();
 	if(world.state.grassAlive < world.edibles.size()/2) {
