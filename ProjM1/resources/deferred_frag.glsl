@@ -129,8 +129,8 @@ void main() {
     float g = sqrt(pow(gx, 2.0)+pow(gy, 2.0));
     g = smoothstep(0.4, 0.6, g);
 
-    color = vec4(diffuseColor - vec3(g), 1.0);
-    //color = vec4((sumColor.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
+    //color = vec4(diffuseColor - vec3(g), 1.0);
+    color = vec4((sumColor.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
     if(diffuseColor.xyz == vec3(0))
       discard;
 
