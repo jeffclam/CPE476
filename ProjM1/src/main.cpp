@@ -185,6 +185,8 @@ static void init()
 	defprog->addUniform("gPosition");
 	defprog->addUniform("gAlbedoSpec");
 	defprog->addUniform("LS");
+	defprog->addUniform("height");
+	defprog->addUniform("width");
 
     Light sun1;
 	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
@@ -347,6 +349,8 @@ static void render()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	//lighting render
 	defprog->bind();
+	glUniform1i(defprog->getUniform("height"), g_height * 2);
+	glUniform1i(defprog->getUniform("width"), g_width * 2);
 	glActiveTexture(GL_TEXTURE3);
    	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
 	glUniform1i(defprog->getUniform("shadowDepth"), 3);

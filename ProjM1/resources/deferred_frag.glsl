@@ -7,6 +7,8 @@ uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
 uniform sampler2D shadowDepth;
 uniform mat4 LS;
+uniform int width;
+uniform int height;
 
 vec3 ambColor = vec3(0.1, 0.1, 0.1);
 vec3 specColor = vec3(0.5, 0.5, 0.5);
@@ -23,6 +25,16 @@ vec3 worldPos;
 vec3 diffuseColor;
 float specShine;
 float shadowWidth = 2048.0;
+mat3 sx = mat3( 
+    1.0, 2.0, 1.0, 
+    0.0, 0.0, 0.0, 
+   -1.0, -2.0, -1.0 
+);
+mat3 sy = mat3( 
+    1.0, 0.0, -1.0, 
+    2.0, 0.0, -2.0, 
+    1.0, 0.0, -1.0 
+);
 const float M[25]=float[25](0.003f, 0.013f, 0.022f, 0.013f, 0.003f,
                  0.013f, 0.059f, 0.097f, 0.059f, 0.013f,
                  0.022f, 0.097f, 0.159f, 0.097f, 0.022f,
@@ -100,8 +112,25 @@ void main() {
       sumColor += calcLight(lights[i], normal, view);
     }
 
-    //color = vec4(diffuseColor, 1.0);
-    color = vec4(sumColor.xyz * diffuseColor.xyz * inShade, 1.0);
+    //edge detect
+    mat3 I;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            float offsetX = float(i-1)/float(width);
+            float offsetY = float(j-1)/float(height);
+            vec3 sample  = texture(gAlbedoSpec, vec2(TexCoords) + vec2(offsetX, offsetY)).rgb;
+            I[i][j] = length(sample); 
+        }
+    }
+
+    float gx = dot(sx[0], I[0]) + dot(sx[1], I[1]) + dot(sx[2], I[2]); 
+    float gy = dot(sy[0], I[0]) + dot(sy[1], I[1]) + dot(sy[2], I[2]);
+
+    float g = sqrt(pow(gx, 2.0)+pow(gy, 2.0));
+    g = smoothstep(0.4, 0.6, g);
+
+    color = vec4(diffuseColor - vec3(g), 1.0);
+    //color = vec4((sumColor.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
     if(diffuseColor.xyz == vec3(0))
       discard;
 
