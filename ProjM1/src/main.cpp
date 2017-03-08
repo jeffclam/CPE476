@@ -41,7 +41,7 @@ using namespace glm;
 
 GLFWwindow *window; // Main application window
 string RESOURCE_DIR = ""; // Where the resources are loaded from
-shared_ptr<Program> main_prog, prog;
+shared_ptr<Program> gprog, defprog;
 
 int g_width, g_height;
 
@@ -69,11 +69,76 @@ static void resize_callback(GLFWwindow *window, int width, int height) {
    glViewport(0, 0, width, height);
 }
 
+GLuint quadVAO = 0;
+GLuint quadVBO;
+void RenderQuad()
+{
+	if (quadVAO == 0)
+	{
+		GLfloat quadVertices[] = {
+			// Positions        // Texture Coords
+			-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		};
+		// Setup plane VAO
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(defprog->getAttribute("vertPos"));
+		glVertexAttribPointer(defprog->getAttribute("vertPos") , 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(defprog->getAttribute("vertTex"));
+		glVertexAttribPointer(defprog->getAttribute("vertTex") , 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
+
+GLuint gBuffer;
+GLuint gPosition, gNormal, gAlbedoSpec;
+void defferedInit() {
+	glGenFramebuffers(1, &gBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+	
+	// - Position color buffer
+	glGenTextures(1, &gPosition);
+	glBindTexture(GL_TEXTURE_2D, gPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width, g_height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
+	
+	// - Normal color buffer
+	glGenTextures(1, &gNormal);
+	glBindTexture(GL_TEXTURE_2D, gNormal);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width, g_height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
+	
+	// - Color + Specular color buffer
+	glGenTextures(1, &gAlbedoSpec);
+	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width, g_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+	
+	// - Tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
+	GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, attachments);
+}
+
 
 static void init()
 {
     srand (time(NULL));
 	GLSL::checkVersion();
+	defferedInit();
     loadStuff(RESOURCE_DIR, "stuff.json");
 	// Set background color.
 	glClearColor(.12f, .34f, .56f, 1.0f);
@@ -90,24 +155,27 @@ static void init()
     toonshading.initShader(RESOURCE_DIR);
 
 	// Initialize the GLSL program.
-	main_prog = make_shared<Program>();
-    prog = main_prog;
-	prog->setVerbose(true);
-	prog->setShaderNames(RESOURCE_DIR + "simple_vert.glsl", RESOURCE_DIR + "simple_frag.glsl");
-	prog->init();
-	prog->addUniform("P");
-	prog->addUniform("M");
-    prog->addUniform("V");
-	prog->addAttribute("vertPos");
-	prog->addAttribute("vertNor");
-    prog->addAttribute("vertTex");
-    prog->addUniform("specColor");
-    prog->addUniform("specShine");
-    prog->addUniform("diffuseColor");
-    prog->addUniform("ambColor");
-	prog->addUniform("numLights");
-	prog->addUniform("shadowDepth");
-	prog->addUniform("LS");
+	gprog = make_shared<Program>();
+	gprog->setVerbose(true);
+	gprog->setShaderNames(RESOURCE_DIR + "gbuffer_vert.glsl", RESOURCE_DIR + "gbuffer_frag.glsl");
+	gprog->init();
+	gprog->addUniform("P");
+	gprog->addUniform("M");
+    gprog->addUniform("V");
+	gprog->addAttribute("vertPos");
+	gprog->addAttribute("vertNor");
+    gprog->addAttribute("vertTex");
+    gprog->addUniform("specShine");
+
+	defprog = make_shared<Program>();
+	defprog->setVerbose(true);
+	defprog->setShaderNames(RESOURCE_DIR + "deferred_vert.glsl", RESOURCE_DIR + "deferred_frag.glsl");
+	defprog->init();
+	defprog->addAttribute("vertPos");
+    defprog->addAttribute("vertTex");
+	defprog->addUniform("numLights");
+	defprog->addUniform("shadowDepth");
+	defprog->addUniform("LS");
 
     Light sun1;
 	sun1.pos = vec4(-10.0, 30.0, -10.0, 0);
@@ -133,8 +201,8 @@ static void init()
     overcast.ambCoeff = .70;
     lighting.push_back(overcast);
     
-    prog->addUniformLights("lights", lighting.size());
-	lighting.SetLightUniforms(prog);
+    defprog->addUniformLights("lights", lighting.size());
+	lighting.SetLightUniforms(defprog);
     
 	world.grid.initGrid();
 
@@ -255,6 +323,7 @@ static void render()
     glCullFace(GL_FRONT);
     glDepthMask(GL_TRUE);
 
+	//toon render
     toonshading.toonProg->bind();
     glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
     glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
@@ -263,18 +332,32 @@ static void render()
     toonshading.toonProg->unbind();
     glDisable(GL_CULL_FACE);
 
-	prog->bind();
-	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//geomtry render
+	gprog->bind();
+	glUniformMatrix4fv(gprog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 	world.PMat = P->topMatrix();
-    setMat(1, prog);
-	glActiveTexture(GL_TEXTURE1);
-   	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
-	glUniform1i(prog->getUniform("shadowDepth"), 1);
-	glUniformMatrix4fv(prog->getUniform("LS"), 1, GL_FALSE, value_ptr(LS));
-    world.render(prog, false);
-	prog->unbind();
+    setMat(1, gprog);
+    world.render(gprog, false);
+	gprog->unbind();
 
-	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//lighting render
+	defprog->bind();
+	glActiveTexture(GL_TEXTURE3);
+   	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
+	glUniform1i(defprog->getUniform("shadowDepth"), 1);
+	glUniformMatrix4fv(defprog->getUniform("LS"), 1, GL_FALSE, value_ptr(LS));
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, gPosition);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, gNormal);
+    glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+	RenderQuad();
+	defprog->unbind();
 
    // Pop matrix stacks.
    P->popMatrix();

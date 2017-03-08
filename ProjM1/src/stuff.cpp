@@ -88,33 +88,33 @@ shared_ptr<Texture> getTexture(string name) {
 void setMat(int mat, shared_ptr<Program> prog) {
     switch (mat) {
         case 0: //shiny blue plastic
-            glUniform3f(prog->getUniform("ambColor"), 0.02, 0.04, 0.2);
+            /*glUniform3f(prog->getUniform("ambColor"), 0.02, 0.04, 0.2);
             glUniform3f(prog->getUniform("diffuseColor"), 0.0, 0.16, 0.9);
-            glUniform3f(prog->getUniform("specColor"), 0.14, 0.2, 0.8);
+            glUniform3f(prog->getUniform("specColor"), 0.14, 0.2, 0.8);*/
             glUniform1f(prog->getUniform("specShine"), 120.0);
             break;
         case 1: // flat grey
-            glUniform3f(prog->getUniform("ambColor"), 0.13, 0.13, 0.14);
+            /*glUniform3f(prog->getUniform("ambColor"), 0.13, 0.13, 0.14);
             glUniform3f(prog->getUniform("diffuseColor"), 0.3, 0.3, 0.4);
-            glUniform3f(prog->getUniform("specColor"), 0.3, 0.3, 0.4);
+            glUniform3f(prog->getUniform("specColor"), 0.3, 0.3, 0.4);*/
             glUniform1f(prog->getUniform("specShine"), 25.0);
             break;
         case 2: //brass
-            glUniform3f(prog->getUniform("ambColor"), 0.3294, 0.2235, 0.02745);
+            /*glUniform3f(prog->getUniform("ambColor"), 0.3294, 0.2235, 0.02745);
             glUniform3f(prog->getUniform("diffuseColor"), 0.7804, 0.5686, 0.11373);
-            glUniform3f(prog->getUniform("specColor"), 0.9922, 0.941176, 0.80784);
+            glUniform3f(prog->getUniform("specColor"), 0.9922, 0.941176, 0.80784);*/
             glUniform1f(prog->getUniform("specShine"), 27.9);
             break;
         case 3: //copper
-            glUniform3f(prog->getUniform("ambColor"), 0.1913, 0.0735, 0.0225);
+            /*glUniform3f(prog->getUniform("ambColor"), 0.1913, 0.0735, 0.0225);
             glUniform3f(prog->getUniform("diffuseColor"), 0.7038, 0.27048, 0.0828);
-            glUniform3f(prog->getUniform("specColor"), 0.257, 0.1376, 0.08601);
+            glUniform3f(prog->getUniform("specColor"), 0.257, 0.1376, 0.08601);*/
             glUniform1f(prog->getUniform("specShine"), 12.8);
             break;
         case 4: //emerald
-            glUniform3f(prog->getUniform("ambColor"), 0.0215, 0.1745, 0.0215);
+            /*glUniform3f(prog->getUniform("ambColor"), 0.0215, 0.1745, 0.0215);
             glUniform3f(prog->getUniform("diffuseColor"), 0.07568, 0.61424, 0.07568);
-            glUniform3f(prog->getUniform("specColor"), 0.633, 0.727811, 0.633);
+            glUniform3f(prog->getUniform("specColor"), 0.633, 0.727811, 0.633);*/
             glUniform1f(prog->getUniform("specShine"), 76.8);
             break;
     }

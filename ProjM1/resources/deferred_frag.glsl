@@ -1,22 +1,15 @@
 #version 330 core
-
-#define VARIATION 5
-
-uniform sampler2D tex;
-uniform sampler2D shadowDepth;
-
-
-in vec2 vTexCoord;
-in vec3 fragNor;
-in vec4 worldPos;
-//in vec4 gl_fragCoord;
 out vec4 color;
-in vec4 fPosLS;
+in vec2 TexCoords;
 
-uniform vec3 ambColor;
-uniform vec3 specColor;
-uniform float specShine;
-uniform vec3 diffuseColor;
+uniform sampler2D gPosition;
+uniform sampler2D gNormal;
+uniform sampler2D gAlbedoSpec;
+uniform sampler2D shadowDepth;
+uniform mat4 LS;
+
+vec3 ambColor = vec3(0.1, 0.1, 0.1);
+vec3 specColor = vec3(0.5, 0.5, 0.5);
 
 #define MAX_LIGHTS 10
 uniform int numLights;
@@ -26,8 +19,10 @@ uniform struct Light {
    float ambCoeff;
 } lights[MAX_LIGHTS];
 
+vec3 worldPos;
+vec3 diffuseColor;
+float specShine;
 float shadowWidth = 2048.0;
-//gaus blur
 const float M[25]=float[25](0.003f, 0.013f, 0.022f, 0.013f, 0.003f,
                  0.013f, 0.059f, 0.097f, 0.059f, 0.013f,
                  0.022f, 0.097f, 0.159f, 0.097f, 0.022f,
@@ -89,30 +84,23 @@ float TestShadow(vec4 LSfPos) {
 	return contribution;
 }
 
-void main()
-{
-    vec4 texColor = texture(tex, vTexCoord);
-    vec3 normal = normalize(fragNor);
+void main() {
+    // Retrieve data from gbuffer
+    worldPos = texture(gPosition, TexCoords).rgb;
+    vec3 normal = texture(gNormal, TexCoords).rgb;
+    diffuseColor = texture(gAlbedoSpec, TexCoords).rgb;
+    specShine = texture(gAlbedoSpec, TexCoords).a;
     vec3 view = normalize(-1 * vec3(worldPos));
-
-
-	float metallic = dot(-fragNor, view);
-	metallic = smoothstep(0.3, .6, metallic);
-	metallic = metallic/2 + 0.5;
 
     vec3 sumColor = vec3(0);
 
-    float inShade = TestShadow(fPosLS);
+    float inShade = TestShadow(LS * vec4(worldPos, 1.0));
 
     for (int i = 0; i < numLights; i++) {
       sumColor += calcLight(lights[i], normal, view);
     }
-	//sumColor = ceil(sumColor * VARIATION) / VARIATION;
-	//sumColor *= metallic;
-	//color = vec4(texColor.xyz * metallic * inShade, texColor.w);
-	color = vec4(sumColor.xyz * texColor.xyz * inShade, texColor[3]);
-    //color = vec4(color.xyz * metallic, texColor[3]);
-	//color = vec4(texColor.xyz * inShade * metallic, texColor[3]);
-	//color = vec4(ceil(texColor.xyz * VARIATION) / VARIATION * inShade, texColor[3]);
-}
 
+    //color = vec4(diffuseColor, 1.0);
+    color = vec4(sumColor.xyz * diffuseColor.xyz * inShade, 1.0);
+
+}
