@@ -36,6 +36,12 @@
 #include "Stuff.h"
 #include "Lighting.h"
 
+#ifdef _WIN32
+    #define RETSCALE 1
+#else
+	#define RETSCALE 2
+#endif
+
 using namespace std;
 using namespace glm;
 
@@ -107,7 +113,7 @@ void defferedInit() {
 	// - Position color buffer
 	glGenTextures(1, &gPosition);
 	glBindTexture(GL_TEXTURE_2D, gPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * 2, g_height * 2, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * RETSCALE, g_height * RETSCALE, 0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
@@ -115,7 +121,7 @@ void defferedInit() {
 	// - Normal color buffer
 	glGenTextures(1, &gNormal);
 	glBindTexture(GL_TEXTURE_2D, gNormal);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * 2, g_height * 2, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, g_width * RETSCALE, g_height * RETSCALE, 0, GL_RGB, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
@@ -123,7 +129,7 @@ void defferedInit() {
 	// - Color + Specular color buffer
 	glGenTextures(1, &gAlbedoSpec);
 	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width * 2, g_height * 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, g_width * RETSCALE, g_height * RETSCALE, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
@@ -135,7 +141,7 @@ void defferedInit() {
 	//set up depth buffer
 	glGenRenderbuffers(1, &rboDepth);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, g_width * 2, g_height * 2);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, g_width * RETSCALE, g_height * RETSCALE);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 }
 
@@ -349,8 +355,8 @@ static void render()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	//lighting render
 	defprog->bind();
-	glUniform1i(defprog->getUniform("height"), g_height * 2);
-	glUniform1i(defprog->getUniform("width"), g_width * 2);
+	glUniform1i(defprog->getUniform("height"), g_height * RETSCALE);
+	glUniform1i(defprog->getUniform("width"), g_width * RETSCALE);
 	glActiveTexture(GL_TEXTURE3);
    	glBindTexture(GL_TEXTURE_2D, lighting.depthMap);
 	glUniform1i(defprog->getUniform("shadowDepth"), 3);
