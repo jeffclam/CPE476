@@ -326,18 +326,6 @@ static void render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glDepthMask(GL_TRUE);
-
-	//toon render
-    /*toonshading.toonProg->bind();
-    glUniformMatrix4fv(toonshading.toonProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-    glUniform3f(toonshading.toonProg->getUniform("silhouette_color"), 0.0, 0.0, 0.0);
-    glUniform1f(toonshading.toonProg->getUniform("silhouette_offset"), 0.05);
-    world.render(toonshading.toonProg, false);
-    toonshading.toonProg->unbind();*/
    
    	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
