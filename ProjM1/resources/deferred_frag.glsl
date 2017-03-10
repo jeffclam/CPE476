@@ -112,7 +112,7 @@ void main() {
       sumColor += calcLight(lights[i], normal, view);
     }
 
-    //edge detect
+    //edge detect start
     mat3 I;
     for (int i=0; i<3; i++) {
         for (int j=0; j<3; j++) {
@@ -128,6 +128,7 @@ void main() {
 
     float g = sqrt(pow(gx, 2.0)+pow(gy, 2.0));
     g = smoothstep(0.4, 0.6, g);
+    //edge detect end
 
     //color = vec4(diffuseColor - vec3(g), 1.0);
     color = vec4((sumColor.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
