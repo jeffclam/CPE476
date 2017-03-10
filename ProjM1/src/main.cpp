@@ -192,12 +192,12 @@ static void init()
 	defprog->addUniform("width");
 
     Light sun1;
-	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
-	sun1.intensity = vec3(0.2, 0.2, 0.2);
+	sun1.pos = vec4(25.0, 0.0, 35.0, 1);
+	sun1.intensity = vec3(1.0, 1.0, 1.0);
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
 
-    
+    /*
 	for(int i = 0; i < 5; i++) {
 		for(int j = 0; j < 2; j++) {
 			Light newLight;
@@ -207,7 +207,7 @@ static void init()
     		lighting.push_back(newLight);
 		}
 	}
-    
+    */
 
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
