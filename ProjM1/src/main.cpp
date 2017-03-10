@@ -32,7 +32,6 @@
 #include "PlayerGameObj.h"
 #include "GameObjPather.h"
 #include "Texture.h"
-#include "toonshading.h"
 #include "Stuff.h"
 #include "Lighting.h"
 
@@ -54,7 +53,6 @@ int g_width, g_height;
 WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
-ToonShading toonshading = ToonShading();
 Sky sky;
 
 static void error_callback(int error, const char *description)
@@ -164,7 +162,6 @@ static void init()
 	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
 	lighting.initShadow();
     lighting.initShadowProg(RESOURCE_DIR);
-    toonshading.initShader(RESOURCE_DIR);
 
 	// Initialize the GLSL program.
 	gprog = make_shared<Program>();
@@ -200,8 +197,9 @@ static void init()
 	sun1.ambCoeff = 1.0;
 	lighting.push_back(sun1);
 
+    
 	for(int i = 0; i < 5; i++) {
-		for(int j = 0; j < 5; j++) {
+		for(int j = 0; j < 2; j++) {
 			Light newLight;
 			newLight.pos = vec4( i * 35, 2.0, j * 35, 1.0);
     		newLight.intensity = vec3(0.25, 0.25, 0.3);
@@ -210,6 +208,7 @@ static void init()
 		}
 	}
     
+
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
     
@@ -252,15 +251,6 @@ static void init()
 	world.addObj(player);
 
 	world.makeFence(12, 22);
-
-    //EnemyGameObj *enemy = new EnemyGameObj(getShape("manPants"), getTexture("manPantText"));
-    //shared_ptr<CharModel> enemy_model = make_shared<CharModel>();
-
-    //enemy->setPos(0, 0, 0);
-    //enemy->setVel(0, 0, 0);
-
-    //world.addObj(enemy);
-	//world.grid.addToGrid(enemy);
 
 	sky.setRight(getTexture("skyRight"));
 	sky.setLeft(getTexture("skyLeft"));
@@ -327,7 +317,6 @@ static void render()
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
    
-   	glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
 	glDepthFunc(GL_LESS); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

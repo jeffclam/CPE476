@@ -122,17 +122,18 @@ void Program::addUniformArray(const string &name, const int size)
 }
 
 void Program::addUniformLights(const string &name, const int size) {
-    string index = "[#]";
+    string index = "[";
     string pos = ".pos";
     string intensity = ".intensity";
     string ambientCoeff = ".ambCoeff";
     string lights = "lights";
+    string index_num;
     if (uniforms.count("lights") == 0) {
         for (int i = 0; i < size; i++) {
-            index[1] = (char)(i + '0');
-            uniforms[name + index + pos] = GLSL::getUniformLocation(pid, (name + index + pos).c_str(), isVerbose());
-            uniforms[name + index + intensity] = GLSL::getUniformLocation(pid, (name + index + intensity).c_str(), isVerbose());
-            uniforms[name + index + ambientCoeff] = GLSL::getUniformLocation(pid, (name + index + ambientCoeff).c_str(), isVerbose());
+            index_num = to_string(i) + "]";
+            uniforms[name + index + index_num + pos] = GLSL::getUniformLocation(pid, (name + index + index_num + pos).c_str(), isVerbose());
+            uniforms[name + index + index_num + intensity] = GLSL::getUniformLocation(pid, (name + index + index_num + intensity).c_str(), isVerbose());
+            uniforms[name + index + index_num + ambientCoeff] = GLSL::getUniformLocation(pid, (name + index + index_num + ambientCoeff).c_str(), isVerbose());
         }
     }
 }
