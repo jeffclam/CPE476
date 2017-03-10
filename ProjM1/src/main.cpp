@@ -316,8 +316,6 @@ static void render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//sky render
 	sky.render(P->topMatrix(), world.cam.getLookAt());
-
-    glEnable(GL_CULL_FACE);
    
 	glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
 	glDepthFunc(GL_LESS); 
@@ -358,7 +356,7 @@ static void render()
    //Render user interface
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130 , 75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
