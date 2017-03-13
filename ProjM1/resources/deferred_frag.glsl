@@ -10,9 +10,6 @@ uniform mat4 LS;
 uniform int width;
 uniform int height;
 
-vec3 ambColor = vec3(0.1, 0.1, 0.1);
-vec3 specColor = vec3(0.5, 0.5, 0.5);
-
 #define MAX_LIGHTS 35
 uniform int numLights;
 uniform struct Light {
@@ -52,25 +49,24 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    } else {
       surfaceToLight = normalize(light.pos.xyz - worldPos.xyz);
       float distToLight = length(light.pos.xyz - worldPos.xyz);
-      //attenuation = 1.0 / (1.0 + pow(distToLight, 2);
-      attenuation = 0.5;
+      attenuation = 1.0 / (1.0 + pow(distToLight, 2));
    }
    
    // Ambient = Amb * intensity
-   vec3 amb = light.ambCoeff * ambColor.rgb * light.intensity;
+   vec3 amb = light.ambCoeff * light.intensity;
    
    // Diffuse = Diff * dot(N, L) * intensity
    float diffuseCoeff = max(0.0, dot(normal, surfaceToLight));
-   vec3 diff = diffuseCoeff * diffuseColor.rgb * light.intensity;
+   vec3 diff = diffuseCoeff * light.intensity;
    
    // Specular = Spec * pow(dot(vec3(view), R), shine)) * intensity
    float specularCoeff = 0.0;
    if (diffuseCoeff > 0.0) {
       specularCoeff = pow(max(0.0, dot(view, reflect(-surfaceToLight, normal))), specShine);
    }
-   vec3 spec = specularCoeff * specColor * light.intensity;
+   vec3 spec = specularCoeff * light.intensity;
    
-   return amb + attenuation * diff;//(diff + spec);
+   return amb + attenuation * (diff + spec);
 }
 
 /* returns 1 if shadowed */
@@ -96,23 +92,7 @@ float TestShadow(vec4 LSfPos) {
 	return contribution;
 }
 
-void main() {
-    // Retrieve data from gbuffer
-    worldPos = texture(gPosition, TexCoords).rgb;
-    vec3 normal = texture(gNormal, TexCoords).rgb;
-    diffuseColor = texture(gAlbedoSpec, TexCoords).rgb;
-    specShine = texture(gAlbedoSpec, TexCoords).a;
-    vec3 view = normalize(-1 * vec3(worldPos));
-
-    vec3 sumColor = vec3(0);
-
-    float inShade = TestShadow(LS * vec4(worldPos, 1.0));
-
-    for (int i = 0; i < numLights; i++) {
-      sumColor += calcLight(lights[i], normal, view);
-    }
-
-    //edge detect start
+float outline() {
     mat3 I;
     for (int i=0; i<3; i++) {
         for (int j=0; j<3; j++) {
@@ -122,16 +102,34 @@ void main() {
             I[i][j] = length(sample); 
         }
     }
-
     float gx = dot(sx[0], I[0]) + dot(sx[1], I[1]) + dot(sx[2], I[2]); 
     float gy = dot(sy[0], I[0]) + dot(sy[1], I[1]) + dot(sy[2], I[2]);
-
     float g = sqrt(pow(gx, 2.0)+pow(gy, 2.0));
     g = smoothstep(0.4, 0.6, g);
-    //edge detect end
+	return g;
+}
 
-    //color = vec4(diffuseColor - vec3(g), 1.0);
-    color = vec4((sumColor.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
+void main() {
+    // Retrieve data from gbuffer
+    worldPos = texture(gPosition, TexCoords).rgb;
+    vec3 normal = texture(gNormal, TexCoords).rgb;
+    diffuseColor = texture(gAlbedoSpec, TexCoords).rgb * .8;
+    specShine = texture(gAlbedoSpec, TexCoords).a;
+    vec3 view = normalize(-1 * vec3(worldPos));
+
+    vec3 intensity = vec3(0);
+
+    float inShade = TestShadow(LS * vec4(worldPos, 1.0));
+
+    for (int i = 0; i < numLights; i++) {
+      intensity += calcLight(lights[i], normal, view);
+    }
+
+	float g = outline();
+
+	//color = vec4((diffuseColor.xyz * inShade) - vec3(g), 1.0);
+	color = vec4(intensity.xyz * inShade - vec3(g), 1.0);
+	color = vec4((intensity.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
     if(diffuseColor.xyz == vec3(0))
       discard;
 

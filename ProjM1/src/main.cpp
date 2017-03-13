@@ -192,29 +192,27 @@ static void init()
 	defprog->addUniform("width");
 
     Light sun1;
-	sun1.pos = vec4(0, 30, 0, 0);
-	sun1.intensity = vec3(.80, .70, .90);
-	sun1.ambCoeff = 1.0;
+	sun1.pos = vec4(0, 50, 0, 0);
+    sun1.intensity = vec3(0);
+    /* Based on Overcast Sky color (more blue-ish) * 25% to die down brightness */
+	sun1.intensity = vec3(201/255.0, 226/255.0, 255/255.0) * vec3(.45);
+    sun1.ambCoeff = 1;
     lighting.push_back(sun1);
-
-    Light newLight;
-    newLight.pos = vec4(35, 2.0, 35, 1);
-    newLight.intensity = vec3(0.8, 0.95, 0.6);
-    newLight.ambCoeff = 1.0;
-    lighting.push_back(newLight);
-
-    /*
-	for(int i = 0; i < 5; i++) {
-		for(int j = 0; j < 5; j++) {
-			Light newLight;
-			newLight.pos = vec4( i * 35, 2.0, j * 35, 1.0);
-    		newLight.intensity = vec3(0.25, 0.25, 0.3);
-    		newLight.ambCoeff = 1.0;
-    		lighting.push_back(newLight);
-		}
-	}
-    */
-
+    
+    
+    for (int i = 0; i < 1; i++) {
+        for (int j = 0; j < 2; j++) {
+            Light newLight;
+            newLight.pos = vec4(35 * i, 2.0, 35 * j, 1);
+            /* Based on 100W Tungston to add orange-ish color * .10 to really die down */
+            newLight.intensity = vec3(0);
+            newLight.intensity = vec3(255/255.0, 214/255.0, 190/255.0) * vec3(.02);
+            newLight.ambCoeff = 1;
+            lighting.push_back(newLight);
+        }
+    }
+    
+    
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
     
