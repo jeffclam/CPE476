@@ -192,14 +192,20 @@ static void init()
 	defprog->addUniform("width");
 
     Light sun1;
-	sun1.pos = vec4(25.0, 0.0, 35.0, 1);
-	sun1.intensity = vec3(1.0, 1.0, 1.0);
+	sun1.pos = vec4(0, 30, 0, 0);
+	sun1.intensity = vec3(.80, .70, .90);
 	sun1.ambCoeff = 1.0;
-	lighting.push_back(sun1);
+    lighting.push_back(sun1);
+
+    Light newLight;
+    newLight.pos = vec4(35, 2.0, 35, 1);
+    newLight.intensity = vec3(0.8, 0.95, 0.6);
+    newLight.ambCoeff = 1.0;
+    lighting.push_back(newLight);
 
     /*
 	for(int i = 0; i < 5; i++) {
-		for(int j = 0; j < 2; j++) {
+		for(int j = 0; j < 5; j++) {
 			Light newLight;
 			newLight.pos = vec4( i * 35, 2.0, j * 35, 1.0);
     		newLight.intensity = vec3(0.25, 0.25, 0.3);
