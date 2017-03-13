@@ -38,6 +38,11 @@ const float M[25]=float[25](0.003f, 0.013f, 0.022f, 0.013f, 0.003f,
                  0.013f, 0.059f, 0.097f, 0.059f, 0.013f,
                  0.003f, 0.013f, 0.022f, 0.013f, 0.003f);
 
+float stepmix(float edge0, float edge1, float E, float x) {
+    float T = clamp(0.5 * (x - edge0 + E) / E, 0.0, 1.0);
+    return mix(edge0, edge1, T);
+}
+
 vec3 calcLight(Light light, vec3 normal, vec3 view) {
    vec3 surfaceToLight;
    float attenuation = 1.0;
@@ -55,16 +60,44 @@ vec3 calcLight(Light light, vec3 normal, vec3 view) {
    // Ambient = Amb * intensity
    vec3 amb = light.ambCoeff * light.intensity;
    
+   	float A = 0.1;
+	float B = 0.3;
+	float C = 0.6;
+	float D = 1.0;
+
    // Diffuse = Diff * dot(N, L) * intensity
-   float diffuseCoeff = max(0.0, dot(normal, surfaceToLight));
-   vec3 diff = diffuseCoeff * light.intensity;
+   float diffCoeff = max(0.0, dot(normal, surfaceToLight));
+   
+   float E = fwidth(diffCoeff);
+   /*
+   if (diffCoeff > A - E && diffCoeff < A + E)
+       diffCoeff = stepmix(A, B, E, diffCoeff);
+   else if (diffCoeff > B - E && diffCoeff < B + E)
+       diffCoeff = stepmix(B, C, E, diffCoeff);
+   else if (diffCoeff > C - E && diffCoeff < C + E)
+       diffCoeff = stepmix(C, D, E, diffCoeff);
+   else */if (diffCoeff < A)
+		diffCoeff = 0.0;
+	else if (diffCoeff < B)
+		diffCoeff = B;
+	else if (diffCoeff < C)
+		diffCoeff = C;
+	else
+		diffCoeff = D; 
+   
+   vec3 diff = diffCoeff * light.intensity;
    
    // Specular = Spec * pow(dot(vec3(view), R), shine)) * intensity
-   float specularCoeff = 0.0;
-   if (diffuseCoeff > 0.0) {
-      specularCoeff = pow(max(0.0, dot(view, reflect(-surfaceToLight, normal))), specShine);
+   float specCoeff = 0.0;
+   if (diffCoeff > 0) {
+	  specCoeff = pow(max(0.0, dot(view, reflect(-surfaceToLight, normal))), specShine);
+	  E = fwidth(specCoeff); 
+	  if (specCoeff > 0.3 - E && specCoeff < 0.3 + E)
+		specCoeff = clamp(0.3 * (specCoeff - 0.3 + E) / E, 0.0, 1.0);
+	  else 
+		specCoeff = step(0.3, specCoeff); 
    }
-   vec3 spec = specularCoeff * light.intensity;
+   vec3 spec = specCoeff * light.intensity;
    
    return amb + attenuation * (diff + spec);
 }
@@ -117,19 +150,20 @@ void main() {
     specShine = texture(gAlbedoSpec, TexCoords).a;
     vec3 view = normalize(-1 * vec3(worldPos));
 
+	float inShade = TestShadow(LS * vec4(worldPos, 1.0));
+	float g = outline();
+
     vec3 intensity = vec3(0);
-
-    float inShade = TestShadow(LS * vec4(worldPos, 1.0));
-
     for (int i = 0; i < numLights; i++) {
       intensity += calcLight(lights[i], normal, view);
     }
 
-	float g = outline();
+    vec3 baseColor = diffuseColor.rgb;
 
 	//color = vec4((diffuseColor.xyz * inShade) - vec3(g), 1.0);
-	color = vec4(intensity.xyz * inShade - vec3(g), 1.0);
-	color = vec4((intensity.xyz * diffuseColor.xyz * inShade) - vec3(g), 1.0);
+	//color = vec4(intensity.xyz * inShade - vec3(g), 1.0);
+	color = vec4((intensity.xyz * baseColor.xyz * inShade) - vec3(g), 1.0);
+
     if(diffuseColor.xyz == vec3(0))
       discard;
 

@@ -194,7 +194,7 @@ static void init()
     Light sun1;
 	sun1.pos = vec4(0, 50, 0, 0);
     sun1.intensity = vec3(0);
-    /* Based on Overcast Sky color (more blue-ish) * 25% to die down brightness */
+    /* Based on Overcast Sky color (more blue-ish) */
 	sun1.intensity = vec3(201/255.0, 226/255.0, 255/255.0) * vec3(.45);
     sun1.ambCoeff = 1;
     lighting.push_back(sun1);
@@ -203,8 +203,8 @@ static void init()
     for (int i = 0; i < 1; i++) {
         for (int j = 0; j < 2; j++) {
             Light newLight;
-            newLight.pos = vec4(35 * i, 2.0, 35 * j, 1);
-            /* Based on 100W Tungston to add orange-ish color * .10 to really die down */
+            newLight.pos = vec4(35 * i, 10.0, 35 * j, 1);
+            /* Based on 100W Tungston to add orange-ish color */
             newLight.intensity = vec3(0);
             newLight.intensity = vec3(255/255.0, 214/255.0, 190/255.0) * vec3(.02);
             newLight.ambCoeff = 1;
