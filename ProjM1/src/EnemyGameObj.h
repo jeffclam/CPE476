@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EdibleGameObj.h"
+#include "EnemyCharModel.h"
 #include "GameObj.h"
 
 class EnemyGameObj: public GameObj {
@@ -9,6 +10,9 @@ public:
     vec3 setRandomVel();
     virtual void update(GameState *state);
     void scare(GameObj *scarer);
+    shared_ptr<CharModel> normal;
+    shared_ptr<CharModel> scared;
+    shared_ptr<CharModel> walking;
 private:
     bool was_pushed;
     bool canEatCell(GridCell *cell);

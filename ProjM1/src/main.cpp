@@ -241,10 +241,24 @@ static void init()
         getTexture("legText"), getTexture("legText"),
         getTexture("legText"), getTexture("legText")
     };
+
     shared_ptr<CharModel> sheep_model =
         make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_model->init_Model();
+    shared_ptr<CharModel> sheep_walk =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_walk->init_Model();
+    shared_ptr<CharModel> sheep_scare =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_scare->init_Model();
+
     world.charModels.insert(
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_walk", sheep_walk));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_scare", sheep_scare));
+    //dynamic_pointer_cast<EnemyCharModel>(world.charModels.at("sheep_model"))->set_Pointers(sheep_model, sheep_walk, sheep_scare);
 
     player->setVel(1, 0, 1);
     player->setPos(10, 2.5, 10);
