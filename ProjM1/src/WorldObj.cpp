@@ -146,6 +146,7 @@ void WorldObj::cleanUp() {
 
 void WorldObj::update(double time) {
     state.grassAlive = 0;
+    state.retireIn -= state.deltaTime;
     cleanUp();
     updateTime += time;
     //update game state
@@ -160,7 +161,7 @@ void WorldObj::update(double time) {
         EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
         enemy->setModel(charModels.at("sheep_model"));
         enemy->setScale(.75, .75, .75);
-        enemy->setPos(42, 2, 45);
+        enemy->setPos(40, 2, 60);
         enemy->normal = enemy->getModel();
         enemy->walking = charModels.at("sheep_walk");
         enemy->scared = charModels.at("sheep_scare");
@@ -194,11 +195,21 @@ void WorldObj::setWindows(GLFWwindow *win) {
 
 void WorldObj::makeFence(int row, int col){
     for(int r = 0; r <= row; r++){
+        if(r != row/2 && r!= row/2 + 1) {
+            GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
+            fence->name = "fence";
+            fence->setPos(r * grid.offset, 2, col * grid.offset);
+            fence->setScale(0.5,1.5,1.5);
+            fence->setRot(0,M_PI/2,0);
+            addObj(fence);
+            grid.addToGrid(fence);
+        }
+
         GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
         fence->name = "fence";
-        fence->setPos(r * grid.offset, 2, col * grid.offset);
+        fence->setPos(r * grid.offset, 2, 0);
         fence->setScale(0.5,1.5,1.5);
-        fence->setRot(0,M_PI/2,0);
+        fence->setRot(0,-M_PI/2,0);
         addObj(fence);
         grid.addToGrid(fence);
     }
@@ -211,9 +222,16 @@ void WorldObj::makeFence(int row, int col){
             addObj(fence);
             grid.addToGrid(fence);
         }
+        GameObj *fence = new GameObj(getShape("fence"), getTexture("fenceText"));
+        fence->setPos(0, 2, c * grid.offset);
+        fence->setScale(0.5,1.5,1.5);
+        fence->setRot(0,-M_PI,0);
+        fence->name = "fence";
+        addObj(fence);
+        grid.addToGrid(fence);
     }
-    for(int r = 0; r < row; r++) {
-        for(int c = 0; c < col; c++) {
+    for(int r = 1; r < row; r++) {
+        for(int c = 1; c < col; c++) {
             EdibleGameObj *grass = new EdibleGameObj(getShape("goodGrass"), getTexture("grassText"));
             grass->setPos(r * grid.offset, 1.5, c * grid.offset);
             grass->setScale(1.5, 1, 1.5);

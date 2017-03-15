@@ -389,7 +389,8 @@ static void render()
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
-    ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+	ImGui::Text("Retire In: %d:%d", (int)world.state.retireIn/60, (int)world.state.retireIn%60);
+    //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
 	//ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
 	//ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
 	//ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
