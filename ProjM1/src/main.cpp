@@ -196,23 +196,27 @@ static void init()
 	defprog->addUniform("width");
 
     Light sun1;
-	sun1.pos = vec4(10.0, 30.0, 10.0, 0);
-	sun1.intensity = vec3(0.2, 0.2, 0.2);
-	sun1.ambCoeff = 1.0;
-	lighting.push_back(sun1);
-
+	sun1.pos = vec4(0, 50, 0, 0);
+    sun1.intensity = vec3(0);
+    /* Based on Overcast Sky color (more blue-ish) */
+	sun1.intensity = vec3(201/255.0, 226/255.0, 255/255.0) * vec3(.45);
+    sun1.ambCoeff = 1;
+    lighting.push_back(sun1);
     
-	for(int i = 0; i < 5; i++) {
-		for(int j = 0; j < 2; j++) {
-			Light newLight;
-			newLight.pos = vec4( i * 35, 2.0, j * 35, 1.0);
-    		newLight.intensity = vec3(0.25, 0.25, 0.3);
-    		newLight.ambCoeff = 1.0;
-    		lighting.push_back(newLight);
-		}
-	}
     
-
+    for (int i = 0; i < 1; i++) {
+        for (int j = 0; j < 2; j++) {
+            Light newLight;
+            newLight.pos = vec4(35 * i, 10.0, 35 * j, 1);
+            /* Based on 100W Tungston to add orange-ish color */
+            newLight.intensity = vec3(0);
+            newLight.intensity = vec3(255/255.0, 214/255.0, 190/255.0) * vec3(.02);
+            newLight.ambCoeff = 1;
+            lighting.push_back(newLight);
+        }
+    }
+    
+    
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
     
@@ -241,10 +245,24 @@ static void init()
         getTexture("legText"), getTexture("legText"),
         getTexture("legText"), getTexture("legText")
     };
+
     shared_ptr<CharModel> sheep_model =
         make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_model->init_Model();
+    shared_ptr<CharModel> sheep_walk =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_walk->init_Model();
+    shared_ptr<CharModel> sheep_scare =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_scare->init_Model();
+
     world.charModels.insert(
         pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_walk", sheep_walk));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_scare", sheep_scare));
+    //dynamic_pointer_cast<EnemyCharModel>(world.charModels.at("sheep_model"))->set_Pointers(sheep_model, sheep_walk, sheep_scare);
 
     player->setVel(1, 0, 1);
     player->setPos(10, 2.5, 10);

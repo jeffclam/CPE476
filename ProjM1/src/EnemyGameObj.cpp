@@ -34,12 +34,14 @@ void EnemyGameObj::update(GameState *state) {
     if(partCountDown >= 0) {
         partCountDown -= state->deltaTime;
     }
-    if (getModel() != NULL && getVel() != vec3(0, 0, 0)) {
+    if (walking != NULL && getVel() != vec3(0, 0, 0)) {
+        setModel(walking);
         getModel()->walk_Motion();
     }
 
     if (scareMotion) {
-        scareMotion = getModel()->scare_Motion();
+        setModel(scared);
+        scareMotion = scared->scare_Motion();
     }
     else {
         GameObj::update(state);
@@ -69,6 +71,7 @@ void EnemyGameObj::update(GameState *state) {
             setVel(normGoal[0] * (isScared + 1), vel[1], normGoal[2] * (isScared + 1));
         }
         else {
+            setModel(normal);
             if (isLeaving) {
                 dead = true;
                 state->enemyCount--;

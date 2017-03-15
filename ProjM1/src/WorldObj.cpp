@@ -159,9 +159,11 @@ void WorldObj::update(double time) {
 
         EnemyGameObj *enemy = new EnemyGameObj(getShape("sheepLeg"), getTexture("legText"));
         enemy->setModel(charModels.at("sheep_model"));
-        enemy->getModel()->init_Model();
         enemy->setScale(.75, .75, .75);
         enemy->setPos(42, 2, 45);
+        enemy->normal = enemy->getModel();
+        enemy->walking = charModels.at("sheep_walk");
+        enemy->scared = charModels.at("sheep_scare");
         addObj(enemy);
         grid.addToGrid(enemy);
     }
