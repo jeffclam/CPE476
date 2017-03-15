@@ -150,21 +150,21 @@ static void initGeom() {
    
 	/* These are junk right now  - fix! */ 
 	float GTBO[] = {
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0
+     1, 0, 0,
+     1, 0, 0,
+     1, 0, 0,
+     1, 0, 0,
+     1, 0, 0,
+     1, 0, 0
     };
 	
 	float GBNBO[] = {
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0,
-     0, 0, 0
+     0, 0, -1,
+     0, 0, -1,
+     0, 0, -1,
+     0, 0, -1,
+     0, 0, -1,
+     0, 0, -1
     };
 
   static GLfloat GrndTex[] = {
@@ -194,6 +194,13 @@ static void initGeom() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(GrndTex), GrndTex, GL_STATIC_DRAW);
 	
 	/*TODO Make the the VBO for tangents and biNormals */ 
+	glGenBuffers(1 , &GrndTanBO);
+	glBindBuffer(GL_ARRAY_BUFFER , GrndTanBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GTBO), GTBO, GL_STATIC_DRAW);
+
+	glGenBuffers(1 , &GrndBNBO);
+	glBindBuffer(GL_ARRAY_BUFFER , GrndBNBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GBNBO), GBNBO, GL_STATIC_DRAW);
 
     glGenBuffers(1, &GIndxBuffObj);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GIndxBuffObj);
@@ -428,6 +435,14 @@ void drawScene(shared_ptr<Program> shader, GLint texID0, GLint texID1, int TexOn
 	glEnableVertexAttribArray(2);
    glBindBuffer(GL_ARRAY_BUFFER, GrndTexBuffObj);
    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+   glEnableVertexAttribArray(3);
+   glBindBuffer(GL_ARRAY_BUFFER, GrndTanBO);
+   glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+   glEnableVertexAttribArray(4);
+   glBindBuffer(GL_ARRAY_BUFFER, GrndBNBO);
+   glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	
 	//TODO set up tangent and Binormal VBOs
 

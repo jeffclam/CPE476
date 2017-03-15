@@ -177,6 +177,7 @@ void WorldObj::update(double time) {
     //update camera
     cam.avatar = objs[0];
     cam.updateCamera();
+    state.partManager->update(state.deltaTime);
 }
 
 void WorldObj::addObj(GameObj *newObj) {

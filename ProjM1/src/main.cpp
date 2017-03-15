@@ -17,6 +17,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
 #include "sky.h"
+#include "ParticleSystem.h"
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
@@ -54,6 +55,7 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
+ParticleManager pm;
 
 static void error_callback(int error, const char *description)
 {
@@ -159,6 +161,8 @@ static void init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);*/
     
+	pm.init(RESOURCE_DIR + "part_vert.glsl", RESOURCE_DIR + "part_frag.glsl");
+
 	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
 	lighting.initShadow();
     lighting.initShadowProg(RESOURCE_DIR);
@@ -252,6 +256,8 @@ static void init()
 
 	world.makeFence(12, 22);
 
+	world.state.partManager = &pm;
+
 	sky.setRight(getTexture("skyRight"));
 	sky.setLeft(getTexture("skyLeft"));
 	sky.setTop(getTexture("skyUp"));
@@ -330,6 +336,10 @@ static void render()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_DEPTH_BUFFER_BIT);
+	
+	glClear(GL_DEPTH_BUFFER_BIT);
+   	pm.render(world.cam.getLookAt(), world.PMat);
+
 	//lighting render
 	defprog->bind();
 	glUniform1i(defprog->getUniform("height"), g_height * RETSCALE);

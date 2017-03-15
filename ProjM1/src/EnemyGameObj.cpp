@@ -31,6 +31,9 @@ vec3 EnemyGameObj::setRandomVel() {
 
 void EnemyGameObj::update(GameState *state) {
     grid->removeFromGrid(this);
+    if(partCountDown >= 0) {
+        partCountDown -= state->deltaTime;
+    }
     if (getModel() != NULL && getVel() != vec3(0, 0, 0)) {
         getModel()->walk_Motion();
     }
@@ -76,8 +79,13 @@ void EnemyGameObj::update(GameState *state) {
             }
             else {
                 setVel(0, 0, 0);
-                if (grass->is_Edible)
+                if (grass->is_Edible) {
                     grass->eat(*state);
+                    if(partCountDown <= 0) {
+                        state->partManager->addParticleSystem(true, vec4(0.9, 0.1, 0.1, 1.0), pos);
+                        partCountDown = 7.0;
+                    }
+                }
                 else
                     goal = NULL;
             }
@@ -97,8 +105,9 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 }
 
 void EnemyGameObj::scare(GameObj *scarer){
-    if (!isScared)
+    if (!isScared) {
         playSound("sheepScare", pos);
+    }
     isScared = true;
     scareMotion = true;
     isLeaving = false;

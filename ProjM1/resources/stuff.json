@@ -153,6 +153,10 @@
         {
         "name": "skyUp",
         "text": "miramar_up.tga"
+        },
+        {
+        "name": "particle",
+        "text": "alpha.bmp"
         }
         ],
    "sounds" : [
