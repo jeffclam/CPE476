@@ -410,7 +410,7 @@ static void render()
 	if(world.state.retireIn <= 0) {
         ImGui_ImplGlfwGL3_NewFrame();
 		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
-		ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(150,75), ImGuiSetCond_Always);
 		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 		ImGui::Text("GAME OVER");
 		ImGui::Text("YOU HAVE RETIRED :D");
