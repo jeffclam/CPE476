@@ -11,9 +11,9 @@ void main() {
 
 	// Billboarding: set the upper 3x3 to be the identity matrix
 	mat4 MV0 = MV;
-	MV0[0] = vec4(1.0, 0.0, 0.0, 0.0);
-	MV0[1] = vec4(0.0, 1.0, 0.0, 0.0);
-	MV0[2] = vec4(0.0, 0.0, 1.0, 0.0);
+	//MV0[0] = vec4(1.0, 0.0, 0.0, 0.0);
+	//MV0[1] = vec4(0.0, 1.0, 0.0, 0.0);
+	//MV0[2] = vec4(0.0, 0.0, 1.0, 0.0);
 	gl_Position = P * MV0 * vec4(vertPos.xyz, 1.0);
 	partCol = Pcolor;
 }
