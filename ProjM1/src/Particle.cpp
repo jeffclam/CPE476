@@ -38,10 +38,10 @@ void Particle::load()
 /* all particles born at the origin */
 void Particle::rebirth(){
     //set ransom pos based around origin
-    pos.x = randFloat(-0.05, 0.05);;
-    pos.y = -0.5;
-    pos.z = randFloat(-0.05, -0.05);
-    pos = pos + origin; 
+    //pos.x = randFloat(-0.05, 0.05);;
+    //pos.y = -0.5;
+    //pos.z = randFloat(-0.05, -0.05);
+    pos = origin; 
     //set random velocity
 	v.x = randFloat(-1.0f, 1.0f);
 	v.y = randFloat(1.5f, 3.5f);
@@ -62,6 +62,7 @@ void Particle::update(float deltaTime) {
         rebirth();
         return;
     } else if(doesDie && timeToLive <= 0) {
+        color.a = 0.0;
         return;
     }
 

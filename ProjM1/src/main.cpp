@@ -311,7 +311,6 @@ static void render()
 
    // Create tperspective matrix
    auto P = make_shared<MatrixStack>();
-    
    // Apply perspective projection.
    P->pushMatrix();
    P->perspective(45.0f, aspect, 0.01f, 100.0f);
@@ -354,9 +353,6 @@ static void render()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_DEPTH_BUFFER_BIT);
-	
-	glClear(GL_DEPTH_BUFFER_BIT);
-   	pm.render(world.cam.getLookAt(), world.PMat);
 
 	//lighting render
 	defprog->bind();
@@ -377,6 +373,11 @@ static void render()
 	glUniform1i(defprog->getUniform("gAlbedoSpec"), 2);
 	RenderQuad();
 	defprog->unbind();
+
+	glDepthFunc(GL_ALWAYS); 
+	glClear(GL_DEPTH_BUFFER_BIT);
+   	pm.render(world.cam.getLookAt(), world.PMat);
+	glDepthFunc(GL_LESS); 
 
    // Pop matrix stacks.
    P->popMatrix();

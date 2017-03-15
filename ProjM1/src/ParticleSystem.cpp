@@ -86,6 +86,7 @@ void ParticleSystem::render(shared_ptr<Program> prog) {
 	glVertexAttribDivisor(0, 1);
 	glVertexAttribDivisor(1, 1);
    // Draw the points !
+   glBindVertexArray(VertexArrayID);
 	glDrawArraysInstanced(GL_POINTS, 0, 1, partNum);
 
 	glVertexAttribDivisor(0, 0);
@@ -131,7 +132,9 @@ void ParticleManager::render(tmat4x4<float> MV, tmat4x4<float> P) {
     partProg->bind();
     glUniformMatrix4fv(partProg->getUniform("P"), 1, GL_FALSE, value_ptr(P));
 	glUniformMatrix4fv(partProg->getUniform("MV"), 1, GL_FALSE, value_ptr(MV));
+    glActiveTexture(GL_TEXTURE0);
     tex->bind();
+    glUniform1i(partProg->getUniform("alphaTexture"), 0);
     for(int i = 0; i < systems.size(); i++) {
         systems[i].render(partProg);
     }

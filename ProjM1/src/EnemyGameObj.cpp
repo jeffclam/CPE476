@@ -85,7 +85,7 @@ void EnemyGameObj::update(GameState *state) {
                 if (grass->is_Edible) {
                     grass->eat(*state);
                     if(partCountDown <= 0) {
-                        state->partManager->addParticleSystem(true, vec4(0.9, 0.1, 0.1, 1.0), pos);
+                        state->partManager->addParticleSystem(true, vec4(0.1, 0.9, 0.1, 1.0), pos);
                         partCountDown = 7.0;
                     }
                 }
