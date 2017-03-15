@@ -46,7 +46,7 @@ void Particle::rebirth(){
 	v.x = randFloat(-1.0f, 1.0f);
 	v.y = randFloat(1.5f, 3.5f);
 	v.z = randFloat(-1.0f, 1.0f);
-	lifespan = randFloat(0.5f, 6.0f);
+	lifespan = randFloat(5.5f, 8.0f);
     timeToLive = lifespan;
 	scale = randFloat(0.2f, 1.0f);
     //set random color based around baseColor
