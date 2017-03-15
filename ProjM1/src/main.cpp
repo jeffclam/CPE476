@@ -389,7 +389,7 @@ static void render()
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
-	ImGui::Text("Retire In: %d:%d", (int)world.state.retireIn/60, (int)world.state.retireIn%60);
+	ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn/60, (int)world.state.retireIn%60);
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
 	//ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
 	//ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
@@ -403,6 +403,17 @@ static void render()
 		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 		ImGui::Text("GAME OVER");
 		ImGui::Text("YOUR LAWN DIED D:");
+		ImGui::End();
+    	ImGui::Render();
+		gameOver = true;
+    }
+	if(world.state.retireIn <= 0) {
+        ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
+		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Text("GAME OVER");
+		ImGui::Text("YOU HAVE RETIRED :D");
 		ImGui::End();
     	ImGui::Render();
 		gameOver = true;
