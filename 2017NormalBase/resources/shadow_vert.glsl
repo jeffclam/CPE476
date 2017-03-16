@@ -3,6 +3,8 @@
 layout(location = 0) in vec3 vertPos;
 layout(location = 1) in vec3 vertNor;
 layout(location = 2) in vec2 vertTex;
+layout(location = 3) in vec3 vertTan;
+layout(location = 4) in vec3 vertBN;
 
 uniform mat4 P;
 uniform mat4 V;
@@ -12,6 +14,8 @@ uniform mat4 LS;
 uniform vec3 lightDir;
 
 out mat3 TBN;
+out vec3 lightTS;
+out vec3 viewTS;
 
 out OUT_struct {
 	vec3 fPos;
@@ -24,9 +28,9 @@ out OUT_struct {
 void main() {
 
 	/* when doing TBN - convert to eye space - now is junk*/
-	vec3 eyeN = vec3(0, 0, 1);
-	vec3 eyeT = vec3(1, 0, 0);
-	vec3 eyeBN = vec3(0, 1, 0);
+	vec3 eyeN = (V*M*vec4(vertNor, 0.0)).xyz;
+	vec3 eyeT = (V*M*vec4(vertTan, 0.0)).xyz;
+	vec3 eyeBN = (V*M*vec4(vertBN, 0.0)).xyz;
 
 	TBN = transpose(mat3(eyeT, eyeBN, eyeN));
 
@@ -46,4 +50,9 @@ void main() {
 
 	//LOL HAX
 	out_struct.fPos = (V*M*vec4(vertPos, 1.0)).xyz;
+
+	out_struct.vColor = normalize(abs(vertBN));
+
+	lightTS = TBN*normalize(lightDir);
+	viewTS = TBN*(out_struct.fPos);
 }

@@ -9,6 +9,8 @@
 #ifndef GameState_h
 #define GameState_h
 
+
+#include "ParticleSystem.h"
 #include <GLFW/glfw3.h>
 
 class GameState {
@@ -24,7 +26,10 @@ public:
     int enemyCount = 0;
     int score = 0;
     int grassAlive = 0;
+    float retireIn = 60 * 5;
     GLFWwindow *window = NULL;
+    ParticleManager *partManager;
+
     //use glfwGetKey (GLFWwindow *window, int key) to check key input
 private:
 

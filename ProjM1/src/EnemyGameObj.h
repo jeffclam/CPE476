@@ -22,4 +22,5 @@ private:
     bool scareMotion = false;
     bool isScared = false;
     bool isLeaving = false;
+    float partCountDown = 0;
 };

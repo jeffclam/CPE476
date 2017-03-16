@@ -17,6 +17,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
 #include "sky.h"
+#include "ParticleSystem.h"
 
 // value_ptr for glm
 #include <glm/gtc/type_ptr.hpp>
@@ -54,6 +55,7 @@ WorldObj world = WorldObj();
 bool gameOver = false;
 Lighting lighting = Lighting();
 Sky sky;
+ParticleManager pm;
 
 static void error_callback(int error, const char *description)
 {
@@ -159,6 +161,8 @@ static void init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);*/
     
+	pm.init(RESOURCE_DIR + "part_vert.glsl", RESOURCE_DIR + "part_frag.glsl");
+
 	sky.initShader(RESOURCE_DIR + "sky_vert.glsl", RESOURCE_DIR + "sky_frag.glsl");
 	lighting.initShadow();
     lighting.initShadowProg(RESOURCE_DIR);
@@ -270,6 +274,8 @@ static void init()
 
 	world.makeFence(12, 22);
 
+	world.state.partManager = &pm;
+
 	sky.setRight(getTexture("skyRight"));
 	sky.setLeft(getTexture("skyLeft"));
 	sky.setTop(getTexture("skyUp"));
@@ -305,7 +311,6 @@ static void render()
 
    // Create tperspective matrix
    auto P = make_shared<MatrixStack>();
-    
    // Apply perspective projection.
    P->pushMatrix();
    P->perspective(45.0f, aspect, 0.01f, 100.0f);
@@ -348,6 +353,7 @@ static void render()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_DEPTH_BUFFER_BIT);
+
 	//lighting render
 	defprog->bind();
 	glUniform1i(defprog->getUniform("height"), g_height * RETSCALE);
@@ -368,6 +374,11 @@ static void render()
 	RenderQuad();
 	defprog->unbind();
 
+	glDepthFunc(GL_ALWAYS); 
+	glClear(GL_DEPTH_BUFFER_BIT);
+   	pm.render(world.cam.getLookAt(), world.PMat);
+	glDepthFunc(GL_LESS); 
+
    // Pop matrix stacks.
    P->popMatrix();
 
@@ -378,7 +389,8 @@ static void render()
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Score: %d", world.state.score);
 	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
-    ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+	ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn/60, (int)world.state.retireIn%60);
+    //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
 	//ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
 	//ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
 	//ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
@@ -391,6 +403,17 @@ static void render()
 		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 		ImGui::Text("GAME OVER");
 		ImGui::Text("YOUR LAWN DIED D:");
+		ImGui::End();
+    	ImGui::Render();
+		gameOver = true;
+    }
+	if(world.state.retireIn <= 0) {
+        ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(150,75), ImGuiSetCond_Always);
+		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Text("GAME OVER");
+		ImGui::Text("YOU HAVE RETIRED :D");
 		ImGui::End();
     	ImGui::Render();
 		gameOver = true;

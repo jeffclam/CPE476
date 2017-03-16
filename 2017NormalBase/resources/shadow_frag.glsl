@@ -7,6 +7,8 @@ uniform vec3 lightDir;
 
 out vec4 Outcolor;
 in mat3 TBN;
+in vec3 lightTS;
+in vec3 viewTS;
 
 in OUT_struct {
    vec3 fPos;
@@ -46,13 +48,15 @@ void main() {
 
   Shade = TestShadow(in_struct.fPosLS);
 
-  vec3 V = -1 * normalize(in_struct.fPos);
-  vec3 H = (normalize(lightDir) + V)/2.0;
+  //vec3 V = -1 * normalize(in_struct.fPos);
+  vec3 V = normalize(viewTS);
+  vec3 H = (normalize(lightTS) + V)/2.0;
   vec3 N = 2.0*(tNormal.xyz) - 1.0;
 
   float sCoeff = pow( max(0, dot(N,H)), shine);
-  float dCoeff = (max(0, dot((2.0 * tNormal.xyz) - 1.0, normalize(lightDir))));
+  float dCoeff = (max(0, dot((2.0 * tNormal.xyz) - 1.0, normalize(lightTS))));
   Outcolor = amb*tColor + (1.0-Shade)*vec4(dCoeff) * tColor + sCoeff * tColor;
   //Outcolor = sCoeff * tColor;
+  //Outcolor = vec4(in_struct.vColor, 1.0);
 }
 
