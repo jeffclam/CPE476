@@ -132,7 +132,7 @@
         },
         {
         "name": "skyBack",
-        "text": "miramar_bk.tga"
+        "text": "toon_bk.png"
         },
         {
         "name": "skyDown",
@@ -140,19 +140,19 @@
         },
         {
         "name": "skyFront",
-        "text": "miramar_ft.tga"
+        "text": "toon_ft.png"
         },
         {
         "name": "skyLeft",
-        "text": "miramar_lf.tga"
+        "text": "toon_lf.png"
         },
         {
         "name": "skyRight",
-        "text": "miramar_rt.tga"
+        "text": "toon_rt.png"
         },
         {
         "name": "skyUp",
-        "text": "miramar_up.tga"
+        "text": "toon_up.png"
         },
         {
         "name": "particle",
