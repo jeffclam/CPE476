@@ -11,6 +11,7 @@
 
 void PlayerGameObj::update(GameState *state) {
     vec3 startPos = getPos();
+    setSndPos(pos, rot);
     int height, width, speed = 0;
     grid->removeFromGrid(this);
     if(oldX == 0) {

@@ -8,8 +8,8 @@ ISoundEngine* engine = createIrrKlangDevice();
 
 string RESDIR = "";
 
-void setSndPos(vec3 pos) {
-    engine->setListenerPosition(vec3df(pos[0],pos[1],pos[2]), vec3df(0,0,1));
+void setSndPos(vec3 pos, vec3 dir) {
+    engine->setListenerPosition(vec3df(pos[0],pos[1],pos[2]), vec3df(dir[0],dir[1],dir[2]));
 }
 
 void loadStuff(string resourceDir, string stuffFile){
