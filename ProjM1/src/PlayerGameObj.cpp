@@ -17,7 +17,7 @@ void PlayerGameObj::update(GameState *state) {
         oldX = state->mouseX;
     }
     glfwGetWindowSize(state->window, &width, &height);
-    theta += (state->mouseX-oldX)/width;
+    theta -= (state->mouseX-oldX)/width;
     oldX = state->mouseX;
 
     if (glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
