@@ -233,7 +233,7 @@ static void init()
         getTexture("manArmText"), getTexture("manArmText"),
         getTexture("manLegText"), getTexture("manLegText") };
     shared_ptr<CharModel> player_model = 
-        make_shared<CharModel>(PlayerCharModel(playerParts, playerTexs));
+        make_shared<PlayerCharModel>(PlayerCharModel(playerParts, playerTexs));
 
     vector<shared_ptr<Shape>> sheepParts = {
         getShape("sheepBod"), getShape("sheepHead"),

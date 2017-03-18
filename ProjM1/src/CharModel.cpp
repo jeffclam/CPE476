@@ -100,7 +100,10 @@ void CharModel::render_Part(shared_ptr<Program> prog, int part) {
             rotation = -legs;
     }
     else if (part == LEFT_ARM || part == RIGHT_ARM) {
-        rotation = arms;
+        if (part == LEFT_ARM)
+            rotation = arms;
+        else
+            rotation = -arms;
     }
     model_transform->pushMatrix();
     shared_ptr<MatrixStack> M = adjust_Part(part, rotation);
