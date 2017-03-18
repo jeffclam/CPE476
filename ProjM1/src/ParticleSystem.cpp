@@ -13,10 +13,12 @@ ParticleSystem::ParticleSystem(bool dies, vec4 startColor, vec3 startPos) {
 }
 
 void ParticleSystem::update(float deltaTime) {
+    alivePart = 0;
     for(int i = 0; i < particles.size(); i++) {
-        particles[i].update(deltaTime);
-        if(particles[i].isDead()) {
-            particles.erase(particles.begin() + i);
+        
+        if(!particles[i].isDead()) {
+            particles[i].update(deltaTime);
+            alivePart++;
         }
     }
 }

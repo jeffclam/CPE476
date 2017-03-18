@@ -63,6 +63,7 @@ void Particle::update(float deltaTime) {
         return;
     } else if(doesDie && timeToLive <= 0) {
         color.a = 0.0;
+        pos = vec3(-10, -10, -10);
         return;
     }
 

@@ -15,7 +15,7 @@ class ParticleSystem {
         ~ParticleSystem(){};
         void update(float deltaTime);
         void render(shared_ptr<Program> prog);
-        const bool isEmpty() const { return particles.size() == 0 && !isInfinite; };
+        const bool isEmpty() const { return alivePart == 0 && !isInfinite; };
         void initGeom();
         void updateGeom();
     private:
@@ -24,6 +24,7 @@ class ParticleSystem {
         bool isInfinite;
         vector<Particle> particles;
         int partNum = 100;
+        int alivePart = 0;
         GLfloat points[300];
         GLfloat pointColors[400];
         GLuint pointsbuffer;
