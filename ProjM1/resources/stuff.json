@@ -157,6 +157,10 @@
         {
         "name": "particle",
         "text": "alpha.bmp"
+        },
+        {
+        "name": "start",
+        "text": "start.png"
         }
         ],
    "sounds" : [

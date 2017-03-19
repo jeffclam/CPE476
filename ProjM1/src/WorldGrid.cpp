@@ -188,6 +188,6 @@ vec3 WorldGrid::getNextPoint(GridCell *dest, GameObj *mover) {
         current = NULL;
     }
     //if no path was found, return the start node as the next destination
-    cout << "No path: " << lookedAt << "\n";
+    //cout << "No path: " << lookedAt << "\n";
     return mover->getPos();
 }

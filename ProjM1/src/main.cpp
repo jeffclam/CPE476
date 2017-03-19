@@ -52,7 +52,7 @@ shared_ptr<Program> gprog, defprog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
-bool gameOver = false;
+bool gameOver = false, startMenu = true;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
@@ -64,9 +64,14 @@ static void error_callback(int error, const char *description)
 
 static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
+    if (startMenu) {
+        if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+            startMenu = false;
+        }
+    }
 }
 
 static void resize_callback(GLFWwindow *window, int width, int height) {
@@ -294,12 +299,66 @@ static void init()
 	engine->setListenerPosition(vec3df(0,0,0), vec3df(0,0,1));*/
 }
 
+void renderUI() {
+    bool show_another_window = true;
+
+    ImGui_ImplGlfwGL3_NewFrame();
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
+    ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::Text("Score: %d", world.state.score);
+    ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive * 100) / world.edibles.size(), "%");
+    ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
+    //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+    //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
+    //ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
+    //ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
+    ImGui::End();
+    ImGui::Render();
+    if (world.state.grassAlive < world.edibles.size() / 2) {
+        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
+        ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::Text("GAME OVER");
+        ImGui::Text("YOUR LAWN DIED D:");
+        ImGui::End();
+        ImGui::Render();
+        gameOver = true;
+    }
+    if (world.state.retireIn <= 0) {
+        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(150, 75), ImGuiSetCond_Always);
+        ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::Text("GAME OVER");
+        ImGui::Text("YOU HAVE RETIRED :D");
+        ImGui::End();
+        ImGui::Render();
+        gameOver = true;
+    }
+}
+
+void renderStartMenu() {
+    bool show_another_window = true;
+
+    ImGui_ImplGlfwGL3_NewFrame();
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(g_width, g_height), ImGuiSetCond_Always);
+    ImGui::GetStyle().WindowPadding = ImVec2(0,0);
+    ImTextureID id = (ImTextureID) getTexture("start")->getTid();
+    ImGui::Begin("Image goes here", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+    ImGui::Image(id, ImVec2(800, 600));
+    ImGui::End();
+    ImGui::Render();
+    ImGui::GetStyle().WindowPadding = ImVec2(5, 15);
+}
+
 static void render()
 {
 	// Get current frame buffer size.
 	int width, height;
 	mat4 LS;
-    bool show_another_window = true;
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
@@ -383,41 +442,10 @@ static void render()
    P->popMatrix();
 
    //Render user interface
-    ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
-    ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Score: %d", world.state.score);
-	ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive*100)/world.edibles.size(),"%");
-	ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn/60, (int)world.state.retireIn%60);
-    //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
-	//ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
-	//ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
-	//ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
-    ImGui::End();
-    ImGui::Render();
-	if(world.state.grassAlive < world.edibles.size()/2) {
-        ImGui_ImplGlfwGL3_NewFrame();
-		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
-		ImGui::SetNextWindowSize(ImVec2(130,75), ImGuiSetCond_Always);
-		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-		ImGui::Text("GAME OVER");
-		ImGui::Text("YOUR LAWN DIED D:");
-		ImGui::End();
-    	ImGui::Render();
-		gameOver = true;
-    }
-	if(world.state.retireIn <= 0) {
-        ImGui_ImplGlfwGL3_NewFrame();
-		ImGui::SetNextWindowPos(ImVec2(g_width/2 - 103, g_height/2 - 75), ImGuiSetCond_Always);
-		ImGui::SetNextWindowSize(ImVec2(150,75), ImGuiSetCond_Always);
-		ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-		ImGui::Text("GAME OVER");
-		ImGui::Text("YOU HAVE RETIRED :D");
-		ImGui::End();
-    	ImGui::Render();
-		gameOver = true;
-    }
+   if (startMenu)
+       renderStartMenu();
+   else
+       renderUI();
 
 }
 
@@ -443,14 +471,15 @@ int main(int argc, char **argv)
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 
 	// Create a windowed mode window and its OpenGL context.
-    g_width = 640;
-    g_height = 480;
+    g_width = 800;
+    g_height = 600;
 	window = glfwCreateWindow(g_width, g_height, "Oh Mah Lawn!", NULL, NULL);
 	if(!window) {
 		glfwTerminate();
 		return -1;
 	}
     ImGui_ImplGlfwGL3_Init(window, true);
+        
 	// Make the window's context current.
 	glfwMakeContextCurrent(window);
 	// Initialize GLEW.
@@ -485,7 +514,7 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
-        if(!gameOver)
+        if(!gameOver && !startMenu)
             world.update(glfwGetTime() - lastTime);
         lastTime = glfwGetTime();
 	}

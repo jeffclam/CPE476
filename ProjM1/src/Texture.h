@@ -32,6 +32,7 @@ public:
 	int getUnit() const { return unit; }
 	void setHandle(GLint h) { handle = h; }
 	GLint getHandle() const { return handle; }
+    GLint getTid() { return tid; }
 	void init();
 	void bind();
 	void unbind();
