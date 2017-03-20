@@ -41,12 +41,12 @@ void EnemyCharModel::init_Model() {
 
 bool EnemyCharModel::scare_Motion() {
     if (scare) {
-        body[TORSO]->scale += .25;
-        if (body[TORSO]->scale == vec3(2.5))
+        body[TORSO]->scale += .20;
+        if (body[TORSO]->scale[0] >= 2.25)
             scare = false;
     }
     else {
-        body[TORSO]->scale -= .25;
+        body[TORSO]->scale -= .20;
         if (body[TORSO]->scale[0] <= 1.25) {
             scare = true;
             return false;

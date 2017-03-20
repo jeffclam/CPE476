@@ -32,9 +32,6 @@
 #include "ManualCamera.h"
 #include "camera.h"
 
-#define CAM true
-#define FREE_CAM false
-
 class WroldGrid;
 
 using namespace glm;
@@ -47,7 +44,6 @@ public:
     ~WorldObj();
     std::vector<GameObj*> objs;
     void render(shared_ptr<Program> prog, bool shadowPass);
-    void toon_render(shared_ptr<Program>);
     void update(double time);
     void addObj(GameObj *newObj);
     void setWindows(GLFWwindow *win);

@@ -108,9 +108,9 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 }
 
 void EnemyGameObj::scare(GameObj *scarer){
-    if (!isScared) {
+    //if (!isScared) {
         playSound("sheepScare", pos);
-    }
+    //}
     isScared = true;
     scareMotion = true;
     isLeaving = false;

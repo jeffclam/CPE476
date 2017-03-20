@@ -74,6 +74,10 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
+static void mouse_callback(GLFWwindow *window, int button, int action, int mods) {
+
+}
+
 static void resize_callback(GLFWwindow *window, int width, int height) {
    g_width = width;
    g_height = height;
@@ -501,6 +505,7 @@ int main(int argc, char **argv)
 	glfwSwapInterval(1);
 	// Set keyboard callback.
 	glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_callback);
    //set the window resize call back
    glfwSetFramebufferSizeCallback(window, resize_callback);
 

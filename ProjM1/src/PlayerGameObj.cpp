@@ -21,7 +21,7 @@ void PlayerGameObj::update(GameState *state) {
     theta -= (state->mouseX-oldX)/width;
     oldX = state->mouseX;
 
-    if (glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    if (glfwGetMouseButton(state->window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isScaring = true;
         push();
         getModel()->scare_Motion();
@@ -57,7 +57,8 @@ void PlayerGameObj::update(GameState *state) {
             strafe = strafe * ((float)2.5 * state->deltaTime);
             setPos(oldPos[0] + strafe[0], oldPos[1], oldPos[2] + strafe[2]);
         }
-
+        if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            speed *= sprint;
         setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
         pos += getVel()*((float)5 * state->deltaTime);
     }
