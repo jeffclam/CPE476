@@ -29,6 +29,7 @@
 #define RIGHT_ARM 3
 #define LEFT_LEG 4
 #define RIGHT_LEG 5
+#define CANE 6
 
 using namespace std;
 

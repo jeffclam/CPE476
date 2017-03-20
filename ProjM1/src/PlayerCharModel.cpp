@@ -1,7 +1,5 @@
 #include "PlayerCharModel.h"
 
-#define CANE 6
-
 PlayerCharModel::PlayerCharModel(vector<shared_ptr<Shape>> parts,
     vector<shared_ptr<Texture>> texs) {
     init();
@@ -27,6 +25,7 @@ void PlayerCharModel::init_Model() {
 
         body[CANE]->scale = vec3(.25, .5, .25);
         body[CANE]->offset = vec3(0, -2.5, 0);
+        body[CANE]->rotation = vec3(0, 0, 1);
         body[CANE]->action_rotation = vec3(1, 0, 0);
         body[CANE]->attach_Limb = vec3(-.9, .3, 0);
 

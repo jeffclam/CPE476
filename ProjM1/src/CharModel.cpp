@@ -100,7 +100,7 @@ void CharModel::render_Part(shared_ptr<Program> prog, int part) {
             rotation = -legs;
     }
 
-    if (part == LEFT_ARM || part == 6) {
+    if (part == LEFT_ARM || part == CANE) {
        rotation = arms;
     }
 
@@ -128,7 +128,10 @@ shared_ptr<MatrixStack> CharModel::adjust_Part(int part, float rotation) {
     model_transform->scale(body[part]->scale);
 
     if (body[part]->rotation != vec3(0)) {
-        model_transform->rotate(-M_PI / 2.0, body[part]->rotation);
+        if (part == LEFT_ARM || part == RIGHT_ARM)
+            model_transform->rotate(-M_PI / 2.0, body[part]->rotation);
+        if (part == CANE)
+            model_transform->rotate(-M_PI, body[part]->rotation);
     }
 
     return model_transform;
