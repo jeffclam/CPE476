@@ -12,7 +12,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define SPRINT_MAX 2
+#define SPRINT_MAX 50000
 
 #include "GameObj.h"
 #include "EnemyGameObj.h"
@@ -26,8 +26,7 @@ public:
 private:
     float oldX;
     float theta;
-    float sprint = 1;
-    //void jump(GameState state);
+    float sprintEnergy = 2;
     bool isScaring = false;
 };
 

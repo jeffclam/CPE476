@@ -57,8 +57,13 @@ void PlayerGameObj::update(GameState *state) {
             strafe = strafe * ((float)2.5 * state->deltaTime);
             setPos(oldPos[0] + strafe[0], oldPos[1], oldPos[2] + strafe[2]);
         }
-        if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-            speed *= sprint;
+        if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+            if (sprintEnergy > 0)
+                speed *= sprintEnergy;
+            if (glfwGetKey(state->window, GLFW_KEY_W | GLFW_KEY_A | GLFW_KEY_S | GLFW_KEY_D)) {
+                getModel()->walk_Motion();
+            }
+        }
         setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
         pos += getVel()*((float)5 * state->deltaTime);
     }
@@ -82,22 +87,6 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     theta = M_PI;
     name = "player";
 }
-
-/*
-void PlayerGameObj::jump(GameState state) {
-    if(getVel()[1] != 0 && isJumping && getPos()[1] <= 0) {
-        setPos(getPos()[0], 0, getPos()[2]);
-        setVel(getVel()[0], 0, getVel()[2]);
-        isJumping = false;
-        return;
-    }
-    if(getVel()[1] == 0 && isJumping) {
-        setVel(getVel()[0], 0.3, getVel()[2]);
-    }
-    if(isJumping && getPos()[1] > 1) {
-        setVel(getVel()[0], -0.3, getVel()[2]);
-    }
-} */
 
 void PlayerGameObj::push() {
     EnemyGameObj *enemy;
