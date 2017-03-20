@@ -232,11 +232,15 @@ static void init()
     vector<shared_ptr<Shape>> playerParts = {
         getShape("manBody"), getShape("manHead"),
         getShape("manArm"),getShape("manArm"),
-        getShape("manLeg"), getShape("manLeg")};
+        getShape("manLeg"), getShape("manLeg"),
+        getShape("sheepLeg")
+    };
     vector<shared_ptr<Texture>> playerTexs = { 
         getTexture("manBodyText"), getTexture("faceText"),
         getTexture("manArmText"), getTexture("manArmText"),
-        getTexture("manLegText"), getTexture("manLegText") };
+        getTexture("manLegText"), getTexture("manLegText"),
+        getTexture("legText")
+    };
     shared_ptr<CharModel> player_model = 
         make_shared<PlayerCharModel>(PlayerCharModel(playerParts, playerTexs));
 

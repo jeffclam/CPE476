@@ -1,8 +1,12 @@
 #include "PlayerCharModel.h"
 
+#define CANE 6
+
 PlayerCharModel::PlayerCharModel(vector<shared_ptr<Shape>> parts,
     vector<shared_ptr<Texture>> texs) {
     init();
+    /* for the cane */
+    body.push_back(unique_ptr<Part>(new Part));
     for (int i = 0; i < body.size(); i++) {
         body[i]->shape = parts[i];
         body[i]->tex = texs[i];
@@ -18,12 +22,17 @@ void PlayerCharModel::init_Model() {
 
         body[LEFT_ARM]->offset = vec3(0, -1.0, 0);
         body[LEFT_ARM]->rotation = vec3(0, 0, 1);
-        body[LEFT_ARM]->action_rotation = vec3(0, 0, 1);
+        body[LEFT_ARM]->action_rotation = vec3(1, 0, 0);
         body[LEFT_ARM]->attach_Limb = vec3(-.9, .30, 0);
+
+        body[CANE]->scale = vec3(.25, .5, .25);
+        body[CANE]->offset = vec3(0, -2.5, 0);
+        body[CANE]->action_rotation = vec3(1, 0, 0);
+        body[CANE]->attach_Limb = vec3(-.9, .3, 0);
 
         body[RIGHT_ARM]->offset = vec3(0, -1.0, 0);
         body[RIGHT_ARM]->rotation = vec3(0, 0, 1);
-        body[RIGHT_ARM]->action_rotation = vec3(0, 0, 1);
+        body[RIGHT_ARM]->action_rotation = vec3(1, 0, 0);
         body[RIGHT_ARM]->attach_Limb = vec3(.9, .30, 0);
 
         body[LEFT_LEG]->offset = vec3(0, -.35, 0);
@@ -66,4 +75,5 @@ void PlayerCharModel::walk_Motion() {
             walk = 1;
         }
     }
+    arms = -legs;
 }

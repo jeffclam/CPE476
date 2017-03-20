@@ -93,18 +93,17 @@ void CharModel::render_Model(shared_ptr<Program> prog) {
 
 void CharModel::render_Part(shared_ptr<Program> prog, int part) {
     float rotation = 0;
-    if (part == LEFT_LEG || part == RIGHT_LEG) {
-        if (part == LEFT_LEG)
+    if (part == LEFT_LEG || part == RIGHT_LEG || part == RIGHT_ARM) {
+        if (part == LEFT_LEG || part == RIGHT_ARM)
             rotation = legs;
         else
             rotation = -legs;
     }
-    else if (part == LEFT_ARM || part == RIGHT_ARM) {
-        if (part == LEFT_ARM)
-            rotation = arms;
-        else
-            rotation = -arms;
+
+    if (part == LEFT_ARM || part == 6) {
+       rotation = arms;
     }
+
     model_transform->pushMatrix();
     shared_ptr<MatrixStack> M = adjust_Part(part, rotation);
 
