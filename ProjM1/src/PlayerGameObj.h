@@ -12,7 +12,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define SPRINT_MAX 50000
+#define SPRINT_MAX 1
+#define SPRINT_MIN -.5
 
 #include "GameObj.h"
 #include "EnemyGameObj.h"
@@ -23,10 +24,10 @@ public:
     virtual ~PlayerGameObj();
     virtual void update(GameState *state);
     void push();
+    float stamina = SPRINT_MAX;
 private:
     float oldX;
     float theta;
-    float sprintEnergy = 2;
     bool isScaring = false;
     bool sawFirstSheep = false;
     bool sawFirstEat = false;

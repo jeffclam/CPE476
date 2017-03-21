@@ -49,7 +49,8 @@ void PlayerGameObj::update(GameState *state) {
     }
     vec3 startPos = getPos();
     setSndPos(pos, rot);
-    int height, width, speed = 0;
+    int height, width;
+    float speed = 0;
     grid->removeFromGrid(this);
     if(oldX == 0) {
         oldX = state->mouseX;
@@ -70,11 +71,11 @@ void PlayerGameObj::update(GameState *state) {
         /* walking */
         if (glfwGetKey(state->window, GLFW_KEY_W) == GLFW_PRESS) {
             getModel()->walk_Motion();
-            speed = 1.5;
+            speed = 1;
         }
         else if (glfwGetKey(state->window, GLFW_KEY_S) == GLFW_PRESS) {
             getModel()->walk_Motion();
-            speed = -1.5;
+            speed = -1;
         }
         else {
             setVel(0, getVel()[1], 0);
@@ -94,13 +95,27 @@ void PlayerGameObj::update(GameState *state) {
             strafe = strafe * ((float)2.5 * state->deltaTime);
             setPos(oldPos[0] + strafe[0], oldPos[1], oldPos[2] + strafe[2]);
         }
+
         if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-            if (sprintEnergy > 0)
-                speed *= sprintEnergy;
+            if (stamina > SPRINT_MIN)
+                speed *= 2;
+            else
+                speed *= .5;
+
             if (glfwGetKey(state->window, GLFW_KEY_W | GLFW_KEY_A | GLFW_KEY_S | GLFW_KEY_D)) {
                 getModel()->walk_Motion();
+                if (stamina > SPRINT_MIN)
+                    stamina -= state->deltaTime;
+            } else {
+                if (stamina < SPRINT_MAX)
+                    stamina += state->deltaTime;
             }
         }
+        else {
+            if (stamina < SPRINT_MAX)
+                stamina += state->deltaTime;
+        }
+
         setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
         pos += getVel()*((float)5 * state->deltaTime);
     }
