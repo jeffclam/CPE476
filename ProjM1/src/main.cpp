@@ -72,6 +72,7 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     if (startMenu) {
         if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
             startMenu = false;
+            playSound("sheepScare", vec3(10, 2.5, 10));
         }
     }
 }
