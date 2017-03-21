@@ -159,8 +159,28 @@
         "text": "alpha.bmp"
         },
         {
-        "name": "start",
-        "text": "start.png"
+            "name": "start",
+            "text": "start.png"
+        },
+        {
+        "name": "100",
+        "text": "100.png"
+        },
+        {
+        "name": "75",
+        "text": "75.png"
+        },
+        {
+        "name": "50",
+        "text": "50.png"
+        },
+        {
+        "name": "25",
+        "text": "25.png"
+        },
+        {
+        "name": "0",
+        "text": "0.png"
         }
         ],
    "sounds" : [

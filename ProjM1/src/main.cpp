@@ -324,13 +324,35 @@ void renderUI() {
     ImGui::End();
     ImGui::Render();
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
+    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, .8);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0,0,0,0));
     ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::SetNextWindowPos(ImVec2(0, 75), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(140, 20), ImGuiSetCond_Always);
-    ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Stamina: %.2f%", (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100);
+    ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
+    ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+    ImTextureID id;
+    int stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
+    string percentage;
+    if (stamina > 75)
+        percentage = "100";
+    else if (stamina > 50)
+        percentage = "75";
+    else if (stamina > 25)
+        percentage = "50";
+    else if (stamina > 5)
+        percentage = "25";
+    else
+        percentage = "0";
+    id = (ImTextureID)getTexture(percentage)->getTid();
+    ImGui::Image(id, ImVec2(120, 15));
     ImGui::End();
     ImGui::Render();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar();
 
     if (world.state.grassAlive < world.edibles.size() / 2) {
         ImGui_ImplGlfwGL3_NewFrame();
@@ -359,16 +381,16 @@ void renderUI() {
 void renderStartMenu() {
     bool show_another_window = true;
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
     ImGui::SetNextWindowSize(ImVec2(g_width, g_height), ImGuiSetCond_Always);
-    ImGui::GetStyle().WindowPadding = ImVec2(0,0);
     ImTextureID id = (ImTextureID) getTexture("start")->getTid();
     ImGui::Begin("Image goes here", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
     ImGui::Image(id, ImVec2(800, 600));
     ImGui::End();
     ImGui::Render();
-    ImGui::GetStyle().WindowPadding = ImVec2(5, 15);
+    ImGui::PopStyleVar();
 }
 
 static void render()
