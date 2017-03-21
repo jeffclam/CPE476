@@ -52,7 +52,7 @@ shared_ptr<Program> gprog, defprog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
-bool gameOver = false, startMenu = true;
+bool gameOver = false, startMenu = true, pauseMenu = true;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
@@ -74,11 +74,30 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
             startMenu = false;
             playSound("sheepScare", vec3(10, 2.5, 10));
         }
+    }else if (pauseMenu) {
+        if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+            pauseMenu = false;
+            playSound("sheepScare", vec3(10, 2.5, 10));
+        }
+    }
+    if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        pauseMenu = true;
+        playSound("sheepScare", world.objs[0]->getPos());
     }
 }
 
 static void mouse_callback(GLFWwindow *window, int button, int action, int mods) {
-
+    if (startMenu) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            startMenu = false;
+            playSound("sheepScare", vec3(10, 2.5, 10));
+        }
+    } else if (pauseMenu) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            pauseMenu = false;
+            playSound("sheepScare", vec3(10, 2.5, 10));
+        }
+    }
 }
 
 static void resize_callback(GLFWwindow *window, int width, int height) {
@@ -320,6 +339,21 @@ static void init()
 	getEngine()->setListenerPosition(vec3df(0,0,0), vec3df(0,0,1));
 }
 
+void renderScreen(string screen) {
+    bool show_another_window = true;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    ImGui_ImplGlfwGL3_NewFrame();
+    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(g_width, g_height), ImGuiSetCond_Always);
+    ImTextureID id = (ImTextureID)getTexture(screen)->getTid();
+    ImGui::Begin("Image goes here", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+    ImGui::Image(id, ImVec2(800, 600));
+    ImGui::End();
+    ImGui::Render();
+    ImGui::PopStyleVar();
+}
+
 void renderUI() {
     bool show_another_window = true;
 
@@ -377,6 +411,7 @@ void renderUI() {
         ImGui::End();
         ImGui::Render();
         gameOver = true;
+        renderScreen("lose");
     }
     if (world.state.retireIn <= 0) {
         ImGui_ImplGlfwGL3_NewFrame();
@@ -388,22 +423,8 @@ void renderUI() {
         ImGui::End();
         ImGui::Render();
         gameOver = true;
+        renderScreen("win");
     }
-}
-
-void renderStartMenu() {
-    bool show_another_window = true;
-
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(g_width, g_height), ImGuiSetCond_Always);
-    ImTextureID id = (ImTextureID) getTexture("start")->getTid();
-    ImGui::Begin("Image goes here", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-    ImGui::Image(id, ImVec2(800, 600));
-    ImGui::End();
-    ImGui::Render();
-    ImGui::PopStyleVar();
 }
 
 static void render()
@@ -495,7 +516,11 @@ static void render()
 
    //Render user interface
    if (startMenu)
-       renderStartMenu();
+       renderScreen("start");
+   else if (!startMenu && pauseMenu) {
+       renderScreen("pause");
+       renderUI();
+   }
    else
        renderUI();
 
@@ -567,7 +592,7 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
-        if(!gameOver && !startMenu) {
+        if(!gameOver && !startMenu && !pauseMenu) {
             world.update(glfwGetTime() - lastTime);
 			if(world.state.lawnHealth < 60){
 				music->setIsPaused(true);
