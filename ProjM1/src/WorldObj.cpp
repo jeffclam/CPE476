@@ -149,7 +149,7 @@ void WorldObj::update(double time) {
     state.deltaTime = (float) time;
     state.worldTime += (float) time;
     state.timeSinceSpawn += (float) time;
-    if(state.timeSinceSpawn > state.timeBetweenSpawn && state.enemyCount < 11) {
+    if(state.timeSinceSpawn > state.timeBetweenSpawn && state.enemyCount < 15) {
         state.enemyCount++;
         state.score++;
         state.timeSinceSpawn = 0;
@@ -177,6 +177,7 @@ void WorldObj::update(double time) {
     cam.avatar = objs[0];
     cam.updateCamera();
     state.partManager->update(state.deltaTime);
+    state.lawnHealth = (state.grassAlive * 100) / edibles.size();
 }
 
 void WorldObj::addObj(GameObj *newObj) {

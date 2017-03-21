@@ -16,6 +16,6 @@ void EdibleGameObj::update(GameState *state) {
 }
 
 void EdibleGameObj::eat(GameState stat) {
-    setScale(scale[0], scale[1] - (stat.deltaTime/10), scale[2]);
-    setPos(pos[0], pos[1] - (stat.deltaTime/10), pos[2]);
+    setScale(scale[0], scale[1] - (stat.deltaTime/6), scale[2]);
+    setPos(pos[0], pos[1] - (stat.deltaTime/6), pos[2]);
 }

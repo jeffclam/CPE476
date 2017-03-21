@@ -28,6 +28,14 @@ private:
     float theta;
     float sprintEnergy = 2;
     bool isScaring = false;
+    bool sawFirstSheep = false;
+    bool sawFirstEat = false;
+    bool wasNearDead = false;
+    bool hasWon = false;
+    bool hasLost = false;
+    void *snd = 0;
+    float sndTimer = 5.0;
+    int sndNum = 0;
 };
 
 #endif /* PlayerGameObj_h */

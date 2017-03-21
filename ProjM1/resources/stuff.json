@@ -167,6 +167,66 @@
         {
         "name": "sheepScare",
         "sound": "sheepScare.ogg"
+        },
+        {
+        "name": "intro",
+        "sound": "intro.ogg"
+        },
+        {
+        "name": "firstSheep",
+        "sound": "firstSheep.ogg"
+        },
+        {
+        "name": "firstEat",
+        "sound": "firstEat.ogg"
+        },
+        {
+        "name": "Killers",
+        "sound": "Killers.ogg"
+        },
+        {
+        "name": "The_Show_Must_Be_Go",
+        "sound": "The_Show_Must_Be_Go.ogg"
+        },
+        {
+        "name": "nearDead",
+        "sound": "nearDead.ogg"
+        },
+        {
+        "name": "scare1",
+        "sound": "scare1.ogg"
+        },
+        {
+        "name": "scare2",
+        "sound": "scare2.ogg"
+        },
+        {
+        "name": "scare3",
+        "sound": "scare3.ogg"
+        },
+        {
+        "name": "win1",
+        "sound": "win1.ogg"
+        },
+        {
+        "name": "win2",
+        "sound": "win2.ogg"
+        },
+        {
+        "name": "win3",
+        "sound": "win3.ogg"
+        },
+        {
+        "name": "fail1",
+        "sound": "fail1.ogg"
+        },
+        {
+        "name": "fail3",
+        "sound": "fail3.ogg"
+        },
+        {
+        "name": "fail2",
+        "sound": "fail2.ogg"
         }
         ]
 }

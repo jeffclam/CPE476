@@ -22,11 +22,12 @@ public:
     int waveNumber = 0;  //How many waves you've survived
     double mouseX = 0;    //Current position of mouse (X)
     double mouseY = 0;    //Current position of mouse (Y)
-    float timeBetweenSpawn = 5;
+    float timeBetweenSpawn = 3;
     int enemyCount = 0;
     int score = 0;
     float grassAlive = 0;
-    float retireIn = 60 * 5;
+    float lawnHealth = 100.0;
+    float retireIn = 60 * 3;
     GLFWwindow *window = NULL;
     ParticleManager *partManager;
 

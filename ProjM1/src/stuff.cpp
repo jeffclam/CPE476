@@ -8,6 +8,8 @@ ISoundEngine* engine = createIrrKlangDevice();
 
 string RESDIR = "";
 
+ISoundEngine *getEngine(){ return engine;};
+
 void setSndPos(vec3 pos, vec3 dir) {
     engine->setListenerPosition(vec3df(pos[0],pos[1],pos[2]), vec3df(dir[0],dir[1],dir[2]));
 }
@@ -75,9 +77,19 @@ shared_ptr<Shape> getShape(string name) {
     return got->second;
 }
 
-void playSound(string name, vec3 pos) {
+void *playSound(string name, vec3 pos) {
     std::unordered_map<std::string,string>::const_iterator got = loadedSound.find (name);
-    engine->play3D(got->second.c_str(), vec3df(pos[0], pos[1], pos[2]));
+    irrklang::ISound* snd = engine->play3D(got->second.c_str(), vec3df(pos[0], pos[1], pos[2]), false, true);
+    if (snd) {
+        snd->setIsPaused(false);
+    }
+    return snd;
+}
+
+void updateSndPos(void *snd, vec3 pos) {
+    if(snd) {
+        ((irrklang::ISound*)snd)->setPosition(vec3df(pos[0],pos[1],pos[2]));
+    }
 }
 
 shared_ptr<Texture> getTexture(string name) {
