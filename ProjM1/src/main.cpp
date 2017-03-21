@@ -57,6 +57,8 @@ Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
 
+ISound* musicDead, *music;
+
 static void error_callback(int error, const char *description)
 {
 	cerr << description << endl;
@@ -297,14 +299,24 @@ static void init()
 	sky.setFront(getTexture("skyFront"));
 	sky.loadCubemap();
 
-	/*ISound* music = engine->play3D((RESOURCE_DIR + "Funky_Chunk.ogg").c_str(),
+	music = getEngine()->play3D((RESOURCE_DIR + "The_Show_Must_Be_Go.ogg").c_str(),
 	                               vec3df(0,0,0), true, false, true);
 
 	if (music) {
-		music->setMinDistance(5.0f);
+		music->setMinDistance(-5.0f);
 		music->setIsPaused(false);
+		music->setVolume(0.5);
 	}
-	engine->setListenerPosition(vec3df(0,0,0), vec3df(0,0,1));*/
+
+	musicDead = getEngine()->play3D((RESOURCE_DIR + "Killers.ogg").c_str(),
+	                               vec3df(0,0,0), true, false, true);
+
+	if (musicDead) {
+		musicDead->setMinDistance(-5.0f);
+		musicDead->setIsPaused(true);
+		musicDead->setVolume(0.5);
+	}
+	getEngine()->setListenerPosition(vec3df(0,0,0), vec3df(0,0,1));
 }
 
 void renderUI() {
@@ -315,7 +327,7 @@ void renderUI() {
     ImGui::SetNextWindowSize(ImVec2(140, 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Sheep Survived: %d", world.state.score);
-    ImGui::Text("Lawn Life: %.2f%s", (world.state.grassAlive * 100) / world.edibles.size(), "%");
+    ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
@@ -354,7 +366,7 @@ void renderUI() {
     ImGui::PopStyleVar();
     ImGui::PopStyleVar();
 
-    if (world.state.grassAlive < world.edibles.size() / 2) {
+    if (world.state.lawnHealth < 50.0) {
         ImGui_ImplGlfwGL3_NewFrame();
         ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
         ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
@@ -554,8 +566,13 @@ int main(int argc, char **argv)
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
-        if(!gameOver && !startMenu)
+        if(!gameOver && !startMenu) {
             world.update(glfwGetTime() - lastTime);
+			if(world.state.lawnHealth < 60){
+				music->setIsPaused(true);
+				musicDead->setIsPaused(false);
+			}
+		}
         lastTime = glfwGetTime();
 	}
 	// Quit program.

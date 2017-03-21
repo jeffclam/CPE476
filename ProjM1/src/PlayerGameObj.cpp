@@ -10,6 +10,43 @@
 #include "PlayerGameObj.h"
 
 void PlayerGameObj::update(GameState *state) {
+    if(state->deltaTime == state->worldTime) {
+        snd = playSound("intro", pos);
+    }
+    if(state->score == 1 && !sawFirstSheep) {
+        snd = playSound("firstSheep", pos);
+        sawFirstSheep = true;
+    }
+    if(state->lawnHealth < 100.0 && !sawFirstEat) {
+        snd = playSound("firstEat", pos);
+        sawFirstEat = true;
+    }
+    if(state->lawnHealth < 60.0 && !wasNearDead) {
+        snd = playSound("nearDead", pos);
+        wasNearDead = true;
+    }
+    if(state->retireIn < 1.0/60.0 && !hasWon) {
+        if(sndNum == 0)
+            playSound("win1", pos);
+        if(sndNum == 1)
+            playSound("win2", pos);
+        if(sndNum == 2)
+            playSound("win3", pos);
+        hasWon = true;
+    }
+    if(state->lawnHealth < 51.0 && !hasLost) {
+        if(sndNum == 0)
+            playSound("fail1", pos);
+        if(sndNum == 1)
+            playSound("fail2", pos);
+        if(sndNum == 2)
+            playSound("fail3", pos);
+        hasLost = true;
+    }
+    updateSndPos(snd, pos);
+    if(sndTimer > 0) {
+        sndTimer -= state->deltaTime;
+    }
     vec3 startPos = getPos();
     setSndPos(pos, rot);
     int height, width;
@@ -105,6 +142,16 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
 
 void PlayerGameObj::push() {
     EnemyGameObj *enemy;
+    if(sndTimer <= 0) {
+        if(sndNum == 0)
+            playSound("scare1", pos);
+        if(sndNum == 1)
+            playSound("scare2", pos);
+        if(sndNum == 2)
+            playSound("scare3", pos);
+        sndTimer = 3.0;
+        sndNum = (sndNum +1)%3;
+    }
     for (int i = 0; i < (*worldObjs).size(); i++) {
         enemy = (EnemyGameObj *)(*worldObjs)[i];
         if (enemy->getName() == "enemy") {
