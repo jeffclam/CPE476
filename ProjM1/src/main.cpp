@@ -312,10 +312,10 @@ void renderUI() {
 
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(140, 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Score: %d", world.state.score);
-    ImGui::Text("Lawn Health: %lu%s", (world.state.grassAlive * 100) / world.edibles.size(), "%");
+    ImGui::Text("Sheep Survived: %d", world.state.score);
+    ImGui::Text("Lawn Life: %.2f%s", (world.state.grassAlive * 100) / world.edibles.size(), "%");
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
