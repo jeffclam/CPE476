@@ -323,6 +323,15 @@ void renderUI() {
     //ImGui::Image((void *)gPosition, ImVec2(g_width/8, g_height/8));
     ImGui::End();
     ImGui::Render();
+
+    ImGui_ImplGlfwGL3_NewFrame();
+    ImGui::SetNextWindowPos(ImVec2(0, 75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(140, 20), ImGuiSetCond_Always);
+    ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::Text("Stamina: %.2f%", (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100);
+    ImGui::End();
+    ImGui::Render();
+
     if (world.state.grassAlive < world.edibles.size() / 2) {
         ImGui_ImplGlfwGL3_NewFrame();
         ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
