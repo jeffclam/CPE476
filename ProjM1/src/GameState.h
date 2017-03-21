@@ -25,7 +25,7 @@ public:
     float timeBetweenSpawn = 5;
     int enemyCount = 0;
     int score = 0;
-    int grassAlive = 0;
+    float grassAlive = 0;
     float retireIn = 60 * 5;
     GLFWwindow *window = NULL;
     ParticleManager *partManager;

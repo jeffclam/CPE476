@@ -23,4 +23,5 @@ private:
     bool isScared = false;
     bool isLeaving = false;
     float partCountDown = 0;
+    float sndTimer = 0;
 };

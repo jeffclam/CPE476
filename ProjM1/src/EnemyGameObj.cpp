@@ -31,6 +31,9 @@ vec3 EnemyGameObj::setRandomVel() {
 
 void EnemyGameObj::update(GameState *state) {
     grid->removeFromGrid(this);
+    if(sndTimer > 0) {
+        sndTimer -= state->deltaTime;
+    }
     if(partCountDown >= 0) {
         partCountDown -= state->deltaTime;
     }
@@ -108,9 +111,10 @@ bool EnemyGameObj::canEatCell(GridCell *cell){
 }
 
 void EnemyGameObj::scare(GameObj *scarer){
-    //if (!isScared) {
+    if (sndTimer <= 0) {
         playSound("sheepScare", pos);
-    //}
+        sndTimer = 1.0;
+    }
     isScared = true;
     scareMotion = true;
     isLeaving = false;

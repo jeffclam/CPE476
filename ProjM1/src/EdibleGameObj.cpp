@@ -12,7 +12,7 @@ void EdibleGameObj::update(GameState *state) {
     GameObj::update(state);
     is_Edible = (scale[1] > 0);  
     if(is_Edible)
-        state->grassAlive++; 
+        state->grassAlive += scale[1]; 
 }
 
 void EdibleGameObj::eat(GameState stat) {
