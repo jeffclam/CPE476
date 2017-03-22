@@ -61,7 +61,12 @@ void PlayerGameObj::update(GameState *state) {
 
     if (glfwGetMouseButton(state->window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS || glfwGetKey(state->window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         isScaring = true;
-        push();
+        push(state);
+        getModel()->scare_Motion();
+    }
+    if (state->waterLevel >= 100.0 && (glfwGetMouseButton(state->window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS || glfwGetKey(state->window, GLFW_KEY_Q) == GLFW_PRESS)) {
+        isScaring = true;
+        sprinkler(state);
         getModel()->scare_Motion();
     }
 
@@ -140,7 +145,7 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     name = "player";
 }
 
-void PlayerGameObj::push() {
+void PlayerGameObj::push(GameState *state) {
     EnemyGameObj *enemy;
     if(sndTimer <= 0) {
         if(sndNum == 0)
@@ -156,8 +161,40 @@ void PlayerGameObj::push() {
         enemy = (EnemyGameObj *)(*worldObjs)[i];
         if (enemy->getName() == "enemy") {
             if (check_Interact_Radius(*enemy)) {
+                if(!enemy->isScared)
+                    state->waterLevel += 2.0;
                 enemy->scare(this);
             }
         }
+    }
+}
+
+void PlayerGameObj::sprinkler(GameState *state) {
+    EnemyGameObj *enemy;
+    /*if(sndTimer <= 0) {
+        if(sndNum == 0)
+            playSound("scare1", pos);
+        if(sndNum == 1)
+            playSound("scare2", pos);
+        if(sndNum == 2)
+            playSound("scare3", pos);
+        sndTimer = 3.0;
+        sndNum = (sndNum +1)%3;
+    }*/
+    state->waterLevel = 0;
+    for (int i = 0; i < (*worldObjs).size(); i++) {
+        enemy = (EnemyGameObj *)(*worldObjs)[i];
+        if (enemy->getName() == "enemy") {
+            enemy->scare(this);
+        }
+    }
+    vec3 partPos = vec3(1.5, 0, 1.5);
+    for(int i = 0; i < 30; i++) {
+        for(int j = 0; j < 15; j++) {
+            state->partManager->addParticleSystem(true, vec4(0.1, 0.1, 0.9, 1.0), partPos);
+            partPos[0] += 3;
+        }
+        partPos[0] = 1.5;
+        partPos[2] += 3;
     }
 }

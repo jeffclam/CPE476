@@ -364,6 +364,7 @@ void renderUI() {
     ImGui::Text("Sheep Survived: %d", world.state.score);
     ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
+	ImGui::Text("Water: %.2f%s", world.state.waterLevel, "%");
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
     //ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));

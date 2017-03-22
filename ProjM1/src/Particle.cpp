@@ -43,9 +43,9 @@ void Particle::rebirth(){
     //pos.z = randFloat(-0.05, -0.05);
     pos = origin; 
     //set random velocity
-	v.x = randFloat(-1.0f, 1.0f);
+	v.x = randFloat(-2.0f, 2.0f);
 	v.y = randFloat(1.5f, 3.5f);
-	v.z = randFloat(-1.0f, 1.0f);
+	v.z = randFloat(-2.0f, 2.0f);
 	lifespan = randFloat(5.5f, 8.0f);
     timeToLive = lifespan;
 	scale = randFloat(0.2f, 1.0f);
@@ -69,7 +69,7 @@ void Particle::update(float deltaTime) {
 
     pos += v * deltaTime;
     timeToLive -= deltaTime;
-    //v.y -= (1/9.8) * deltaTime;
+    v.y -= (1) * deltaTime;
 }
 
 /*void Particle::update(float t, float h, const vec3 &g, const bool *keyToggles)

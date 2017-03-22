@@ -13,6 +13,7 @@ public:
     shared_ptr<CharModel> normal;
     shared_ptr<CharModel> scared;
     shared_ptr<CharModel> walking;
+    bool isScared = false;
 private:
     bool was_pushed;
     bool canEatCell(GridCell *cell);
@@ -20,7 +21,6 @@ private:
     GridCell *goal = NULL;
     EdibleGameObj *grass;
     bool scareMotion = false;
-    bool isScared = false;
     bool isLeaving = false;
     float partCountDown = 0;
     float sndTimer = 0;

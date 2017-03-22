@@ -23,7 +23,8 @@ public:
     PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex);
     virtual ~PlayerGameObj();
     virtual void update(GameState *state);
-    void push();
+    void push(GameState *state);
+    void sprinkler(GameState *state);
     float stamina = SPRINT_MAX;
 private:
     float oldX;

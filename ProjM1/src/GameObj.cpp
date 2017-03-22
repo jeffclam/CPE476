@@ -145,7 +145,7 @@ void GameObj::calcBoundingSphere() {
 }
 
 bool GameObj::check_Interact_Radius(GameObj obj) {
-    if (calcBoundingRadius() * 10.0f > distance(getPos(), obj.getPos())) {
+    if (calcBoundingRadius() * 15.0f > distance(getPos(), obj.getPos())) {
         return true;
     }
     return false;
