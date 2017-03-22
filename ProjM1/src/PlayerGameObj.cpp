@@ -149,11 +149,11 @@ void PlayerGameObj::push(GameState *state) {
     EnemyGameObj *enemy;
     if(sndTimer <= 0) {
         if(sndNum == 0)
-            playSound("scare1", pos);
+            snd = playSound("scare1", pos);
         if(sndNum == 1)
-            playSound("scare2", pos);
+            snd = playSound("scare2", pos);
         if(sndNum == 2)
-            playSound("scare3", pos);
+            snd = playSound("scare3", pos);
         sndTimer = 3.0;
         sndNum = (sndNum +1)%3;
     }
