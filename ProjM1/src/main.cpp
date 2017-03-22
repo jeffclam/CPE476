@@ -356,9 +356,24 @@ void renderScreen(string screen) {
 
 void renderUI() {
     bool show_another_window = true;
+    bool show_stamina = true;
+    ImVec2 pos = ImVec2(0, 0);
+
+    if (world.state.lawnHealth < 50.0) {
+        show_stamina = false;
+        renderScreen("lose");
+        pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
+        gameOver = true;
+    }
+    if (world.state.retireIn <= 0) {
+        show_stamina = false;
+        renderScreen("win");
+        pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
+        gameOver = true;
+    }
 
     ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
+    ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
     ImGui::SetNextWindowSize(ImVec2(140, 75), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Sheep Survived: %d", world.state.score);
@@ -372,59 +387,36 @@ void renderUI() {
     ImGui::End();
     ImGui::Render();
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
-    ImGui::PushStyleVar(ImGuiStyleVar_Alpha, .8);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0,0,0,0));
-    ImGui_ImplGlfwGL3_NewFrame();
-    ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
-    ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-    ImTextureID id;
-    int stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
-    string percentage;
-    if (stamina > 75)
-        percentage = "100";
-    else if (stamina > 50)
-        percentage = "75";
-    else if (stamina > 25)
-        percentage = "50";
-    else if (stamina > 5)
-        percentage = "25";
-    else
-        percentage = "0";
-    id = (ImTextureID)getTexture(percentage)->getTid();
-    ImGui::Image(id, ImVec2(120, 15));
-    ImGui::End();
-    ImGui::Render();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleVar();
-    ImGui::PopStyleVar();
-    ImGui::PopStyleVar();
-
-    if (world.state.lawnHealth < 50.0) {
+    if (show_stamina) {
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, .8);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
         ImGui_ImplGlfwGL3_NewFrame();
-        ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(130, 75), ImGuiSetCond_Always);
-        ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-        ImGui::Text("GAME OVER");
-        ImGui::Text("YOUR LAWN DIED D:");
+        ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
+        ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+        ImTextureID id;
+        int stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
+        string percentage;
+        if (stamina > 75)
+            percentage = "100";
+        else if (stamina > 50)
+            percentage = "75";
+        else if (stamina > 25)
+            percentage = "50";
+        else if (stamina > 5)
+            percentage = "25";
+        else
+            percentage = "0";
+        id = (ImTextureID)getTexture(percentage)->getTid();
+        ImGui::Image(id, ImVec2(120, 15));
         ImGui::End();
         ImGui::Render();
-        gameOver = true;
-        renderScreen("lose");
-    }
-    if (world.state.retireIn <= 0) {
-        ImGui_ImplGlfwGL3_NewFrame();
-        ImGui::SetNextWindowPos(ImVec2(g_width / 2 - 103, g_height / 2 - 75), ImGuiSetCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(150, 75), ImGuiSetCond_Always);
-        ImGui::Begin("GAME OVER", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-        ImGui::Text("GAME OVER");
-        ImGui::Text("YOU HAVE RETIRED :D");
-        ImGui::End();
-        ImGui::Render();
-        gameOver = true;
-        renderScreen("win");
+        ImGui::PopStyleColor();
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
     }
 }
 
