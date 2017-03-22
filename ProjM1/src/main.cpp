@@ -300,7 +300,7 @@ static void init()
     //dynamic_pointer_cast<EnemyCharModel>(world.charModels.at("sheep_model"))->set_Pointers(sheep_model, sheep_walk, sheep_scare);
 
     player->setVel(1, 0, 1);
-    player->setPos(10, 2.5, 10);
+    player->setPos(10, 2.25, 10);
     player->setScale(.5, .5, .5);
     player->setModel(player_model);
     player->getModel()->init_Model();
