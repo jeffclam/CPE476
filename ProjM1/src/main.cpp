@@ -690,8 +690,11 @@ int main(int argc, char **argv)
         else if (gameOver) {
             if (restart) {
                 gameOver = false;
-                //world = WorldObj();
-                //initWorld();
+                world = WorldObj();
+                initWorld();
+                world.setWindows(window);
+                ((PlayerGameObj *)world.objs[0])->sprinkler(&world.state);
+                ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
                 restart = false;
             }
         }
