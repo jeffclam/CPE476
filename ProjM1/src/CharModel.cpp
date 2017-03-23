@@ -30,12 +30,11 @@ CharModel::CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso,
     body[LEFT_LEG]->shape = body[RIGHT_LEG]->shape = leg;
 }
 
-CharModel::CharModel(shared_ptr<Shape> shape, shared_ptr<MatrixStack> global) {
-    init();
+CharModel::CharModel(shared_ptr<Shape> shape, shared_ptr<Texture> text) {
     for (int i = 0; i < body.size(); i++) {
         body[i]->shape = shape;
+        body[i]->tex = text;
     }
-    model_transform = global;
 }
 
 CharModel::CharModel(vector<shared_ptr<Shape>> parts,

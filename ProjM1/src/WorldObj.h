@@ -20,6 +20,7 @@
 #include "GameObj.h"
 #include "EdibleGameObj.h"
 #include "EnemyGameObj.h"
+#include "SupportGameObj.h"
 #include "GLSL.h"
 #include "Program.h"
 #include "MatrixStack.h"

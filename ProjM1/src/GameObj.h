@@ -83,6 +83,7 @@ public:
     WorldGrid *grid = NULL;
     bool solid = true;
     bool dead;
+    float interact_radius = 0;
 private:
     vec3 oldScale = vec3(0,0,0);
     shared_ptr<CharModel> model = NULL;

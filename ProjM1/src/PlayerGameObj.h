@@ -12,11 +12,12 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define SPRINT_MAX 1
+#define SPRINT_MAX .5
 #define SPRINT_MIN -.5
 
 #include "GameObj.h"
 #include "EnemyGameObj.h"
+#include "SupportGameObj.h"
 
 class PlayerGameObj: public GameObj {
 public:

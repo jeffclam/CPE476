@@ -49,7 +49,7 @@ public:
     CharModel();
     CharModel(shared_ptr<Shape> s);
     CharModel(shared_ptr<Shape> head, shared_ptr<Shape> torso, shared_ptr<Shape> arm, shared_ptr<Shape> leg);
-    CharModel(shared_ptr<Shape> s, shared_ptr<MatrixStack> g);
+    CharModel(shared_ptr<Shape> s, shared_ptr<Texture> text);
     CharModel(vector<shared_ptr<Shape>>, vector<shared_ptr<Texture>>);
     void init();
     virtual void init_Model();

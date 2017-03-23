@@ -145,7 +145,7 @@ void GameObj::calcBoundingSphere() {
 }
 
 bool GameObj::check_Interact_Radius(GameObj obj) {
-    if (calcBoundingRadius() * 15.0f > distance(getPos(), obj.getPos())) {
+    if (calcBoundingRadius() * interact_radius > distance(getPos(), obj.getPos())) {
         return true;
     }
     return false;
@@ -155,7 +155,7 @@ GameObj *GameObj::check_Collision_Radius(vector<GameObj *> *objs) {
     float dist, minDist;
     for (int i = 0; i < objs->size(); i++) {
         GameObj *other = (*objs)[i];
-        if (other != NULL && other->name != noInteract && other->name != "ground") {
+        if (other != NULL && other->name != noInteract && other->name != "sprinkler" && other->name != "ground") {
             dist = distance(this->getPos(), other->getPos());
             minDist = this->b_sphere.radius + other->b_sphere.radius;
             if (dist > 0 && dist < minDist) {

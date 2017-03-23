@@ -143,6 +143,7 @@ PlayerGameObj::PlayerGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex) :
     oldX = 0.0;
     theta = M_PI;
     name = "player";
+    interact_radius = 12.0f;
 }
 
 void PlayerGameObj::push(GameState *state) {
@@ -170,31 +171,8 @@ void PlayerGameObj::push(GameState *state) {
 }
 
 void PlayerGameObj::sprinkler(GameState *state) {
-    EnemyGameObj *enemy;
-    /*if(sndTimer <= 0) {
-        if(sndNum == 0)
-            playSound("scare1", pos);
-        if(sndNum == 1)
-            playSound("scare2", pos);
-        if(sndNum == 2)
-            playSound("scare3", pos);
-        sndTimer = 3.0;
-        sndNum = (sndNum +1)%3;
-    }*/
-    state->waterLevel = 0;
-    for (int i = 0; i < (*worldObjs).size(); i++) {
-        enemy = (EnemyGameObj *)(*worldObjs)[i];
-        if (enemy->getName() == "enemy") {
-            enemy->scare(this);
-        }
-    }
-    vec3 partPos = vec3(1.5, 0, 1.5);
-    for(int i = 0; i < 30; i++) {
-        for(int j = 0; j < 15; j++) {
-            state->partManager->addParticleSystem(true, vec4(0.1, 0.1, 0.9, 1.0), partPos);
-            partPos[0] += 3;
-        }
-        partPos[0] = 1.5;
-        partPos[2] += 3;
+    for (auto sprinklr : (*worldObjs)) {
+        if (sprinklr->getName() == "sprinkler")
+            ((SupportGameObj *)sprinklr)->sprinkle(state);
     }
 }
