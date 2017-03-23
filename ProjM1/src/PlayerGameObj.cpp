@@ -102,7 +102,7 @@ void PlayerGameObj::update(GameState *state) {
         }
 
         /* sprinting sound effects */
-        if (exhaustionTimer > 0) {
+        if (exhaustionTimer > 0.0) {
             sndNum = (sndNum + 1) % 3;
             if (sndTimer <= 0) {
                 if (sndNum == 0)
@@ -111,7 +111,7 @@ void PlayerGameObj::update(GameState *state) {
                     snd = playSound("stopSprint2", pos);
                 if (sndNum == 3)
                     snd = playSound("stopSprint3", pos);
-                sndTimer = 3.0;
+                sndTimer = 2.0;
             }
         }
 
@@ -127,19 +127,23 @@ void PlayerGameObj::update(GameState *state) {
                 if (stamina > SPRINT_MIN)
                     stamina -= state->deltaTime;
                 else
-                    exhaustionTimer += state->deltaTime * 2.0;
+                    exhaustionTimer += state->deltaTime * EXHAUST_TIMER_MULTIPLIER;
             } else {
                 if (stamina < SPRINT_MAX)
                     stamina += state->deltaTime;
-                if (exhaustionTimer >= 0)
-                    exhaustionTimer -= state->deltaTime * 2.0;
+                if (exhaustionTimer >= 0) {
+                    exhaustionTimer -= state->deltaTime * EXHAUST_TIMER_MULTIPLIER;
+                    exhaustionTimer = (exhaustionTimer < 0) ? 0 : exhaustionTimer;
+                }
             }
         }
         else {
             if (stamina < SPRINT_MAX)
                 stamina += state->deltaTime;
-            if (exhaustionTimer >= 0)
-                exhaustionTimer -= state->deltaTime * 2.0;
+            if (exhaustionTimer >= 0) {
+                exhaustionTimer -= state->deltaTime * EXHAUST_TIMER_MULTIPLIER;
+                exhaustionTimer = (exhaustionTimer < 0) ? 0 : exhaustionTimer;
+            }
         }
 
         setVel(sin(theta) * speed, getVel()[1], cos(theta) * speed);
