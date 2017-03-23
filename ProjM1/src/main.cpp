@@ -1,6 +1,8 @@
 /* Lab 6 base code - transforms using matrix stack built on glm 
 	CPE 471 Cal Poly Z. Wood + S. Sueda
 */
+#define demo_mode 0
+
 #include <iostream>
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -57,6 +59,7 @@ bool restart = false;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
+float lawnDeath = 50.0;
 
 ISound* musicDead, *music;
 
@@ -86,6 +89,14 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
             ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
         }
     }
+
+    if (demo_mode) {
+        if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+            if (world.state.waterLevel < 95)
+                world.state.waterLevel = 95;
+        }
+    }
+
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
         pauseMenu = true;
         playSound("sheepScare", world.objs[0]->getPos());
@@ -387,7 +398,11 @@ void renderUI() {
     bool show_stamina = true;
     ImVec2 pos = ImVec2(0, 0);
 
-    if (world.state.lawnHealth < 50.0) {
+    if (demo_mode) {
+        lawnDeath = 90.0;
+    }
+
+    if (world.state.lawnHealth < lawnDeath) {
         show_stamina = false;
         renderScreen("lose");
         pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
@@ -418,7 +433,13 @@ void renderUI() {
     ImGui::SetNextWindowSize(ImVec2(140, 65), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Sheep Visited: %d", world.state.score);
+    if (world.state.lawnHealth < lawnDeath + 5.0) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+    }
     ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
+    if (world.state.lawnHealth < lawnDeath + 5.0) {
+        ImGui::PopStyleColor();
+    }
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
@@ -669,10 +690,14 @@ int main(int argc, char **argv)
 	// Initialize scene. Note geometry initialized in init now
 	init();
     world.setWindows(window);
-    PlayerGameObj *player = (PlayerGameObj *)world.objs[0];
+    if (demo_mode) {
+        world.state.retireIn = 60;
+    }
+
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
     vec3 playerPos;
+    PlayerGameObj *player = (PlayerGameObj *)world.objs[0];
     vec3df musicPos;
 	while(!glfwWindowShouldClose(window)) {
         player = (PlayerGameObj *)world.objs[0];
@@ -690,8 +715,9 @@ int main(int argc, char **argv)
             music->setPosition(musicPos);
             music->setVolume(.25);
 
-            if (world.state.lawnHealth < 60.0 || player->exhaustionTimer > 0) {
+            if (world.state.lawnHealth < lawnDeath + 5 || player->exhaustionTimer > 0) {
                 music->setIsPaused(true);
+                musicDead->setPosition(musicPos);
                 musicDead->setIsPaused(false);
             }
             else {
@@ -713,6 +739,10 @@ int main(int argc, char **argv)
                 restart = false;
                 music->setIsPaused(false);
                 musicDead->setIsPaused(true);
+
+                if (demo_mode) {
+                    world.state.retireIn = 60;
+                }
             }
         }
         lastTime = glfwGetTime();
