@@ -53,8 +53,12 @@
         "obj": "manLeg.obj"
         },
         {
-        "name": "manPants",
-        "obj": "manPants.obj"
+            "name": "manPants",
+            "obj": "manPants.obj"
+        },
+        {
+            "name": "sprinkler",
+            "obj":  "sprinkler.obj"
         }
         ],
    "textures" : [
@@ -157,6 +161,10 @@
         {
         "name": "particle",
         "text": "alpha.bmp"
+        },
+        {
+        "name": "sprinklerText",
+        "text": "sprinklertext.png"
         },
         {
         "name": "start",
