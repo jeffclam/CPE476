@@ -101,6 +101,21 @@ void PlayerGameObj::update(GameState *state) {
             setPos(oldPos[0] + strafe[0], oldPos[1], oldPos[2] + strafe[2]);
         }
 
+        /* sprinting sound effects */
+        if (stamina <= SPRINT_MIN) {
+            if (sndTimer <= 0) {
+                if (sndNum == 0)
+                    snd = playSound("stopSprint1", pos);
+                if (sndNum == 1)
+                    snd = playSound("stopSprint2", pos);
+                if (sndNum == 2)
+                    snd = playSound("stopSprint3", pos);
+                sndTimer = 3.0;
+                sndNum = (sndNum + 1) % 3;
+            }
+        }
+
+        /* sprinting */
         if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
             if (stamina > SPRINT_MIN)
                 speed *= 2;
@@ -171,6 +186,11 @@ void PlayerGameObj::push(GameState *state) {
 }
 
 void PlayerGameObj::sprinkler(GameState *state) {
+    if (sndTimer <= 0) {
+        snd = playSound("sprinklers", pos);
+        sndTimer = 3.0;
+    }
+
     for (auto sprinklr : (*worldObjs)) {
         if (sprinklr->getName() == "sprinkler")
             ((SupportGameObj *)sprinklr)->sprinkle(state);

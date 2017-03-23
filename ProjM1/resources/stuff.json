@@ -267,6 +267,22 @@
         {
         "name": "fail2",
         "sound": "fail2.ogg"
+        },
+        {
+        "name": "sprinklers",
+        "sound": "sprinklers.ogg"
+        },
+        {
+        "name": "stopSprint1",
+        "sound": "stopSprint1.ogg"
+        },
+        {
+        "name": "stopSprint2",
+        "sound": "stopSprint2.ogg"
+        },
+        {
+        "name": "stopSprint3",
+        "sound": "stopSprint3.ogg"
         }
         ]
 }
