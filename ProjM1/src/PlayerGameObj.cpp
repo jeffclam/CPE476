@@ -102,13 +102,14 @@ void PlayerGameObj::update(GameState *state) {
         }
 
         /* sprinting sound effects */
-        if (stamina <= SPRINT_MIN) {
+        if (exhaustionTimer > 0) {
+            sndNum = (sndNum + 1) % 3;
             if (sndTimer <= 0) {
-                if (exhaustionTimer > 0)
+                if (sndNum == 0)
                     snd = playSound("stopSprint1", pos);
-                if (exhaustionTimer > 1)
+                if (sndNum == 1)
                     snd = playSound("stopSprint2", pos);
-                if (exhaustionTimer > 3)
+                if (sndNum == 3)
                     snd = playSound("stopSprint3", pos);
                 sndTimer = 3.0;
             }
@@ -118,8 +119,8 @@ void PlayerGameObj::update(GameState *state) {
         if (glfwGetKey(state->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
             if (stamina > SPRINT_MIN)
                 speed *= 2;
-            else
-                speed *= .5;
+            else if (exhaustionTimer > 0)
+                speed *= 1.25;
 
             if (glfwGetKey(state->window, GLFW_KEY_W | GLFW_KEY_A | GLFW_KEY_S | GLFW_KEY_D)) {
                 getModel()->walk_Motion();

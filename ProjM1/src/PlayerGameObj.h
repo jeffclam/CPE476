@@ -15,7 +15,7 @@
 #define SPRINT_MAX .5
 #define SPRINT_MIN -.5
 
-#define MAX_SPRINT_TIME 8
+#define MAX_SPRINT_TIME 2
 
 #include "GameObj.h"
 #include "EnemyGameObj.h"

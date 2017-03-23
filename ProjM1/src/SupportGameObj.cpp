@@ -4,7 +4,7 @@ SupportGameObj::SupportGameObj(shared_ptr<Shape> shape, shared_ptr<Texture> tex)
     GameObj(shape, tex)
 {
     name = "sprinkler";
-    interact_radius = 30.0f;
+    interact_radius = 40.0f;
 }
 
 void SupportGameObj::update(GameState *state) {

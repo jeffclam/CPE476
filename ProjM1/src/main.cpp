@@ -52,7 +52,7 @@ shared_ptr<Program> gprog, defprog;
 int g_width, g_height;
 
 WorldObj world = WorldObj();
-bool gameOver = false, startMenu = true, pauseMenu = true;
+bool gameOver = false, startMenu = true, pauseMenu = true, firstSpray = true;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
@@ -96,6 +96,11 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
             pauseMenu = false;
             playSound("sheepScare", vec3(10, 2.5, 10));
+            if (world.state.waterLevel >= 100.0 && firstSpray) {
+                firstSpray = false;
+                ((PlayerGameObj *)world.objs[0])->sprinkler(&world.state);
+                ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
+            }
         }
     }
 }
