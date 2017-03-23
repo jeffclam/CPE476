@@ -53,6 +53,7 @@ int g_width, g_height;
 
 WorldObj world = WorldObj();
 bool gameOver = false, startMenu = true, pauseMenu = true, firstSpray = true;
+bool restart = false;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
@@ -79,10 +80,21 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
             pauseMenu = false;
             playSound("sheepScare", vec3(10, 2.5, 10));
         }
+        if (world.state.waterLevel >= 100.0 && firstSpray) {
+            firstSpray = false;
+            ((PlayerGameObj *)world.objs[0])->sprinkler(&world.state);
+            ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
+        }
     }
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
         pauseMenu = true;
         playSound("sheepScare", world.objs[0]->getPos());
+    }
+
+    if (gameOver) {
+        if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+            restart = true;
+        }
     }
 }
 
@@ -101,6 +113,12 @@ static void mouse_callback(GLFWwindow *window, int button, int action, int mods)
                 ((PlayerGameObj *)world.objs[0])->sprinkler(&world.state);
                 ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
             }
+        }
+    }
+
+    if (gameOver) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            restart = true;
         }
     }
 }
@@ -182,6 +200,84 @@ void defferedInit() {
 }
 
 
+static void initWorld() {
+    world.grid.initGrid();
+
+    PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
+
+    vector<shared_ptr<Shape>> playerParts = {
+        getShape("manBody"), getShape("manHead"),
+        getShape("manArm"),getShape("manArm"),
+        getShape("manLeg"), getShape("manLeg"),
+        getShape("sheepLeg")
+    };
+    vector<shared_ptr<Texture>> playerTexs = {
+        getTexture("manBodyText"), getTexture("faceText"),
+        getTexture("manArmText"), getTexture("manArmText"),
+        getTexture("manLegText"), getTexture("manLegText"),
+        getTexture("legText")
+    };
+    shared_ptr<CharModel> player_model =
+        make_shared<PlayerCharModel>(PlayerCharModel(playerParts, playerTexs));
+
+    vector<shared_ptr<Shape>> sheepParts = {
+        getShape("sheepBod"), getShape("sheepHead"),
+        getShape("sheepLeg"), getShape("sheepLeg"),
+        getShape("sheepLeg"), getShape("sheepLeg")
+    };
+    vector<shared_ptr<Texture>> sheepTexs = {
+        getTexture("sheepBodText"), getTexture("sheepHeadText"),
+        getTexture("legText"), getTexture("legText"),
+        getTexture("legText"), getTexture("legText")
+    };
+
+    shared_ptr<CharModel> sheep_model =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_model->init_Model();
+    shared_ptr<CharModel> sheep_walk =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_walk->init_Model();
+    shared_ptr<CharModel> sheep_scare =
+        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
+    sheep_scare->init_Model();
+
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_walk", sheep_walk));
+    world.charModels.insert(
+        pair<string, shared_ptr<CharModel>>("sheep_scare", sheep_scare));
+
+    player->setVel(1, 0, 1);
+    player->setPos(10, 2.25, 10);
+    player->setScale(.5, .5, .5);
+    player->setModel(player_model);
+    player->getModel()->init_Model();
+    world.cam.eyePt = player->getPos();
+    world.addObj(player);
+
+    world.makeFence(12, 22);
+
+    world.state.partManager = &pm;
+
+    sky.setRight(getTexture("skyRight"));
+    sky.setLeft(getTexture("skyLeft"));
+    sky.setTop(getTexture("skyUp"));
+    sky.setBottom(getTexture("skyDown"));
+    sky.setBack(getTexture("skyBack"));
+    sky.setFront(getTexture("skyFront"));
+    sky.loadCubemap();
+
+    music = getEngine()->play3D((RESOURCE_DIR + "The_Show_Must_Be_Go.ogg").c_str(),
+        vec3df(0, 0, 0), true, false, true);
+
+    if (music) {
+        music->setMinDistance(-5.0f);
+        music->setIsPaused(false);
+        music->setVolume(0.5);
+    }
+}
+
 static void init()
 {
     srand (time(NULL));
@@ -256,83 +352,8 @@ static void init()
     
     defprog->addUniformLights("lights", lighting.size());
 	lighting.SetLightUniforms(defprog);
-    
-	world.grid.initGrid();
 
-    PlayerGameObj *player = new PlayerGameObj(getShape("pointer"), getTexture("test"));
-    
-    vector<shared_ptr<Shape>> playerParts = {
-        getShape("manBody"), getShape("manHead"),
-        getShape("manArm"),getShape("manArm"),
-        getShape("manLeg"), getShape("manLeg"),
-        getShape("sheepLeg")
-    };
-    vector<shared_ptr<Texture>> playerTexs = { 
-        getTexture("manBodyText"), getTexture("faceText"),
-        getTexture("manArmText"), getTexture("manArmText"),
-        getTexture("manLegText"), getTexture("manLegText"),
-        getTexture("legText")
-    };
-    shared_ptr<CharModel> player_model = 
-        make_shared<PlayerCharModel>(PlayerCharModel(playerParts, playerTexs));
-
-    vector<shared_ptr<Shape>> sheepParts = {
-        getShape("sheepBod"), getShape("sheepHead"),
-        getShape("sheepLeg"), getShape("sheepLeg"),
-        getShape("sheepLeg"), getShape("sheepLeg")
-    };
-    vector<shared_ptr<Texture>> sheepTexs = {
-        getTexture("sheepBodText"), getTexture("sheepHeadText"),
-        getTexture("legText"), getTexture("legText"),
-        getTexture("legText"), getTexture("legText")
-    };
-
-    shared_ptr<CharModel> sheep_model =
-        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
-    sheep_model->init_Model();
-    shared_ptr<CharModel> sheep_walk =
-        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
-    sheep_walk->init_Model();
-    shared_ptr<CharModel> sheep_scare =
-        make_shared<EnemyCharModel>(EnemyCharModel(sheepParts, sheepTexs));
-    sheep_scare->init_Model();
-
-    world.charModels.insert(
-        pair<string, shared_ptr<CharModel>>("sheep_model", sheep_model));
-    world.charModels.insert(
-        pair<string, shared_ptr<CharModel>>("sheep_walk", sheep_walk));
-    world.charModels.insert(
-        pair<string, shared_ptr<CharModel>>("sheep_scare", sheep_scare));
-    //dynamic_pointer_cast<EnemyCharModel>(world.charModels.at("sheep_model"))->set_Pointers(sheep_model, sheep_walk, sheep_scare);
-
-    player->setVel(1, 0, 1);
-    player->setPos(10, 2.25, 10);
-    player->setScale(.5, .5, .5);
-    player->setModel(player_model);
-    player->getModel()->init_Model();
-	world.cam.eyePt = player->getPos();
-	world.addObj(player);
-
-	world.makeFence(12, 22);
-
-	world.state.partManager = &pm;
-
-	sky.setRight(getTexture("skyRight"));
-	sky.setLeft(getTexture("skyLeft"));
-	sky.setTop(getTexture("skyUp"));
-	sky.setBottom(getTexture("skyDown"));
-	sky.setBack(getTexture("skyBack"));
-	sky.setFront(getTexture("skyFront"));
-	sky.loadCubemap();
-
-	music = getEngine()->play3D((RESOURCE_DIR + "The_Show_Must_Be_Go.ogg").c_str(),
-	                               vec3df(0,0,0), true, false, true);
-
-	if (music) {
-		music->setMinDistance(-5.0f);
-		music->setIsPaused(false);
-		music->setVolume(0.5);
-	}
+    initWorld();
 
 	musicDead = getEngine()->play3D((RESOURCE_DIR + "Killers.ogg").c_str(),
 	                               vec3df(0,0,0), true, false, true);
@@ -665,7 +686,15 @@ int main(int argc, char **argv)
 				music->setIsPaused(true);
 				musicDead->setIsPaused(false);
 			}
-		}
+        }
+        else if (gameOver) {
+            if (restart) {
+                gameOver = false;
+                //world = WorldObj();
+                //initWorld();
+                restart = false;
+            }
+        }
         lastTime = glfwGetTime();
 	}
 	// Quit program.
