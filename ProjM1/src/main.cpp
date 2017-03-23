@@ -376,7 +376,7 @@ void renderUI() {
     ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
     ImGui::SetNextWindowSize(ImVec2(140, 65), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-    ImGui::Text("Sheep Survived: %d", world.state.score);
+    ImGui::Text("Sheep Visited: %d", world.state.score);
     ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);

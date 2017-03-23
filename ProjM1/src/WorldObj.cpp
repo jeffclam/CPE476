@@ -247,8 +247,8 @@ void WorldObj::makeFence(int row, int col){
     for (int r = 0; r < row; r += 2) {
         for (int c = 0; c < col; c += 2) {
             GameObj *sprinkler = new SupportGameObj(getShape("sprinkler"), getTexture("sprinklerText"));
-            sprinkler->setPos(r * grid.offset + grid.offset / 2 , 1.25, c * grid.offset + grid.offset / 2);
-            sprinkler->setScale(.15, .15, .15);
+            sprinkler->setPos(r * grid.offset + grid.offset / 2 , SPRINKLER_MIN_HEIGHT, c * grid.offset + grid.offset / 2);
+            sprinkler->setScale(.05, .15, .05);
             addObj(sprinkler);
         }
     }
