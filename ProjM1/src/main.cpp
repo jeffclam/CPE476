@@ -374,12 +374,11 @@ void renderUI() {
 
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(140, 75), ImGuiSetCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(140, 65), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Sheep Survived: %d", world.state.score);
     ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
-	ImGui::Text("Water: %.2f%s", world.state.waterLevel, "%");
     //ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
     //ImGui::Image((void *)gAlbedoSpec, ImVec2(g_width/8, g_height/8));
     //ImGui::Image((void *)gNormal, ImVec2(g_width/8, g_height/8));
@@ -388,17 +387,49 @@ void renderUI() {
     ImGui::Render();
 
     if (show_stamina) {
+        ImTextureID id;
+        string percentage;
+
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, .8);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
+
+        /* water bar */
         ImGui_ImplGlfwGL3_NewFrame();
-        ImGui::SetNextWindowPos(ImVec2(10, 80), ImGuiSetCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(10, 70), ImGuiSetCond_Always);
         ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
         ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-        ImTextureID id;
-        int stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
-        string percentage;
+        double water = world.state.waterLevel / 100.0;
+        if (water == 8.0 / 8.0)
+            percentage = "8/8";
+        else if (water > 7.0 / 8.0)
+            percentage = "7/8";
+        else if (water > 6.0 / 8.0)
+            percentage = "6/8";
+        else if (water > 5.0 / 8.0)
+            percentage = "5/8";
+        else if (water > 4.0 / 8.0)
+            percentage = "4/8";
+        else if (water > 3.0 / 8.0)
+            percentage = "3/8";
+        else if (water > 2.0 / 8.0)
+            percentage = "2/8";
+        else if (water > 1.0 / 8.0)
+            percentage = "1/8";
+        else
+            percentage = "0/8";
+        id = (ImTextureID)getTexture(percentage)->getTid();
+        ImGui::Image(id, ImVec2(120, 15));
+        ImGui::End();
+        ImGui::Render();
+
+        /* Sprint bar */
+        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(10, 90), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
+        ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+        float stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
         if (stamina > 75)
             percentage = "100";
         else if (stamina > 50)
@@ -413,6 +444,29 @@ void renderUI() {
         ImGui::Image(id, ImVec2(120, 15));
         ImGui::End();
         ImGui::Render();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 1);
+        /* Water Percentage*/
+        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(22, 71), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
+        ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+        ImGui::Text("Water: %.2f%s", world.state.waterLevel, "%");
+        ImGui::End();
+        ImGui::Render();
+
+        /* Stamina Percentage */
+        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui::SetNextWindowPos(ImVec2(15, 91), ImGuiSetCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
+        ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+        ImVec4 col = (stamina > 0) ? ImVec4(1, 1, 1, 1) : ImVec4(255, 0, 0, 1);
+        ImGui::PushStyleColor(ImGuiCol_Text, col);
+        ImGui::Text("Stamina: %3.2f%%", stamina);
+        ImGui::PopStyleColor();
+        ImGui::End();
+        ImGui::Render();
+
         ImGui::PopStyleColor();
         ImGui::PopStyleVar();
         ImGui::PopStyleVar();

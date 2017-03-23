@@ -201,6 +201,42 @@
         {
         "name": "0",
         "text": "0.png"
+        },
+        {
+        "name": "0/8",
+        "text": "0_8.png"
+        },
+        {
+        "name": "1/8",
+        "text": "1_8.png"
+        },
+        {
+        "name": "2/8",
+        "text": "2_8.png"
+        },
+        {
+        "name": "3/8",
+        "text": "3_8.png"
+        },
+        {
+        "name": "4/8",
+        "text": "4_8.png"
+        },
+        {
+        "name": "5/8",
+        "text": "5_8.png"
+        },
+        {
+        "name": "6/8",
+        "text": "6_8.png"
+        },
+        {
+        "name": "7/8",
+        "text": "7_8.png"
+        },
+        {
+        "name": "8/8",
+        "text": "8_8.png"
         }
         ],
    "sounds" : [
