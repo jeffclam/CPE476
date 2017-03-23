@@ -29,6 +29,7 @@ public:
     float lawnHealth = 100.0;
     float retireIn = 60 * 3;
     float waterLevel = 100.0;
+    float lawnDeath = 50.0;
     GLFWwindow *window = NULL;
     ParticleManager *partManager;
 

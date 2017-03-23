@@ -1,7 +1,7 @@
 /* Lab 6 base code - transforms using matrix stack built on glm 
 	CPE 471 Cal Poly Z. Wood + S. Sueda
 */
-#define demo_mode 0
+#define demo_mode 1
 
 #include <iostream>
 #define GLEW_STATIC
@@ -59,7 +59,6 @@ bool restart = false;
 Lighting lighting = Lighting();
 Sky sky;
 ParticleManager pm;
-float lawnDeath = 50.0;
 
 ISound* musicDead, *music;
 
@@ -399,10 +398,10 @@ void renderUI() {
     ImVec2 pos = ImVec2(0, 0);
 
     if (demo_mode) {
-        lawnDeath = 90.0;
+        world.state.lawnDeath = 90.0;
     }
 
-    if (world.state.lawnHealth < lawnDeath) {
+    if (world.state.lawnHealth < world.state.lawnDeath) {
         show_stamina = false;
         renderScreen("lose");
         pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
@@ -433,11 +432,11 @@ void renderUI() {
     ImGui::SetNextWindowSize(ImVec2(140, 65), ImGuiSetCond_Always);
     ImGui::Begin("Another Window", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::Text("Sheep Visited: %d", world.state.score);
-    if (world.state.lawnHealth < lawnDeath + 5.0) {
+    if (world.state.lawnHealth < world.state.lawnDeath + 5.0) {
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
     }
     ImGui::Text("Lawn Life: %.2f%s", world.state.lawnHealth, "%");
-    if (world.state.lawnHealth < lawnDeath + 5.0) {
+    if (world.state.lawnHealth < world.state.lawnDeath + 5.0) {
         ImGui::PopStyleColor();
     }
     ImGui::Text("Retire In: %d:%02d", (int)world.state.retireIn / 60, (int)world.state.retireIn % 60);
@@ -715,7 +714,7 @@ int main(int argc, char **argv)
             music->setPosition(musicPos);
             music->setVolume(.25);
 
-            if (world.state.lawnHealth < lawnDeath + 5 || player->exhaustionTimer > 0) {
+            if (world.state.lawnHealth < world.state.lawnDeath + 5 || player->exhaustionTimer > 0) {
                 music->setIsPaused(true);
                 musicDead->setPosition(musicPos);
                 musicDead->setIsPaused(false);

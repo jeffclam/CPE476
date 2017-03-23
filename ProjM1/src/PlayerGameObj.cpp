@@ -21,7 +21,7 @@ void PlayerGameObj::update(GameState *state) {
         snd = playSound("firstEat", pos);
         sawFirstEat = true;
     }
-    if(state->lawnHealth < 60.0 && !wasNearDead) {
+    if(state->lawnHealth < state->lawnDeath + 5.0 && !wasNearDead) {
         snd = playSound("nearDead", pos);
         wasNearDead = true;
     }
