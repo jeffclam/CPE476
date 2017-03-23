@@ -669,31 +669,40 @@ int main(int argc, char **argv)
 	// Initialize scene. Note geometry initialized in init now
 	init();
     world.setWindows(window);
-    
+    PlayerGameObj *player = (PlayerGameObj *)world.objs[0];
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
     vec3 playerPos;
     vec3df musicPos;
 	while(!glfwWindowShouldClose(window)) {
-        
+        player = (PlayerGameObj *)world.objs[0];
 		// Render scene.
 		render();
 		// Swap front and back buffers.
 		glfwSwapBuffers(window);
 		// Poll for and process events.
 		glfwPollEvents();
+
         if(!gameOver && !startMenu && !pauseMenu) {
             world.update(glfwGetTime() - lastTime);
-            playerPos = world.objs[0]->getPos();
+            playerPos = player->getPos();
             musicPos = vec3df(playerPos.x, playerPos.y, playerPos.z);
             music->setPosition(musicPos);
             music->setVolume(.25);
-			if(world.state.lawnHealth < 60){
-				music->setIsPaused(true);
-				musicDead->setIsPaused(false);
-			}
+
+            if (world.state.lawnHealth < 60.0 || player->exhaustionTimer > 0) {
+                music->setIsPaused(true);
+                musicDead->setIsPaused(false);
+            }
+            else {
+                music->setIsPaused(false);
+                musicDead->setIsPaused(true);
+            }
         }
         else if (gameOver) {
+            music->setIsPaused(true);
+            musicDead->setPosition(musicPos);
+
             if (restart) {
                 gameOver = false;
                 world = WorldObj();
@@ -702,6 +711,8 @@ int main(int argc, char **argv)
                 ((PlayerGameObj *)world.objs[0])->sprinkler(&world.state);
                 ((PlayerGameObj *)world.objs[0])->getModel()->scare_Motion();
                 restart = false;
+                music->setIsPaused(false);
+                musicDead->setIsPaused(true);
             }
         }
         lastTime = glfwGetTime();
