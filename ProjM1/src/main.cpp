@@ -672,6 +672,8 @@ int main(int argc, char **argv)
     
     lastTime = glfwGetTime();
 	// Loop until the user closes the window.
+    vec3 playerPos;
+    vec3df musicPos;
 	while(!glfwWindowShouldClose(window)) {
         
 		// Render scene.
@@ -682,6 +684,10 @@ int main(int argc, char **argv)
 		glfwPollEvents();
         if(!gameOver && !startMenu && !pauseMenu) {
             world.update(glfwGetTime() - lastTime);
+            playerPos = world.objs[0]->getPos();
+            musicPos = vec3df(playerPos.x, playerPos.y, playerPos.z);
+            music->setPosition(musicPos);
+            music->setVolume(.25);
 			if(world.state.lawnHealth < 60){
 				music->setIsPaused(true);
 				musicDead->setIsPaused(false);
