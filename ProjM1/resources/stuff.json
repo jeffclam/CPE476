@@ -177,10 +177,14 @@
         {
         "name": "win",
         "text": "win.png"
-        },        
+        },
         {
         "name": "lose",
         "text": "lose.png"
+        },
+        {
+        "name": "dead",
+        "text": "dead.png"
         },
         {
         "name": "100",

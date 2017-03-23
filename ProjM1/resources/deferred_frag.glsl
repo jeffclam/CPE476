@@ -9,6 +9,7 @@ uniform sampler2D shadowDepth;
 uniform mat4 LS;
 uniform int width;
 uniform int height;
+uniform float exhaustion;
 
 #define MAX_LIGHTS 35
 uniform int numLights;
@@ -159,12 +160,16 @@ void main() {
     }
 
     vec3 baseColor = diffuseColor.rgb;
-
-	//color = vec4((diffuseColor.xyz * inShade) - vec3(g), 1.0);
-	//color = vec4(intensity.xyz * inShade - vec3(g), 1.0);
 	color = vec4((intensity.xyz * baseColor.xyz * inShade) - vec3(g), 1.0);
 
-    if(diffuseColor.xyz == vec3(0))
+	/* Vignette stuff */
+	vec2 uv = gl_FragCoord.xy / vec2(width, height).xy;
+	uv *= 1.0 - uv.yx;
+	float vig = uv.x * uv.y * 15.0;
+	vig = pow(vig, exhaustion);
+    color *= vig;
+
+    if (diffuseColor.xyz == vec3(0))
       discard;
 
 }

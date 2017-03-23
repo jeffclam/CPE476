@@ -225,6 +225,7 @@ static void init()
 	defprog->addUniform("LS");
 	defprog->addUniform("height");
 	defprog->addUniform("width");
+    defprog->addUniform("exhaustion");
 
     Light sun1;
 	sun1.pos = vec4(0, 50, 0, 0);
@@ -355,6 +356,7 @@ void renderScreen(string screen) {
 }
 
 void renderUI() {
+    PlayerGameObj *player = (PlayerGameObj *)world.objs[0];
     bool show_another_window = true;
     bool show_stamina = true;
     ImVec2 pos = ImVec2(0, 0);
@@ -371,6 +373,19 @@ void renderUI() {
         pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
         gameOver = true;
     }
+
+    defprog->bind();
+    if (player->exhaustionTimer > MAX_SPRINT_TIME) {
+        glUniform1f(defprog->getUniform("exhaustion"), 0);
+        show_stamina = false;
+        renderScreen("dead");
+        pos = ImVec2(g_width / 2 - 70, g_height / 2 - 32.5);
+        gameOver = true;
+    }
+    else {
+        glUniform1f(defprog->getUniform("exhaustion"), player->exhaustionTimer);
+    }
+    defprog->unbind();
 
     ImGui_ImplGlfwGL3_NewFrame();
     ImGui::SetNextWindowPos(pos, ImGuiSetCond_Always);
@@ -429,7 +444,7 @@ void renderUI() {
         ImGui::SetNextWindowPos(ImVec2(10, 90), ImGuiSetCond_Always);
         ImGui::SetNextWindowSize(ImVec2(120, 15), ImGuiSetCond_Always);
         ImGui::Begin("Sprint", &show_another_window, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
-        float stamina = (((PlayerGameObj *)world.objs[0])->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
+        float stamina = (player->stamina - SPRINT_MIN) / (SPRINT_MAX - SPRINT_MIN) * 100;
         if (stamina > 75)
             percentage = "100";
         else if (stamina > 50)

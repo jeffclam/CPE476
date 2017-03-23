@@ -15,6 +15,8 @@
 #define SPRINT_MAX .5
 #define SPRINT_MIN -.5
 
+#define MAX_SPRINT_TIME 8
+
 #include "GameObj.h"
 #include "EnemyGameObj.h"
 #include "SupportGameObj.h"
@@ -27,6 +29,7 @@ public:
     void push(GameState *state);
     void sprinkler(GameState *state);
     float stamina = SPRINT_MAX;
+    float exhaustionTimer = 0;
 private:
     float oldX;
     float theta;
